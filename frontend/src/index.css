@@ -1,11 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  /* Landing Page Colors (blue & navy) */
+  --color-landing-primary: #3B82F6;        /* Bright blue */
+  --color-landing-secondary: #60A5FA;      /* Light blue */
+  --color-landing-navy: #0F172A;           /* Deep navy */
+  --color-landing-bg: #F8FAFC;             /* Light background */
+  --color-landing-gradient-start: #E0F2FE; /* Aqua gradient */
+  --color-landing-gradient-end: #C7D2FE;   /* Lavender-blue */
+  --color-landing-text: #111827;           /* Strong text */
+  --color-landing-text-muted: #6B7280;     /* Muted text */
+
+  /*  App/Dashboard Colors (teal & pastel) */
+  --color-app-primary: #0E938D;            /* Teal brand */
+  --color-app-secondary: #5BC9E4;          /* Sky blue */
+  --color-app-accent: #F59C85;             /* Coral */
+  --color-app-surface: #F5F9FA;            /* Card bg */
+  --color-app-gradient-start: #A3E2DC;     /* Aqua */
+  --color-app-gradient-end: #C2B8F7;       /* Purple */
+  --color-app-text: #1F2937;               /* Strong text */
+  --color-app-text-muted: #6B7280;         /* Muted text */
+
+  /* Fonts */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color-landing-text);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,56 +43,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+h1, h2, h3, h4 {
+  color: var(--color-landing-primary);
+  font-family: var(--font-heading);
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
