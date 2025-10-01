@@ -1,22 +1,33 @@
-import React from "react";
-
 const Hero = () => {
   return (
-    <section className="text-center py-20 bg-gradient-to-r from-landing-gradient-start to-landing-gradient-end text-white">
-      <h1 className="text-5xl font-heading mb-6">
-        Plan, Track & Ship Projects — The Dev Way
-      </h1>
-      <p className="text-lg max-w-xl mx-auto">
-        StackTrack helps developers and teams manage projects, stages, and tasks
-        with ease. Lightweight. Developer-friendly. No clutter.
-      </p>
-      <div className="mt-8 flex justify-center gap-4">
-        <button className="bg-white text-landing-primary px-6 py-3 rounded-lg font-heading">
-          Get Started Free
-        </button>
-        <button className="border border-white px-6 py-3 rounded-lg font-heading">
-          See Dashboard
-        </button>
+    <section className="bg-landing-secondary max-w-7xl mx-auto flex flex-col md:flex-row items-center px-6 py-20 rounded-br-full">
+      {/* Left Content */}
+      <div className="flex-1 text-center md:text-left">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl md:text-left font-heading mb-6">
+          Stack it. Track it. Ship it.
+        </h1>
+        <p className="text-lg max-w-xl mx-auto">
+          Plan projects, manage tasks, and ship with flow. Stay focused from
+          idea to delivery with StackTrack.
+        </p>
+        <div className="mt-8 flex justify-center md:justify-start gap-4">
+          <button className="bg-landing-navy text-landing-secondary px-6 py-3 rounded-full font-heading">
+            Get Started
+          </button>
+          <button className="px-6 py-3 rounded-full font-heading bg-gray-200 text-landing-navy">
+            Learn More{" "}
+          </button>
+        </div>
+      </div>
+
+      {/* Right Mockup / Image */}
+      <div className="flex-1 mt-12 md:mt-0 flex justify-center">
+        <div className="w-full h-64 md:h-80 rounded-full bg-gray-50 flex items-center justify-center">
+            {/* Replace this with <img src="..." alt="Vision Design" /> */}
+            <span className="text-landing-primary font-semibold">
+              [ Your Design Here ]
+            </span>
+          </div>
       </div>
     </section>
   );

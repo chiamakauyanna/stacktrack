@@ -1,27 +1,25 @@
-import Hero from "./components/sections/Hero";
-import ProblemSolution from "./components/sections/ProblemSolution";
-import Features from "./components/sections/Features";
-import HowItWorks from "./components/sections/HowItWorks";
-import Pricing from "./components/sections/Pricing";
-import CTA from "./components/sections/CTA";
-import Footer from "./components/sections/Footer";
-import Navbar from "./components/common/Navbar";
-import Vision from "./components/sections/Vision";
+import { Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import Profile from "./pages/dashboard/Profile";
+import Settings from "./pages/dashboard/Settings";
 
-function App() {
+const AppRoutes = () => {
   return (
-    <div className="font-body bg-landing-bg text-landing-text">
-      <Navbar />
-      <Hero />
-      <ProblemSolution />
-      <Features />
-      <HowItWorks />
-      <Pricing />
-      <Vision />
-      <CTA />
-      <Footer />
-    </div>
-  );
-}
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-export default App;
+      {/* Dashboard Routes */}
+      <Route path="/dashboard" element={<DashboardHome />} />
+      <Route path="/dashboard/profile" element={<Profile />} />
+      <Route path="/dashboard/settings" element={<Settings />} />
+    </Routes>
+  );
+};
+
+export default AppRoutes;
