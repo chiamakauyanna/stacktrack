@@ -23,7 +23,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-gray-50 text-center">
+    <section id="howitworks" className="py-20 px-6 bg-gray-50 text-center">
       {/* Section Header */}
       <h2 className="text-4xl font-heading text-landing-primary mb-3">
         How StackTrack Works
@@ -35,7 +35,7 @@ const HowItWorks = () => {
       <div className="flex flex-col md:flex-row lg:flex-row justify-between gap-6">
         {/* Left Section */}
         <div className="md:flex-1">
-          <div className="w-full h-64 md:h-80 rounded-full bg-landing-secondary flex items-center justify-center">
+          <div className="w-full h-64 md:h-80 rounded-full bg-landing-primary flex items-center justify-center">
             {/* Replace this with <img src="..." alt="Vision Design" /> */}
             <span className="text-landing-primary font-semibold">
               [ Your Design Here ]

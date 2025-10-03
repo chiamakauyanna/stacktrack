@@ -1,57 +1,43 @@
-import { Link } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 
-const Login = () => {
+const ForgotPassword = () => {
   return (
     <AuthLayout>
       <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
         {/* Left: Form */}
         <div className="w-full md:w-1/2 px-8 bg-landing-bg rounded-r-4xl shadow-lg absolute top-2 bottom-2 pt-8 z-10">
-          <p className="mb-24 text-sm text-landing-navy text- font-semibold text-right">
-            Don't have an account?{" "}
+          <p className="mb-24 text-sm text-landing-navy font-semibold text-right">
+            Remember your password?{" "}
             <a
               href="/login"
               className="border-2 border-landing-navy py-1.5 px-2 rounded-lg"
             >
-              Sign Up
+              Back to Login
             </a>
           </p>
 
           <p className="text-3xl font-bold text-landing-text-muted mb-16">
-            Welcome Back
+            Reset Password
           </p>
           <form>
             <div className="bg-white p-3 rounded-xl shadow-md">
               <input
                 type="email"
-                placeholder="Email"
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
-              />
-              <input
-                type="password"
-                placeholder="Password"
+                placeholder="Enter your email address"
                 className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
               />
             </div>
-            <div className="mt-6 text-sm text-red-500 text-right">
-              <Link
-                to="/forgot-password"
-                className="hover:underline mb-2 md:mb-0"
-              >
-                Forgot your password?
-              </Link>
-            </div>
-            <button className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition">
-              Login
+            <button className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition mt-6">
+              Send Reset Link
             </button>
           </form>
         </div>
 
-        {/* Right: Illustration (replace with SVG or image) */}
+        {/* Right: Illustration */}
         <div className="hidden md:flex w-full relative bg-landing-secondary items-center justify-center p-8 h-full">
           {/* <img
-            src="/illustrations/signup.svg" // <-- replace
-            alt="Signup Illustration"
+            src="/illustrations/forgot-password.svg" // <-- replace with your illustration
+            alt="Forgot Password Illustration"
             className="max-w-sm"
           /> */}
         </div>
@@ -60,4 +46,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

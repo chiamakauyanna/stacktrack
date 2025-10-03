@@ -1,7 +1,7 @@
 const AuthLayout = ({ children }) => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg">
+  return ( 
+    <div className="bg-landing-navy p-2">
+      <div className="">
         {children}
       </div>
     </div>

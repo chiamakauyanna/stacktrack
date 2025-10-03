@@ -23,7 +23,7 @@ const Vision = () => {
 
         {/* Right: Image/Design placeholder */}
         <div className="flex justify-center">
-          <div className="w-full h-64 md:h-80 rounded-2xl bg-landing-secondary flex items-center justify-center">
+          <div className="w-full h-64 md:h-80 rounded-2xl bg-landing-primary flex items-center justify-center">
             {/* Replace this with <img src="..." alt="Vision Design" /> */}
             <span className="text-landing-primary font-semibold">
               [ Your Design Here ]

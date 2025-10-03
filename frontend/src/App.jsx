@@ -5,6 +5,8 @@ import Signup from "./pages/Signup";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import Profile from "./pages/dashboard/Profile";
 import Settings from "./pages/dashboard/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/resetPassword";
 
 const AppRoutes = () => {
   return (
@@ -13,6 +15,8 @@ const AppRoutes = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardHome />} />

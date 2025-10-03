@@ -39,7 +39,7 @@ const Features = () => {
             <div
               key={feature.name}
               className={`p-8 rounded-xl shadow-md hover:shadow-lg transition md:flex lg:flex gap-3
-                ${idx === 0 ? "bg-landing-secondary" : "bg-gray-50"}`}
+                ${idx === 0 ? "bg-landing-primary" : "bg-gray-50"}`}
             >
               <div
                 className={`flex justify-center items-center w-28 h-16 rounded-xl my-3 p-2 ${
@@ -48,12 +48,14 @@ const Features = () => {
               >
                 <feature.icon
                   className="h-10 w-10 mx-auto
-                 text-landing-secondary"
+                 text-landing-primary"
                 />
               </div>
 
               <div className="flex flex-col items-start justify-start">
-                <h3 className="mt-4 text-xl font-semibold text-left">{feature.name}</h3>
+                <h3 className="mt-4 text-xl font-semibold text-left">
+                  {feature.name}
+                </h3>
                 <p
                   className="mt-2 text-sm text-left
                   "
