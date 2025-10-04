@@ -2,8 +2,9 @@ from rest_framework import viewsets, filters, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import ProjectSerializer, StageSerializer, TaskSerializer
+from .serializers import ProjectSerializer, StageSerializer, TaskSerializer, UserRegistrationSerializer
 from .models import Project, Stage, Task
+from django.contrib.auth.models import User
 
 # ---------------------------
 # Project ViewSet
@@ -69,3 +70,13 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         stage_id = self.kwargs.get('stage_pk')
         serializer.save(stage_id=stage_id)
+        
+
+# ---------------------------
+# Authentication ViewSet
+# ---------------------------
+
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegistrationSerializer
+    permission_classes = []  # Anyone can register

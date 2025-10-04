@@ -1,6 +1,11 @@
 from django.urls import path, include
 from rest_framework_nested import routers
-from .views import ProjectViewSet, StageViewSet, TaskViewSet
+from .views import ProjectViewSet, StageViewSet, TaskViewSet, UserRegistrationView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+# -------------------
+# Nested routers
+# -------------------
 
 # Parent router
 router = routers.DefaultRouter()
@@ -14,8 +19,17 @@ projects_router.register(r'stages', StageViewSet, basename='project-stages')
 stages_router = routers.NestedDefaultRouter(projects_router, r'stages', lookup='stage')
 stages_router.register(r'tasks', TaskViewSet, basename='stage-tasks')
 
+# -------------------
+# URL patterns
+# -------------------
 urlpatterns = [
+    # Nested API
     path('', include(router.urls)),
     path('', include(projects_router.urls)),
     path('', include(stages_router.urls)),
+
+    # Authentication endpoints
+    path('auth/register/', UserRegistrationView.as_view(), name='register'),
+    path('auth/login/', TokenObtainPairView.as_view(), name='login'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

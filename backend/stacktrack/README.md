@@ -1,91 +1,117 @@
 # 🧠 StackTrack Backend
 
-This is the backend API for StackTrack, a project management and tracking platform built with Django and Django REST Framework (DRF).
+This is the **backend API** for **StackTrack**, a project management and tracking platform built with **Django** and **Django REST Framework (DRF)**.
 
 It provides RESTful endpoints for managing projects, stages, and tasks, along with analytics for project progress and task statistics. The API is structured for modular scalability and upcoming features such as user performance insights, notifications, and enhanced task management.
 
-🚀 Features (so far)
+---
 
-✅ Django REST Framework setup
+## 🚀 Features (so far)
 
-✅ Project, Stage, and Task models with proper relationships
+* ✅ Django REST Framework setup
+* ✅ Project, Stage, and Task models with proper relationships
+* ✅ Automatic slug generation for Projects
+* ✅ Owner field for user association
+* ✅ ViewSets with CRUD endpoints for Projects, Stages, and Tasks
+* ✅ Nested routers for hierarchical endpoints:
 
-✅ Automatic slug generation for Projects
+  * `/projects/{id}/stages/`
+  * `/projects/{project_id}/stages/{stage_id}/tasks/`
+* ✅ Analytics endpoints for project progress and task statistics
+* ✅ Filtering, search, and ordering enabled
+* ✅ JWT authentication:
 
-✅ Owner field for user association
+  * `/auth/register/` → user registration
+  * `/auth/login/` → obtain JWT access and refresh tokens
+  * `/auth/refresh/` → refresh access token
+* 🔜 Pagination support
 
-✅ ViewSets with CRUD endpoints for Projects, Stages, and Tasks
+---
 
-✅ Nested routers for hierarchical endpoints:
+## 🧰 Tech Stack
 
-/projects/{id}/stages/
+| Component           | Description                                |
+| ------------------- | ------------------------------------------ |
+| **Framework**       | Django 5 + Django REST Framework           |
+| **Language**        | Python 3.13                                |
+| **Database**        | SQLite (development)                       |
+| **Version Control** | Git + GitHub                               |
+| **Environment**     | Virtualenv                                 |
+| **Architecture**    | RESTful API (Modular apps for scalability) |
 
-/projects/{project_id}/stages/{stage_id}/tasks/
+---
 
-✅ Analytics endpoints for project progress and task statistics
+## ⚙️ Installation & Setup
 
-✅ Filtering, search, and ordering enabled
+### 1️⃣ Clone the Repository
 
-🔜 Pagination support
-
-🔜 JWT Authentication and user endpoints
-
-🧰 Tech Stack
-Component	Description
-Framework	Django 5 + Django REST Framework
-Language	Python 3.13
-Database	SQLite (development)
-Version Control	Git + GitHub
-Environment	Virtualenv
-Architecture	RESTful API (Modular apps for scalability)
-
-⚙️ Installation & Setup
-1️⃣ Clone the Repository
+```bash
 git clone https://github.com/chiamakauyanna/stacktrack.git
 cd stacktrack/backend/stacktrack
+```
 
-2️⃣ Create a Virtual Environment
+### 2️⃣ Create a Virtual Environment
+
+```bash
 python -m venv venv
 venv\Scripts\activate     # On Windows
 # OR
 source venv/bin/activate  # On macOS/Linux
+```
 
-3️⃣ Apply Migrations
+### 3️⃣ Apply Migrations
+
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
-4️⃣ Run the Server
+### 4️⃣ Run the Server
+
+```bash
 python manage.py runserver
-
+```
 
 Your API will be live at:
-👉 http://127.0.0.1:8000/api/projects/
+👉 `http://127.0.0.1:8000/api/`
 
-🧩 Current API Endpoints
-Method	Endpoint	Description
-GET	/api/projects/	List all projects (owned by user)
-POST	/api/projects/	Create a new project
-GET	/api/projects/<id>/	Retrieve a single project
-PUT/PATCH	/api/projects/<id>/	Update a project
-DELETE	/api/projects/<id>/	Delete a project
-GET	/api/projects/<id>/progress/	Get project completion %
-GET	/api/projects/<id>/stats/	Get project task statistics
-GET	/api/projects/<id>/stages/	List stages for a project
-POST	/api/projects/<id>/stages/	Create stage for a project
-GET	/api/projects/<project_id>/stages/<stage_id>/tasks/	List tasks for a stage
-POST	/api/projects/<project_id>/stages/<stage_id>/tasks/	Create task for a stage
+---
 
-🧑‍💻 Developer Notes
+## 🧩 Current API Endpoints
 
-The slug field is automatically generated from the project title.
+| Method    | Endpoint                                            | Description                       |
+| --------- | --------------------------------------------------- | --------------------------------- |
+| POST      | /api/auth/register/                                 | Register a new user               |
+| POST      | /api/auth/login/                                    | Login and get JWT tokens          |
+| POST      | /api/auth/refresh/                                  | Refresh access token              |
+| GET       | /api/projects/                                      | List all projects (owned by user) |
+| POST      | /api/projects/                                      | Create a new project              |
+| GET       | /api/projects/<id>/                                 | Retrieve a single project         |
+| PUT/PATCH | /api/projects/<id>/                                 | Update a project                  |
+| DELETE    | /api/projects/<id>/                                 | Delete a project                  |
+| GET       | /api/projects/<id>/progress/                        | Get project completion %          |
+| GET       | /api/projects/<id>/stats/                           | Get project task statistics       |
+| GET       | /api/projects/<id>/stages/                          | List stages for a project         |
+| POST      | /api/projects/<id>/stages/                          | Create stage for a project        |
+| GET       | /api/projects/<project_id>/stages/<stage_id>/tasks/ | List tasks for a stage            |
+| POST      | /api/projects/<project_id>/stages/<stage_id>/tasks/ | Create task for a stage           |
 
-The owner field links each project to the authenticated user.
+---
 
-Nested routers enforce hierarchical endpoints and ensure proper parent-child associations.
+## 🧑‍💻 Developer Notes
 
-Analytics endpoints provide project progress and task stats dynamically.
+* The **slug** field is automatically generated from the project title.
+* The **owner** field links each project to the authenticated user.
+* **Nested routers** enforce hierarchical endpoints and ensure proper parent-child associations.
+* JWT authentication secures all API requests; include `Authorization: Bearer <access_token>` in headers.
+* Analytics endpoints provide project progress and task stats dynamically.
 
-📜 License
-This project is open-source under the MIT License.
-[GitHub] https://github.com/chiamakauyanna/stacktrack
-[LinkedIn] https://linkedin.com/in/chiamakauyanna
+---
+
+## 📜 License
+
+This project is open-source under the **MIT License**.
+
+* [GitHub](https://github.com/chiamakauyanna/stacktrack)
+* [LinkedIn](https://linkedin.com/in/chiamakauyanna)
+
