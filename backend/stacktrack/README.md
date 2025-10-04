@@ -1,83 +1,91 @@
 # 🧠 StackTrack Backend
 
-This is the **backend API** for **StackTrack**, a project management and tracking platform built with **Django** and **Django REST Framework (DRF)**.  
+This is the backend API for StackTrack, a project management and tracking platform built with Django and Django REST Framework (DRF).
 
-It currently provides RESTful endpoints for managing projects and serves as the foundation for upcoming modules such as task tracking, user performance insights, and notifications.
+It provides RESTful endpoints for managing projects, stages, and tasks, along with analytics for project progress and task statistics. The API is structured for modular scalability and upcoming features such as user performance insights, notifications, and enhanced task management.
 
----
+🚀 Features (so far)
 
-## 🚀 Features (so far)
+✅ Django REST Framework setup
 
-- ✅ Django REST Framework setup  
-- ✅ Project model with automatic slug generation  
-- ✅ Owner field for user association  
-- ✅ ViewSets and routers with working endpoints  
-- ✅ Clean API structure with modular apps  
-- 🔜 Pagination, filtering, and search  
-- 🔜 Authentication and user endpoints  
-- 🔜 Task and progress tracking
+✅ Project, Stage, and Task models with proper relationships
 
----
+✅ Automatic slug generation for Projects
 
-## 🧰 Tech Stack
+✅ Owner field for user association
 
-| Component | Description |
-|------------|-------------|
-| **Framework** | Django 5 + Django REST Framework |
-| **Language** | Python 3.13 |
-| **Database** | SQLite (development) |
-| **Version Control** | Git + GitHub |
-| **Environment** | Virtualenv |
-| **Architecture** | RESTful API (Modular apps for scalability) |
+✅ ViewSets with CRUD endpoints for Projects, Stages, and Tasks
 
----
+✅ Nested routers for hierarchical endpoints:
 
-## ⚙️ Installation & Setup
+/projects/{id}/stages/
 
-### 1️⃣ Clone the Repository
-```bash
+/projects/{project_id}/stages/{stage_id}/tasks/
+
+✅ Analytics endpoints for project progress and task statistics
+
+✅ Filtering, search, and ordering enabled
+
+🔜 Pagination support
+
+🔜 JWT Authentication and user endpoints
+
+🧰 Tech Stack
+Component	Description
+Framework	Django 5 + Django REST Framework
+Language	Python 3.13
+Database	SQLite (development)
+Version Control	Git + GitHub
+Environment	Virtualenv
+Architecture	RESTful API (Modular apps for scalability)
+
+⚙️ Installation & Setup
+1️⃣ Clone the Repository
 git clone https://github.com/chiamakauyanna/stacktrack.git
 cd stacktrack/backend/stacktrack
+
 2️⃣ Create a Virtual Environment
-bash
-Copy code
 python -m venv venv
 venv\Scripts\activate     # On Windows
 # OR
 source venv/bin/activate  # On macOS/Linux
 
 3️⃣ Apply Migrations
-bash
-Copy code
 python manage.py makemigrations
 python manage.py migrate
+
 4️⃣ Run the Server
-bash
-Copy code
 python manage.py runserver
+
 
 Your API will be live at:
 👉 http://127.0.0.1:8000/api/projects/
 
 🧩 Current API Endpoints
 Method	Endpoint	Description
-GET	/api/projects/	List all projects
+GET	/api/projects/	List all projects (owned by user)
 POST	/api/projects/	Create a new project
 GET	/api/projects/<id>/	Retrieve a single project
 PUT/PATCH	/api/projects/<id>/	Update a project
 DELETE	/api/projects/<id>/	Delete a project
+GET	/api/projects/<id>/progress/	Get project completion %
+GET	/api/projects/<id>/stats/	Get project task statistics
+GET	/api/projects/<id>/stages/	List stages for a project
+POST	/api/projects/<id>/stages/	Create stage for a project
+GET	/api/projects/<project_id>/stages/<stage_id>/tasks/	List tasks for a stage
+POST	/api/projects/<project_id>/stages/<stage_id>/tasks/	Create task for a stage
 
 🧑‍💻 Developer Notes
+
 The slug field is automatically generated from the project title.
 
-The owner field associates each project with a registered user.
+The owner field links each project to the authenticated user.
 
-ViewSets and DefaultRouter are used for clean, RESTful routing.
+Nested routers enforce hierarchical endpoints and ensure proper parent-child associations.
 
-More models (Tasks, Teams, and Progress tracking) will be added next.
+Analytics endpoints provide project progress and task stats dynamically.
 
 📜 License
 This project is open-source under the MIT License.
-
 [GitHub] https://github.com/chiamakauyanna/stacktrack
- [LinkedIn] https://linkedin.com/in/chiamakauyanna
+[LinkedIn] https://linkedin.com/in/chiamakauyanna
