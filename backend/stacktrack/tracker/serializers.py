@@ -37,6 +37,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 # Task Serializer
 # ---------------------------
 class TaskSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     assigned_to = UserSerializer(read_only=True)
     assigned_to_id = serializers.PrimaryKeyRelatedField(
         source='assigned_to', queryset=User.objects.all(), write_only=True, required=False
@@ -50,6 +51,7 @@ class TaskSerializer(serializers.ModelSerializer):
 # Stage Serializer
 # ---------------------------
 class StageSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     # Nested tasks for this stage
     tasks = TaskSerializer(many=True, read_only=True)
     progress = serializers.SerializerMethodField()
@@ -66,6 +68,7 @@ class StageSerializer(serializers.ModelSerializer):
 # Project Serializer
 # ---------------------------
 class ProjectSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
     # Show username instead of user ID
     owner = serializers.StringRelatedField(read_only=True)
     # Nested stages for this project
