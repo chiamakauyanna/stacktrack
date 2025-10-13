@@ -1,15 +1,17 @@
-from .models import Project, Stage, Task, Profile
+from tracker.models import Project, Stage, Task, Profile
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # ---------------------------
-# Authentication Serializer
-# --------------------------
+# Authentication Serializers
+# ---------------------------
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['bio', 'avatar', 'role']
+
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
@@ -17,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'profile']
+
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -31,8 +34,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        Profile.objects.create(user=user)
         return user
     
+
 # ---------------------------
 # Task Serializer
 # ---------------------------
@@ -42,43 +47,58 @@ class TaskSerializer(serializers.ModelSerializer):
     assigned_to_id = serializers.PrimaryKeyRelatedField(
         source='assigned_to', queryset=User.objects.all(), write_only=True, required=False
     )
+
     class Meta:
         model = Task
-        fields = '__all__'
-        read_only_fields = ['created_at', 'updated_at']
+        fields = [
+            'id', 'title', 'description', 'status', 'priority', 'due_date',
+            'assigned_to', 'assigned_to_id', 'stage', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+        
+        
+    def validate_due_date(self, value):
+        if value < timezone.now().date():
+            raise serializers.ValidationError("Due date cannot be in the past.")
+        return value
+
+
+
+
 
 # ---------------------------
 # Stage Serializer
 # ---------------------------
 class StageSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
-    # Nested tasks for this stage
     tasks = TaskSerializer(many=True, read_only=True)
     progress = serializers.SerializerMethodField()
 
     class Meta:
         model = Stage
-        fields = '__all__'
+        fields = ['id', 'title', 'project', 'order', 'progress', 'tasks', 'created_at']
         read_only_fields = ['created_at', 'order']
         
     def get_progress(self, obj):
         return obj.progress()
+
 
 # ---------------------------
 # Project Serializer
 # ---------------------------
 class ProjectSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
-    # Show username instead of user ID
     owner = serializers.StringRelatedField(read_only=True)
-    # Nested stages for this project
     stages = StageSerializer(many=True, read_only=True)
     progress = serializers.SerializerMethodField()
     task_statistics = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = [
+            'id', 'title', 'description', 'slug', 'status', 'owner',
+            'progress', 'task_statistics', 'stages', 'created_at', 'updated_at'
+        ]
         read_only_fields = ['slug', 'created_at', 'updated_at']
 
     def get_progress(self, obj):

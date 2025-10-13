@@ -6,5 +6,5 @@ class StackTrackConfig(AppConfig):
     name = 'tracker'
     
     def ready(self):
-        import tracker.signals
+        import tracker.models.signals
 

@@ -105,7 +105,7 @@ It supports **user authentication**, **nested project/task management**, **progr
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/stacktrack.git
+git clone https://github.com/chiamakauyanna/stacktrack.git
 cd stacktrack/backend/stacktrack
 ```
 
@@ -206,5 +206,5 @@ stacktrack/
 
 ## 🧾 License
 
-This project is developed as part of the **3MTT Capstone Project** — for educational and portfolio use.
-© 2025 Chammy X. All rights reserved.
+This project is developed as part of the **ALX Capstone Project** — for educational and portfolio use.
+© 2025 Chiamaka Uyanna. All rights reserved.

@@ -1,3 +1,14 @@
+"""
+tracker/urls.py
+
+Defines API routes for:
+- Projects
+- Stages (nested under Projects)
+- Tasks (nested under Stages)
+- Auth (register & profile)
+"""
+
+
 from django.urls import path, include, register_converter
 from rest_framework_nested import routers
 from .views import ProjectViewSet, StageViewSet, TaskViewSet, RegisterView, ProfileView
