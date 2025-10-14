@@ -32,7 +32,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         stage = get_object_or_404(Stage, id=self.kwargs['stage_pk'])
-        serializer.save(stage=stage)
+        assigned_to = serializer.validated_data.get('assigned_to', self.request.user)
+        serializer.save(stage=stage, assigned_to=assigned_to)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

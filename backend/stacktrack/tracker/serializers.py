@@ -45,7 +45,7 @@ class TaskSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
     assigned_to = UserSerializer(read_only=True)
     assigned_to_id = serializers.PrimaryKeyRelatedField(
-        source='assigned_to', queryset=User.objects.all(), write_only=True, required=False
+        source='assigned_to', queryset=User.objects.all(), write_only=True, required=False, allow_null=True
     )
 
     class Meta:
@@ -58,7 +58,7 @@ class TaskSerializer(serializers.ModelSerializer):
         
         
     def validate_due_date(self, value):
-        if value < timezone.now().date():
+        if value and value < timezone.now().date():
             raise serializers.ValidationError("Due date cannot be in the past.")
         return value
 
