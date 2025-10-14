@@ -42,12 +42,14 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_spectacular',
+    'corsheaders',
     'tracker',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -156,7 +158,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": True,  # Automatically issue a new refresh on use
+    "ROTATE_REFRESH_TOKENS": True,  
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
 }
@@ -171,10 +173,10 @@ SPECTACULAR_SETTINGS = {
     'SERVERS': [
         {'url': 'http://localhost:8000', 'description': 'Local development server'},
     ],
-    'SECURITY': [{'bearerAuth': []}],
+    'SECURITY': [{'BearerAuth': []}],
     'COMPONENTS': {
         'securitySchemes': {
-            'bearerAuth': {
+            'BearerAuth': {
                 'type': 'http',
                 'scheme': 'bearer',
                 'bearerFormat': 'JWT',
@@ -183,3 +185,4 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
+CORS_ALLOW_ALL_ORIGINS = True

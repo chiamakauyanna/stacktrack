@@ -11,7 +11,7 @@ Defines API routes for:
 
 from django.urls import path, include, register_converter
 from rest_framework_nested import routers
-from .views import ProjectViewSet, StageViewSet, TaskViewSet, RegisterView, ProfileView
+from .views import ProjectViewSet, StageViewSet, TaskViewSet, RegisterView, ProfileView, CustomTokenObtainPairView, CustomTokenRefreshView
 import uuid
 
 
@@ -55,7 +55,9 @@ urlpatterns = [
     path('', include(projects_router.urls)),
     path('', include(stages_router.urls)),
 
-    # Auth endpoints
+     # Auth endpoints
     path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/login/', CustomTokenObtainPairView.as_view(), name='login'),
+    path('auth/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),  
     path('auth/profile/', ProfileView.as_view(), name='profile'),
 ]

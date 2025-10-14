@@ -1,12 +1,29 @@
 from rest_framework import viewsets, status, filters
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
-from tracker.models import Stage
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from tracker.models import Stage, Project
 from tracker.serializers import StageSerializer
 from tracker.utils import success_response
 from .pagination import StandardResultsSetPagination
+from django.shortcuts import get_object_or_404
 
+
+@extend_schema_view(
+    list=extend_schema(summary="List stages for a project"),
+    create=extend_schema(summary="Create a new stage in a project"),
+    retrieve=extend_schema(summary="Retrieve stage details"),
+    update=extend_schema(summary="Update a stage"),
+    destroy=extend_schema(summary="Delete a stage"),
+)
+
+@extend_schema_view(
+    list=extend_schema(summary="List stages for a project"),
+    create=extend_schema(summary="Create a new stage in a project"),
+    retrieve=extend_schema(summary="Retrieve stage details"),
+    update=extend_schema(summary="Update a stage"),
+    destroy=extend_schema(summary="Delete a stage"),
+)
 
 @extend_schema(tags=['Stages'])
 class StageViewSet(viewsets.ModelViewSet):
@@ -22,8 +39,9 @@ class StageViewSet(viewsets.ModelViewSet):
         return Stage.objects.filter(project_id=project_id).order_by('order', '-created_at')
 
     def perform_create(self, serializer):
-        project_id = self.kwargs.get('project_pk')
-        serializer.save(project_id=project_id)
+        project = get_object_or_404(Project, id=self.kwargs['project_pk'], owner=self.request.user)
+        last_order = Stage.objects.filter(project=project).count() + 1
+        serializer.save(project=project, order=last_order)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

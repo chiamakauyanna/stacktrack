@@ -54,7 +54,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'id', 'title', 'description', 'status', 'priority', 'due_date',
             'assigned_to', 'assigned_to_id', 'stage', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'stage']
         
         
     def validate_due_date(self, value):
@@ -77,7 +77,7 @@ class StageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stage
         fields = ['id', 'title', 'project', 'order', 'progress', 'tasks', 'created_at']
-        read_only_fields = ['created_at', 'order']
+        read_only_fields = ['project', 'order', 'created_at', 'progress', 'tasks']
         
     def get_progress(self, obj):
         return obj.progress()
@@ -96,10 +96,10 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id', 'title', 'description', 'slug', 'status', 'owner',
+            'id', 'title', 'description', 'slug', 'owner', 'status',
             'progress', 'task_statistics', 'stages', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['slug', 'created_at', 'updated_at']
+        read_only_fields = ['slug', 'created_at', 'updated_at', 'status']
 
     def get_progress(self, obj):
         return obj.progress()

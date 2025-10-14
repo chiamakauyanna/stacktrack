@@ -2,12 +2,20 @@ from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from tracker.models import Project, Task
 from tracker.serializers import ProjectSerializer
 from tracker.utils import success_response, error_response
 from .pagination import StandardResultsSetPagination
 
+
+@extend_schema_view(
+    list=extend_schema(summary="List all projects"),
+    create=extend_schema(summary="Create a project"),
+    retrieve=extend_schema(summary="Retrieve project details"),
+    update=extend_schema(summary="Update a project"),
+    destroy=extend_schema(summary="Delete a project"),
+)
 
 @extend_schema(tags=['Projects'])
 class ProjectViewSet(viewsets.ModelViewSet):

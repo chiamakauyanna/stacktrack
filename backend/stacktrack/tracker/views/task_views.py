@@ -1,12 +1,20 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status, filters
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
-from tracker.models import Task
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from tracker.models import Task, Stage
 from tracker.serializers import TaskSerializer
 from tracker.utils import success_response, error_response
 from .pagination import StandardResultsSetPagination
 
+@extend_schema_view(
+    list=extend_schema(summary="List all tasks in a stage"),
+    create=extend_schema(summary="Create a task in a stage"),
+    retrieve=extend_schema(summary="Retrieve task details"),
+    update=extend_schema(summary="Update a task"),
+    destroy=extend_schema(summary="Delete a task"),
+)
 
 @extend_schema(tags=['Tasks'])
 class TaskViewSet(viewsets.ModelViewSet):
@@ -23,8 +31,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Task.objects.filter(stage_id=stage_id).order_by('-created_at')
 
     def perform_create(self, serializer):
-        stage_id = self.kwargs.get('stage_pk')
-        serializer.save(stage_id=stage_id)
+        stage = get_object_or_404(Stage, id=self.kwargs['stage_pk'])
+        serializer.save(stage=stage)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
