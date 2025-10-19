@@ -28,13 +28,11 @@ const Navbar = () => {
             {link.label}
           </a>
         ))}
-        <a
-          href="#login"
+        <div
           className="bg-landing-navy text-landing-primary px-8 py-2 rounded-full font-bold text-sm md:text-base"
         >
-          <Link to="/login">
-          Login</Link>
-        </a>
+          <Link to="/login">Login</Link>
+        </div>
       </div>
 
       {/* Mobile Menu Toggle */}
@@ -58,13 +56,9 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a
-            href="#login"
-            className="bg-landing-navy text-landing-primary px-8 py-2 rounded-full font-bold"
-          >
-            <Link to="/login">
-          Login</Link>
-          </a>
+          <div className="bg-landing-navy text-landing-primary px-8 py-2 rounded-full font-bold">
+            <Link to="/login">Login</Link>
+          </div>
         </div>
       )}
     </nav>

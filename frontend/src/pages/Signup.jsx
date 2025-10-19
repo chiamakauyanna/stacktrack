@@ -1,10 +1,12 @@
 import AuthLayout from "../layouts/AuthLayout";
+import useRegister from "../hooks/useRegister";
 
 const Signup = () => {
+  const { formData, handleChange, handleSubmit, loading, error, success } =
+    useRegister();
   return (
     <AuthLayout>
       <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
-        
         {/* Left: Illustration (replace with SVG or image) */}
         <div className="hidden md:flex w-full relative bg-landing-secondary items-center justify-center p-8 h-full">
           {/* <img
@@ -29,26 +31,37 @@ const Signup = () => {
           <p className="text-3xl font-bold text-landing-text-muted mb-16">
             Create Account
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
+            {error && <p>{error}</p>}
+            {success && <p>{success}</p>}
             <div className="bg-white p-3 rounded-xl shadow-md">
               <input
                 type="text"
-                placeholder="Full Name"
+                placeholder="Username"
+                name="username"
                 className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                onChange={handleChange}
+                value={formData.username}
               />
               <input
                 type="email"
                 placeholder="Email Address"
+                name="email"
                 className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                onChange={handleChange}
+                value={formData.email}
               />
               <input
                 type="password"
                 placeholder="Password"
+                name="password"
                 className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                onChange={handleChange}
+                value={formData.password}
               />
             </div>
             <button className="bg-landing-navy hover:bg-landing-primary text-white py-3 px-8 rounded-lg font-medium transition mt-10">
-              Sign Up
+              {loading ? "Loading..." : "Sign Up"}
             </button>
           </form>
         </div>

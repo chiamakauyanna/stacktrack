@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import useLogin from "../hooks/useLogin";
 
 const Login = () => {
+  const { formData, handleChange, handleSubmit, loading, error, success } = useLogin();
+
   return (
     <AuthLayout>
       <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
@@ -10,7 +13,7 @@ const Login = () => {
           <p className="mb-24 text-sm text-landing-navy text- font-semibold text-right">
             Don't have an account?{" "}
             <a
-              href="/login"
+              href="/signup"
               className="border-2 border-landing-navy py-1.5 px-2 rounded-lg"
             >
               Sign Up
@@ -20,16 +23,25 @@ const Login = () => {
           <p className="text-3xl font-bold text-landing-text-muted mb-16">
             Welcome Back
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
+             {success && <p>{success}</p>} 
+             {error && <p>{error}</p>}
             <div className="bg-white p-3 rounded-xl shadow-md">
+           
               <input
-                type="email"
-                placeholder="Email"
+                type="username"
+                placeholder="Username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
                 className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
               />
               <input
                 type="password"
                 placeholder="Password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
               />
             </div>
@@ -42,7 +54,7 @@ const Login = () => {
               </Link>
             </div>
             <button className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition">
-              Login
+              {loading ? 'Loading...' : 'Login'}
             </button>
           </form>
         </div>
