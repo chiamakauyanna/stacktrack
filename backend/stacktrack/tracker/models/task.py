@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Task(models.Model):
     STATUS_CHOICES = [
         ('todo', 'To Do'),
@@ -27,6 +28,11 @@ class Task(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        """Save task and auto-update parent project status."""
+        super().save(*args, **kwargs)
+        self.stage.project.update_status_based_on_tasks()
 
     class Meta:
         ordering = ['-created_at']

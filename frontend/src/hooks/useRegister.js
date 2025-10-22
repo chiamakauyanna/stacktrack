@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -10,6 +11,8 @@ const useRegister = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +30,12 @@ const useRegister = () => {
 
       if (response.success) {
         setSuccess(response.message || "Registration successful!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } else {
         setError(response.message || "Something went wrong.");
       }
-      
     } catch (error) {
       setError("Login failed");
       console.error("Registration failed:", error);

@@ -4,11 +4,10 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.apps import apps
 
-
 class Project(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
-        ('in_progress', 'In Progress'),
+        ('active', 'Active'),
         ('completed', 'Completed'),
     ]
 
@@ -62,3 +61,20 @@ class Project(models.Model):
             "completed": completed_tasks,
             "pending": pending_tasks,
         }
+        
+    def update_status_based_on_tasks(self):
+        """Automatically updates the project status based on task completion."""
+        Task = apps.get_model('tracker', 'Task')
+        all_tasks = Task.objects.filter(stage__project=self)
+        total = all_tasks.count()
+        done = all_tasks.filter(status="done").count()
+
+        if total == 0:
+            self.status = "draft"
+        elif done == total:
+            self.status = "completed"
+        else:
+            self.status = "active"
+
+        self.save(update_fields=["status"])
+
