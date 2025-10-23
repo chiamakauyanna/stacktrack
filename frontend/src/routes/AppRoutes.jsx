@@ -10,9 +10,6 @@ import ResetPassword from "../pages/resetPassword";
 import Projects from "../pages/dashboard/Projects";
 import CreateProject from "../pages/dashboard/CreateProject";
 import ProjectDetails from "../pages/dashboard/ProjectDetails";
-import ProjectsPage from "../pages/projects/ProjectPage";
-import StagesPage from "../pages/projects/StagePage";
-import TasksPage from "../pages/projects/TaskPage";
 
 const AppRoutes = () => {
   return (
@@ -28,14 +25,9 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<DashboardHome />} />
       <Route path="projects" element={<Projects />} />
       <Route path="projects/create" element={<CreateProject />} />
-      {/* <Route path="projects/:id" element={<ProjectDetails />} /> */}
+      <Route path="projects/:id" element={<ProjectDetails />} />
       <Route path="/dashboard/profile" element={<Profile />} />
       <Route path="/dashboard/settings" element={<Settings />} />
-
-      {/* Projects */}
-      <Route path="/project" element={<ProjectsPage />} />
-        <Route path="/projects/:projectId" element={<StagesPage />} />
-        <Route path="/projects/:projectId/stages/:stageId" element={<TasksPage />} />
     </Routes>
   );
 };
