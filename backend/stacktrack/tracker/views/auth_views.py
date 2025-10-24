@@ -5,6 +5,9 @@ from tracker.serializers import RegistrationSerializer, ProfileSerializer
 from tracker.models import Profile
 from tracker.utils import success_response, error_response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.db import transaction
+
 
 # --------------------------
 # Custom JWT Views for Docs
@@ -50,30 +53,38 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [permissions.AllowAny]
 
+    @transaction.atomic  # ensures rollback if anything fails
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            profile = Profile.objects.create(user=user)
+            try:
+                user = serializer.save()
+                profile = user.profile
 
-            # Generate JWT tokens
-            refresh = RefreshToken.for_user(user)
-            tokens = {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
-            }
+                # Generate JWT tokens
+                refresh = RefreshToken.for_user(user)
+                tokens = {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                }
 
-            # Serialize the profile
-            serialized_profile = ProfileSerializer(profile)
+                # Serialize the profile
+                serialized_profile = ProfileSerializer(profile)
 
-            return success_response(
-                "User registered successfully.",
-                {
-                    "tokens": tokens,
-                    "profile": serialized_profile.data,
-                },
-                status_code=status.HTTP_201_CREATED
-            )
+                return success_response(
+                    "User registered successfully.",
+                    {
+                        "tokens": tokens,
+                        "profile": serialized_profile.data,
+                    },
+                    status_code=status.HTTP_201_CREATED
+                )
+
+            except Exception as e:
+                #  Roll back + cleanup user if something fails
+                user.delete()
+                return error_response("Registration failed during processing.", str(e))
+
         return error_response("Registration failed.", serializer.errors)
 
 
