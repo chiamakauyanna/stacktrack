@@ -1,24 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LayoutDashboard, User, Settings, LogOut } from "lucide-react";
 import { GoProject } from "react-icons/go";
 import { IoCreate } from "react-icons/io5";
 import Logo from "./Logo";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = ({ isMobile, onClose, activePath }) => {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
   const links = [
-    {
-      to: "/projects/create",
-      icon: <IoCreate size={18} />,
-      label: "Create Project",
-    },
+    { to: "/projects/create", icon: <IoCreate size={18} />, label: "Create Project" },
     { to: "/dashboard", icon: <LayoutDashboard size={18} />, label: "Home" },
     { to: "/projects", icon: <GoProject size={18} />, label: "Projects" },
-    {
-      to: "/dashboard/settings",
-      icon: <Settings size={18} />,
-      label: "Settings",
-    },
+    { to: "/dashboard/settings", icon: <Settings size={18} />, label: "Settings" },
   ];
+
+  const handleLogout = () => {
+    logout();           
+    navigate("/login");
+  };
 
   return (
     <aside
@@ -50,7 +51,10 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
         </nav>
       </div>
 
-      <button className="flex items-center gap-3 hover:bg-white/10 px-4 py-2 rounded-lg transition">
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-3 hover:bg-white/10 px-4 py-2 rounded-lg transition"
+      >
         <LogOut size={18} />
         <span>Logout</span>
       </button>

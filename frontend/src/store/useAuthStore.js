@@ -6,89 +6,118 @@ import {
   updateProfile,
   patchProfile,
 } from "../services/authService";
+import {
+  clearTokens,
+  getAccessToken,
+  setTokens,
+} from "../utils/tokenManager";
 
 export const useAuthStore = create((set) => ({
   user: null,
   loading: false,
   error: null,
 
-  register: async (userData) => {
+  // ------------------
+  // REGISTER
+  // ------------------
+  register: async (data) => {
     set({ loading: true, error: null });
     try {
-      const data = await registerUser(userData);
-      // Immediately set user profile if returned
-      if (data.bio || data.role) {
-        set({ user: data, loading: false });
-      } else {
-        set({ loading: false });
-      }
-      return data;
-    } catch (error) {
-      console.error("Registration error:", error);
-      set({ loading: false, error: "Registration failed" });
-      throw error;
+      const res = await registerUser(data);
+      const tokens = res?.data?.tokens;
+      const profile = res?.data?.profile;
+
+      if (tokens) setTokens(tokens); 
+      if (profile) set({ user: profile });
+    } catch (err) {
+      console.error("Registration failed:", err);
+      set({ error: "Registration failed" });
+    } finally {
+      set({ loading: false });
     }
   },
 
+  // ------------------
+  // LOGIN
+  // ------------------
   login: async (credentials) => {
     set({ loading: true, error: null });
     try {
-      const tokens = await loginUser(credentials);
-      if (tokens.access) {
-        localStorage.setItem("access_token", tokens.access);
-        localStorage.setItem("refresh_token", tokens.refresh);
-        const profile = await getProfile();
-        set({ user: profile, loading: false });
-      } else {
-        set({ error: "Invalid credentials", loading: false });
+      const res = await loginUser(credentials);
+
+      const tokens = res?.data?.tokens || res?.tokens;
+      const profile = res?.data?.profile || res?.profile;
+
+      if (tokens) setTokens(tokens);
+      if (profile) set({ user: profile });
+      else {
+        // fallback to API if profile not returned
+        const fetchedProfile = await getProfile();
+        set({ user: fetchedProfile });
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      set({ loading: false, error: "Login failed" });
+    } catch (err) {
+      console.error("Login failed:", err);
+      set({ error: "Login failed" });
+    } finally {
+      set({ loading: false });
     }
   },
 
+  // ------------------
+  // INITIALIZE SESSION
+  // ------------------
   initAuth: async () => {
-    const token = localStorage.getItem("access_token");
+    const token = getAccessToken();
     if (!token) return;
-    set({ loading: true, error: null });
+    set({ loading: true });
     try {
       const profile = await getProfile();
-      set({ user: profile, loading: false });
-      // eslint-disable-next-line no-unused-vars
-    } catch (error) {
-      console.warn("Auto-login failed, clearing tokens.");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      set({ user: null, loading: false });
+      set({ user: profile });
+    } catch {
+      clearTokens();
+      set({ user: null });
+    } finally {
+      set({ loading: false });
     }
   },
 
+  // ------------------
+  // LOGOUT
+  // ------------------
   logout: () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    clearTokens();
     set({ user: null });
   },
 
-  updateUserProfile: async (profileData) => {
-    set({ loading: true, error: null });
+  // ------------------
+  // PROFILE MANAGEMENT
+  // ------------------
+  updateUserProfile: async (data) => {
+    set({ loading: true });
     try {
-      const data = await updateProfile(profileData);
-      set({ user: data, loading: false });
-    } catch (error) {
-      console.error("Profile update failed:", error);
-      set({ loading: false, error: "Failed to update profile" });
+      const updated = await updateProfile(data);
+       set((state) => ({
+      user: { ...state.user, ...updated },
+    }));
+    } catch {
+      set({ error: "Failed to update profile" });
+    } finally {
+      set({ loading: false });
     }
   },
 
-  patchUserProfile: async (profileData) => {
-    set({ loading: true, error: null });
+  patchUserProfile: async (data) => {
+    set({ loading: true });
     try {
-      const data = await patchProfile(profileData);
-      set({ user: data, loading: false });
-    } catch (error) {
-      console.error("Partial profile update failed:", error);
-      set({ loading: false, error: "Failed to update profile" });
+      const updated = await patchProfile(data);
+       set((state) => ({
+      user: { ...state.user, ...updated },
+    }));
+    } catch {
+      set({ error: "Failed to update profile" });
+    } finally {
+      set({ loading: false });
     }
   },
+
 }));

@@ -1,16 +1,11 @@
 import axios from "axios";
+import { getRefreshToken, setTokens } from "../utils/tokenManager";
 
 const API_URL = import.meta.env.VITE_BASE_URL;
 
 export const refreshToken = async () => {
-  try {
-    const token = localStorage.getItem("refresh_token");
-    const response = await axios.post(`${API_URL}/auth/refresh/`, {
-      "refresh": token,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("refresh failed", error.response?.data || error.message);
-    return error.response?.data || error.message;
-  }
+  const refresh = getRefreshToken();
+  const response = await axios.post(`${API_URL}/auth/refresh/`, { refresh });
+  setTokens(response.data);
+  return response.data;
 };

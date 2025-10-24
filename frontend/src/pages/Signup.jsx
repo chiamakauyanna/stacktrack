@@ -32,8 +32,8 @@ const Signup = () => {
             Create Account
           </p>
           <form onSubmit={handleSubmit}>
-            {error && <p>{error}</p>}
-            {success && <p>{success}</p>}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {success && <p className="text-green-600 text-sm">{success}</p>}
             <div className="bg-white p-3 rounded-xl shadow-md">
               <input
                 type="text"

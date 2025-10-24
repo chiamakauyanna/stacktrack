@@ -1,48 +1,31 @@
 import { useState } from "react";
-import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService";
 
 const useLogin = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-
+  const [state, setState] = useState({ loading: false, error: null, success: null });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
-
+    setState({ loading: true, error: null, success: null });
     try {
-      setLoading(true);
-      const response = await loginUser(formData);
-      if (response.access && response.refresh) {
-        setSuccess("Login successful!");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
+      const res = await loginUser(formData);
+      if (res.access) {
+        setState({ loading: false, success: "Login successful!" });
+        setTimeout(() => navigate("/dashboard"), 1000);
       } else {
-        setError(response.message || "Something went wrong.");
+        setState({ loading: false, error: res.message || "Invalid credentials" });
       }
-    } catch (error) {
-      setError("Login failed", error);
-      console.error("Login failed:", error);
-    } finally {
-      setLoading(false);
+    } catch {
+      setState({ loading: false, error: "Login failed" });
     }
   };
 
-  return { formData, handleChange, handleSubmit, loading, error, success };
+  return { formData, handleChange, handleSubmit, ...state };
 };
 
 export default useLogin;

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useProjectStore } from "../../store/useProjectStore";
 import { Layers, CheckCircle2, PlusCircle, TrendingUp } from "lucide-react";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
@@ -16,30 +17,42 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const DashboardHome = () => {
-  const [projects, setProjects] = useState([
-    { id: 1, name: "StackTrack API", stages: 4, progress: 85 },
-    { id: 2, name: "Portfolio Revamp", stages: 3, progress: 60 },
-    { id: 3, name: "Health Tracker App", stages: 5, progress: 35 },
-  ]);
+  const { projects, loadProjects } = useProjectStore();
 
   useEffect(() => {
+    loadProjects();
     document.title = "Dashboard | StackTrack";
   }, []);
 
   const totalProjects = projects.length;
-  const avgCompletion = Math.round(
-    projects.reduce((a, p) => a + p.progress, 0) / totalProjects
+  const totalStages = projects.reduce(
+    (sum, p) => sum + (p.stages?.length || 0),
+    0
   );
-  const totalStages = projects.reduce((a, p) => a + p.stages, 0);
+  const avgCompletion =
+    totalProjects > 0
+      ? Math.round(
+          projects.reduce((sum, p) => sum + (parseInt(p.progress) || 0), 0) /
+            totalProjects
+        )
+      : 0;
+
+  // Dynamic bar colors based on progress
+  const barColors = projects.map((p) => {
+    const progress = parseInt(p.progress) || 0;
+    if (progress >= 80) return "rgba(34, 197, 94, 0.8)"; // Green
+    if (progress >= 50) return "rgba(253, 224, 71, 0.8)"; // Yellow
+    return "rgba(239, 68, 68, 0.8)"; // Red
+  });
 
   const barData = {
-    labels: projects.map((p) => p.name),
+    labels: projects.map((p) => p.title),
     datasets: [
       {
         label: "Completion (%)",
-        data: projects.map((p) => p.progress),
-        backgroundColor: "rgba(0, 120, 183, 0.8)",
-        borderRadius: 12,
+        data: projects.map((p) => parseInt(p.progress) || 0),
+        backgroundColor: barColors,
+        borderRadius: 8,
       },
     ],
   };
@@ -145,7 +158,7 @@ const DashboardHome = () => {
               Active Projects
             </h2>
             <Link
-              to="/dashboard/projects/create"
+              to="/projects/create"
               className="flex items-center gap-2 text-sm bg-[var(--color-landing-primary)] hover:bg-[var(--color-landing-secondary)] text-white px-4 py-2 rounded-full shadow-sm transition"
             >
               <PlusCircle size={16} /> New Project
@@ -164,16 +177,25 @@ const DashboardHome = () => {
                 className="bg-[var(--color-app-surface)] rounded-2xl p-5 border border-[var(--color-app-border)] shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-hover)] transition space-y-3"
               >
                 <h3 className="text-lg font-semibold text-[var(--color-app-text)]">
-                  {project.name}
+                  {project.title}
                 </h3>
                 <p className="text-sm text-[var(--color-app-text-muted)]">
-                  {project.stages} Stages • {project.progress}% Complete
+                  {project.stages?.length || 0} Stages • {project.progress}%
+                  Complete
                 </p>
                 <div className="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
                   <motion.div
-                    className="h-2 bg-[var(--color-landing-primary)] rounded-full"
+                    className="h-2 rounded-full"
+                    style={{
+                      backgroundColor:
+                        parseInt(project.progress) >= 80
+                          ? "rgba(34, 197, 94, 0.8)"
+                          : parseInt(project.progress) >= 50
+                          ? "rgba(253, 224, 71, 0.8)"
+                          : "rgba(239, 68, 68, 0.8)",
+                    }}
                     initial={{ width: 0 }}
-                    whileInView={{ width: `${project.progress}%` }}
+                    animate={{ width: `${parseInt(project.progress) || 0}%` }}
                     transition={{ duration: 1 }}
                   />
                 </div>
@@ -188,7 +210,7 @@ const DashboardHome = () => {
           </div>
         </motion.div>
 
-        {/* Simple Analytics */}
+        {/* Project Completion Chart */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -199,7 +221,6 @@ const DashboardHome = () => {
           <h2 className="text-xl font-semibold mb-4 text-[var(--color-landing-navy)]">
             Project Completion Overview
           </h2>
-
           <div className="bg-[var(--color-app-surface)] border border-[var(--color-app-border)] rounded-2xl p-6 shadow-[var(--shadow-soft)]">
             <div className="h-64">
               <Bar

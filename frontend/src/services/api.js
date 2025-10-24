@@ -1,53 +1,37 @@
 import axios from "axios";
 import { refreshToken } from "./tokenService";
+import { getAccessToken, setTokens, clearTokens } from "../utils/tokenManager";
 
-const api = axios.create({ baseURL: import.meta.env.VITE_BASE_URL})
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BASE_URL,
+});
 
-// Request interceptor for adding the bearer token
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('access_token'); 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+api.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 api.interceptors.response.use(
-  (response) =>  response,
+  (response) => response,
   async (error) => {
-    let originalRequest = error.config // return successful response
+    const originalRequest = error.config;
 
-    // If unauthorized AND haven't retried
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true // prevent infinite loops
-
+      originalRequest._retry = true;
       try {
-        const res = await refreshToken()
-
-        // save new access token
-        const newToken = res.access
-        localStorage.setItem("access_token", newToken);
-
-        // update the headers and retry failed request
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
-        return api(originalRequest)
-      } catch (error) {
-        console.error("Token refresh failed:", error);
-        // clear tokens and redirect to login
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        const data = await refreshToken();
+        setTokens(data);
+        originalRequest.headers.Authorization = `Bearer ${data.access}`;
+        return api(originalRequest);
+      } catch {
+        clearTokens();
         window.location.href = "/login";
       }
     }
-        
-    // If not 401 or refresh fails, reject error normally
+
     return Promise.reject(error);
   }
 );
 
-export default api
+export default api;

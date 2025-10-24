@@ -1,50 +1,27 @@
 import { useState } from "react";
-import { registerUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/authService";
 
 const useRegister = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
+  const [state, setState] = useState({ loading: false, error: null, success: null });
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
-
+    setState({ loading: true, error: null, success: null });
     try {
-      setLoading(true);
-      const response = await registerUser(formData);
-
-      if (response.success) {
-        setSuccess(response.message || "Registration successful!");
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-      } else {
-        setError(response.message || "Something went wrong.");
-      }
+      const res = await registerUser(formData);
+      setState({ loading: false, success: res.message || "Registration successful!" });
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (error) {
-      setError("Login failed");
-      console.error("Registration failed:", error);
-    } finally {
-      setLoading(false);
+      setState({ loading: false, error: error.message || "Registration failed" });
     }
   };
 
-  return { formData, handleChange, handleSubmit, loading, error, success };
+  return { formData, handleChange, handleSubmit, ...state };
 };
 
 export default useRegister;

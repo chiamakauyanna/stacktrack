@@ -7,9 +7,9 @@ import Profile from "../pages/dashboard/Profile";
 import Settings from "../pages/dashboard/Settings";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/resetPassword";
-import Projects from "../pages/dashboard/Projects";
+import Projects from "../pages/projects/Projects";
 import CreateProject from "../pages/dashboard/CreateProject";
-import ProjectDetails from "../pages/dashboard/ProjectDetails";
+import ProjectDetails from "../pages/projects/ProjectDetails";
 
 const AppRoutes = () => {
   return (

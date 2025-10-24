@@ -3,7 +3,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import useLogin from "../hooks/useLogin";
 
 const Login = () => {
-  const { formData, handleChange, handleSubmit, loading, error, success } = useLogin();
+  const { formData, handleChange, handleSubmit, loading, error, success } =
+    useLogin();
 
   return (
     <AuthLayout>
@@ -24,10 +25,9 @@ const Login = () => {
             Welcome Back
           </p>
           <form onSubmit={handleSubmit}>
-             {success && <p>{success}</p>} 
-             {error && <p>{error}</p>}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {success && <p className="text-green-600 text-sm">{success}</p>}
             <div className="bg-white p-3 rounded-xl shadow-md">
-           
               <input
                 type="username"
                 placeholder="Username"
@@ -54,7 +54,7 @@ const Login = () => {
               </Link>
             </div>
             <button className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition">
-              {loading ? 'Loading...' : 'Login'}
+              {loading ? "Loading..." : "Login"}
             </button>
           </form>
         </div>
