@@ -13,7 +13,6 @@ const ProjectDetail = () => {
   const {
     project,
     stages,
-    tasks,
     loadProject,
     addStage,
     addTask,
@@ -27,18 +26,19 @@ const ProjectDetail = () => {
   const [selectedStage, setSelectedStage] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingType, setEditingType] = useState(""); // "task" | "stage"
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     due_date: "",
   });
-  const [editingType, setEditingType] = useState(""); // "task" | "stage"
 
   // -------------------------
   // Load project details
   // -------------------------
   useEffect(() => {
     if (id) loadProject(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // -------------------------
@@ -84,6 +84,7 @@ const ProjectDetail = () => {
         await addStage(project.id, formData);
       }
     }
+
     setIsModalOpen(false);
     setFormData({ title: "", description: "", due_date: "" });
     setSelectedTask(null);
@@ -97,6 +98,9 @@ const ProjectDetail = () => {
     await changeTaskStatus(task.id, newStatus);
   };
 
+  // -------------------------
+  // Render
+  // -------------------------
   return (
     <div className="p-6 space-y-6">
       {/* ===== Project Header ===== */}
@@ -105,6 +109,7 @@ const ProjectDetail = () => {
           <h1 className="text-2xl font-semibold">{project?.title}</h1>
           <p className="text-gray-500">{project?.description}</p>
         </div>
+
         {user && (
           <button
             onClick={() => openStageModal()}
@@ -181,6 +186,7 @@ const ProjectDetail = () => {
                       </p>
                     )}
                   </div>
+
                   <div className="flex gap-2 items-center">
                     <button
                       onClick={() => toggleTaskStatus(task)}
@@ -203,6 +209,7 @@ const ProjectDetail = () => {
                   </div>
                 </li>
               ))}
+
               {stage.tasks?.length === 0 && (
                 <p className="text-sm text-gray-500">
                   No tasks in this stage yet.
@@ -222,7 +229,7 @@ const ProjectDetail = () => {
             ? selectedTask
               ? "Edit Task"
               : "Add Task"
-            : selectedStage?.id
+            : selectedStage
             ? "Edit Stage"
             : "Add Stage"
         }
