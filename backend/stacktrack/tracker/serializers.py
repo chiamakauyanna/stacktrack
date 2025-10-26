@@ -33,9 +33,11 @@ class Base64ImageField(serializers.ImageField):
 
             # Verify the file is a valid image
             try:
-                file_ext_detected = Image.open(BytesIO(decoded_file)).format.lower()
+                file_ext_detected = Image.open(
+                    BytesIO(decoded_file)).format.lower()
                 if not file_ext_detected:
-                    raise serializers.ValidationError("Unsupported image type.")
+                    raise serializers.ValidationError(
+                        "Unsupported image type.")
             except Exception:
                 raise serializers.ValidationError("Invalid image content.")
 
@@ -181,7 +183,8 @@ class ProjectNestedSerializer(serializers.ModelSerializer):
 
         for order, stage_data in enumerate(stages_data):
             tasks_data = stage_data.pop('tasks', [])
-            stage = Stage.objects.create(project=project, order=order, **stage_data)
+            stage = Stage.objects.create(
+                project=project, order=order, **stage_data)
             for task_data in tasks_data:
                 Task.objects.create(stage=stage, **task_data)
         return project
@@ -189,10 +192,12 @@ class ProjectNestedSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         stages_data = validated_data.pop('stages', [])
         instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
+        instance.description = validated_data.get(
+            'description', instance.description)
         instance.save()
 
-        existing_stages = {str(stage.id): stage for stage in instance.stages.all()}
+        existing_stages = {
+            str(stage.id): stage for stage in instance.stages.all()}
 
         for order, stage_data in enumerate(stages_data):
             stage_id = str(stage_data.get('id', ''))
@@ -204,7 +209,8 @@ class ProjectNestedSerializer(serializers.ModelSerializer):
                 stage.order = order
                 stage.save()
 
-                existing_tasks = {str(task.id): task for task in stage.tasks.all()}
+                existing_tasks = {
+                    str(task.id): task for task in stage.tasks.all()}
                 for task_data in tasks_data:
                     task_id = str(task_data.get('id', ''))
                     if task_id and task_id in existing_tasks:
@@ -216,8 +222,46 @@ class ProjectNestedSerializer(serializers.ModelSerializer):
                     else:
                         Task.objects.create(stage=stage, **task_data)
             else:
-                stage = Stage.objects.create(project=instance, order=order, **stage_data)
+                stage = Stage.objects.create(
+                    project=instance, order=order, **stage_data)
                 for task_data in tasks_data:
                     Task.objects.create(stage=stage, **task_data)
 
         return instance
+
+# -----------------------------------------------------
+# Project Analysis
+# -----------------------------------------------------
+
+
+class ProjectSummarySerializer(serializers.Serializer):
+    total_projects = serializers.IntegerField()
+    completed_projects = serializers.IntegerField()
+    active_projects = serializers.IntegerField()
+    draft_projects = serializers.IntegerField()
+    average_project_progress = serializers.FloatField()
+    total_tasks = serializers.IntegerField()
+    completed_tasks = serializers.IntegerField()
+    pending_tasks = serializers.IntegerField()
+
+
+class TrendSerializer(serializers.Serializer):
+    week_start = serializers.DateField()
+    completed_tasks = serializers.IntegerField()
+
+
+class ProjectBreakdownSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    title = serializers.CharField()
+    status = serializers.CharField()
+    progress = serializers.FloatField()
+    total_tasks = serializers.IntegerField()
+    completed_tasks = serializers.IntegerField()
+    pending_tasks = serializers.IntegerField()
+    last_updated = serializers.CharField()
+
+
+class ProjectAnalyticsSerializer(serializers.Serializer):
+    summary = ProjectSummarySerializer()
+    trend = TrendSerializer(many=True)
+    projects = ProjectBreakdownSerializer(many=True)
