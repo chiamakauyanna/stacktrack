@@ -1,67 +1,30 @@
-import { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useProjectStore } from "../../store/useProjectStore";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { ChevronDown, ChevronUp, ClipboardList, Clock } from "lucide-react";
+import useDashboardLayout from "../../hooks/useDashboardLayout";
 
 const Projects = () => {
   const navigate = useNavigate();
-  const { projects, loadProjects, loading, error } = useProjectStore();
-  const [expandedProject, setExpandedProject] = useState(null);
-  const [expandedStage, setExpandedStage] = useState(null);
+  const {
+    projects,
+    loading,
+    error,
+    fadeUp,
+    expandedProject,
+    expandedStage,
+    toggleProject,
+    toggleStage,
+    getPriorityClasses,
+    getProgressColor,
+  } = useDashboardLayout();
 
-  useEffect(() => {
-    loadProjects();
-    document.title = "Projects | StackTrack";
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const toggleProject = (id, e) => {
-    e.stopPropagation(); 
-    setExpandedProject(expandedProject === id ? null : id);
-    setExpandedStage(null);
-  };
-
-  const toggleStage = (id) => {
-    setExpandedStage(expandedStage === id ? null : id);
-  };
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.05, duration: 0.5, ease: "easeOut" },
-    }),
-  };
-
-  const getPriorityClasses = (priority) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-100 text-red-700";
-      case "medium":
-        return "bg-yellow-100 text-yellow-700";
-      case "low":
-      default:
-        return "bg-green-100 text-green-700";
-    }
-  };
-
-  const getProgressColor = (progress) => {
-    if (progress >= 80) return "bg-green-500";
-    if (progress >= 40) return "bg-yellow-400";
-    return "bg-red-500";
-  };
-
-  if (loading)
-    return <DashboardLayout pageTitle="Projects">Loading...</DashboardLayout>;
-  if (error)
-    return <DashboardLayout pageTitle="Projects">{error}</DashboardLayout>;
+  if (loading) return <DashboardLayout>Loading...</DashboardLayout>;
+  if (error) return <DashboardLayout>{error}</DashboardLayout>;
 
   return (
-    <DashboardLayout pageTitle="Projects">
+    <DashboardLayout>
       <div className="min-h-screen p-6 space-y-6">
         {projects.length === 0 && (
           <p className="text-center text-gray-500">
@@ -96,7 +59,11 @@ const Projects = () => {
                   className="ml-3 p-1 rounded-md hover:bg-gray-100 transition"
                   title="Expand/Collapse"
                 >
-                  {expandedProject === project.id ? <ChevronUp /> : <ChevronDown />}
+                  {expandedProject === project.id ? (
+                    <ChevronUp />
+                  ) : (
+                    <ChevronDown />
+                  )}
                 </button>
               </div>
 

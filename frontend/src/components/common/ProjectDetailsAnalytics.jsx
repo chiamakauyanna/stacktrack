@@ -1,7 +1,7 @@
 import { ClipboardList, CheckCircle2, Clock, ListChecks, AlertCircle } from "lucide-react";
 import dayjs from "dayjs"; // npm install dayjs
 
-const ProjectAnalytics = ({ stages, onTaskSelect }) => {
+const ProjectDetailsAnalytics = ({ stages, onTaskSelect }) => {
   const allTasks = stages.flatMap((stage) =>
     stage.tasks.map((t) => ({ ...t, stageId: stage.id })) || []
   );
@@ -141,4 +141,4 @@ const ProjectAnalytics = ({ stages, onTaskSelect }) => {
   );
 };
 
-export default ProjectAnalytics;
+export default ProjectDetailsAnalytics;

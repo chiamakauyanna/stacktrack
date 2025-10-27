@@ -1,108 +1,29 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Modal from "../../components/common/Modal";
 import { Plus, Pencil, Trash2, CheckCircle } from "lucide-react";
-import ProjectAnalytics from "./ProjectAnalytics";
-import { useAuthStore } from "../../store/useAuthStore";
-import { useProjectStore } from "../../store/useProjectStore";
+import useProjects from "../../hooks/useProjects";
+import DashboardLayout from "../../layouts/DashboardLayout";
+import ProjectDetailsAnalytics from "../../components/common/ProjectDetailsAnalytics";
 
 const ProjectDetail = () => {
-  const { id } = useParams();
-  const { user } = useAuthStore();
-
-  const {
+  const { data,
+    setData,
     project,
+    user,
+    selectedStage,
+    selectedTask,
+    isModalOpen,
+    setIsModalOpen,
+    editingType,
+    toggleTaskStatus,
     stages,
-    loadProject,
-    addStage,
-    addTask,
-    editTask,
-    removeTask,
-    editStage,
     removeStage,
-    changeTaskStatus,
-  } = useProjectStore();
+    removeTask,
+    openTaskModal,
+    openStageModal,
+    handleSave, } = useProjects();
 
-  const [selectedStage, setSelectedStage] = useState(null);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingType, setEditingType] = useState(""); // "task" | "stage"
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    due_date: "",
-  });
-
-  // -------------------------
-  // Load project details
-  // -------------------------
-  useEffect(() => {
-    if (id) loadProject(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  // -------------------------
-  // Open modal handlers
-  // -------------------------
-  const openTaskModal = (stageId, task = null) => {
-    setEditingType("task");
-    setSelectedStage(stageId);
-    setSelectedTask(task);
-    setFormData(
-      task
-        ? {
-            title: task.title,
-            description: task.description || "",
-            due_date: task.due_date || "",
-          }
-        : { title: "", description: "", due_date: "" }
-    );
-    setIsModalOpen(true);
-  };
-
-  const openStageModal = (stage = null) => {
-    setEditingType("stage");
-    setSelectedStage(stage?.id || null);
-    setFormData(stage ? { title: stage.title } : { title: "" });
-    setIsModalOpen(true);
-  };
-
-  // -------------------------
-  // Handle create/update
-  // -------------------------
-  const handleSave = async () => {
-    if (editingType === "task") {
-      if (selectedTask) {
-        await editTask(selectedTask.id, formData);
-      } else {
-        await addTask(selectedStage, formData);
-      }
-    } else if (editingType === "stage") {
-      if (selectedStage) {
-        await editStage(selectedStage, formData);
-      } else {
-        await addStage(project.id, formData);
-      }
-    }
-
-    setIsModalOpen(false);
-    setFormData({ title: "", description: "", due_date: "" });
-    setSelectedTask(null);
-  };
-
-  // -------------------------
-  // Handle task status toggle
-  // -------------------------
-  const toggleTaskStatus = async (task) => {
-    const newStatus = task.status === "completed" ? "pending" : "completed";
-    await changeTaskStatus(task.id, newStatus);
-  };
-
-  // -------------------------
-  // Render
-  // -------------------------
   return (
-    <div className="p-6 space-y-6">
+    <DashboardLayout>
       {/* ===== Project Header ===== */}
       <div className="flex justify-between items-center">
         <div>
@@ -122,7 +43,7 @@ const ProjectDetail = () => {
 
       {/* ===== Analytics Section ===== */}
       {stages?.length > 0 && (
-        <ProjectAnalytics
+        <ProjectDetailsAnalytics
           stages={stages}
           onTaskSelect={(stageId, taskId) => {
             const stage = stages.find((s) => s.id === stageId);
@@ -245,9 +166,9 @@ const ProjectDetail = () => {
             <label className="text-sm font-medium">Title</label>
             <input
               type="text"
-              value={formData.title}
+              value={data.title}
               onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
+                setData({ ...data, title: e.target.value })
               }
               className="w-full border rounded-lg p-2"
               required
@@ -259,9 +180,9 @@ const ProjectDetail = () => {
               <div>
                 <label className="text-sm font-medium">Description</label>
                 <textarea
-                  value={formData.description}
+                  value={data.description}
                   onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                    setData({ ...data, description: e.target.value })
                   }
                   className="w-full border rounded-lg p-2"
                   rows={2}
@@ -271,9 +192,9 @@ const ProjectDetail = () => {
                 <label className="text-sm font-medium">Due Date</label>
                 <input
                   type="date"
-                  value={formData.due_date}
+                  value={data.due_date}
                   onChange={(e) =>
-                    setFormData({ ...formData, due_date: e.target.value })
+                    setData({ ...data, due_date: e.target.value })
                   }
                   className="w-full border rounded-lg p-2"
                 />
@@ -289,7 +210,7 @@ const ProjectDetail = () => {
           </button>
         </form>
       </Modal>
-    </div>
+    </DashboardLayout>
   );
 };
 

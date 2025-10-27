@@ -84,3 +84,13 @@ export const updateTaskStatus = async (taskId, newStatus) => {
   const { data } = await api.patch(`/tasks/${taskId}/update-status/`, { status: newStatus });
   return data;
 };
+
+// ------------------------------
+// Projects Analytics
+// ------------------------------
+
+// Create a new stage for a project
+export const getAnalytics = async () => {
+  const { data } = await api.get(`/projects/analytics/`);
+  return data.data;
+};

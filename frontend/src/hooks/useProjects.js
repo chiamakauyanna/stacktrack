@@ -1,173 +1,222 @@
-import { useState, useEffect } from "react";
-import {
-  getMyProjects,
-  getProjectById,
-  createProject,
-  updateProject,
-  patchProject,
-  deleteProject,
-  getProgress,
-  getStats,
-} from "../services/projectsService";
+import { useNavigate } from "react-router-dom";
+import { useProjectStore } from "../store/useProjectStore";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
-export const useProjects = () => {
-  const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [progress, setProgress] = useState(null);
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const useProjects = () => {
+  const navigate = useNavigate();
 
-  // Fetch all projects belonging to the authenticated user
-  const fetchMyProjects = async () => {
-    setLoading(true);
-    setError(null);
+  const { id } = useParams();
+  const { user } = useAuthStore();
+  const [selectedStage, setSelectedStage] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingType, setEditingType] = useState(""); // "task" | "stage"
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    stages: [],
+  });
+
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+    due_date: "",
+  });
+
+  const {
+    project,
+    stages,
+    loadProject,
+    addProject,
+    loading,
+    addStage,
+    addTask,
+    editTask,
+    removeTask,
+    editStage,
+    removeStage,
+    changeTaskStatus,
+  } = useProjectStore();
+
+  // ---------- Form Handlers ----------
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
+    setSuccess("");
+  };
+
+  const handleAddStage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      stages: [
+        ...prev.stages,
+        { id: crypto.randomUUID(), title: "", tasks: [] },
+      ],
+    }));
+  };
+
+  const handleRemoveStage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      stages: prev.stages.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleStageChange = (index, value) => {
+    const updated = [...formData.stages];
+    updated[index].title = value;
+    setFormData({ ...formData, stages: updated });
+  };
+
+  const handleAddTask = (stageIndex) => {
+    const updated = [...formData.stages];
+    updated[stageIndex].tasks.push({
+      id: crypto.randomUUID(),
+      title: "",
+      description: "",
+      priority: "low",
+      due_date: "",
+    });
+    setFormData({ ...formData, stages: updated });
+  };
+
+  const handleTaskChange = (stageIndex, taskIndex, field, value) => {
+    const updated = [...formData.stages];
+    updated[stageIndex].tasks[taskIndex][field] = value;
+    setFormData({ ...formData, stages: updated });
+  };
+
+  const handleRemoveTask = (stageIndex, taskIndex) => {
+    const updated = [...formData.stages];
+    updated[stageIndex].tasks.splice(taskIndex, 1);
+    setFormData({ ...formData, stages: updated });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (!formData.title.trim() || !formData.description.trim()) {
+      setError("Title and description are required.");
+      return;
+    }
+
+    if (formData.stages.length === 0) {
+      setError("Add at least one stage.");
+      return;
+    }
+
     try {
-      const data = await getMyProjects();
-      setProjects(Array.isArray(data) ? data : data.results || []);
+      await addProject(formData);
+      setSuccess("Project created successfully!");
+      setTimeout(() => navigate("/projects"), 1200);
     } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
+      console.error(err);
+      setError("Failed to create project.");
     }
   };
 
-  // Retrieve a specific project by ID
-  const fetchProjectById = async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getProjectById(id);
-      setSelectedProject(data);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Load project details
 
-  // Create a new project
-  const createNewProject = async (projectData) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await createProject(projectData);
-      setProjects((prev) => [...prev, data]);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Update an entire project (PUT)
-  const updateExistingProject = async (id, projectData) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await updateProject(id, projectData);
-      setProjects((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, ...data } : p))
-      );
-      setSelectedProject(data);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Partially update a project (PATCH)
-  const patchExistingProject = async (id, updates) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await patchProject(id, updates);
-      setProjects((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, ...data } : p))
-      );
-      setSelectedProject(data);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Delete a project
-  const removeProject = async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await deleteProject(id);
-      setProjects((prev) => prev.filter((p) => p.id !== id));
-      if (selectedProject?.id === id) setSelectedProject(null);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Retrieve progress for a project
-  const fetchProgress = async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getProgress(id);
-      setProgress(data);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Retrieve statistics for a project
-  const fetchStats = async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getStats(id);
-      setStats(data);
-      return data;
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Refresh all data
-  const refreshProjects = () => {
-    fetchMyProjects();
-  };
-
-  // Auto-load projects on mount
   useEffect(() => {
-    fetchMyProjects();
-  }, []);
+    if (id) loadProject(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  // Open modal handlers
+
+  const openTaskModal = (stageId, task = null) => {
+    setEditingType("task");
+    setSelectedStage(stageId);
+    setSelectedTask(task);
+    setFormData(
+      task
+        ? {
+            title: task.title,
+            description: task.description || "",
+            due_date: task.due_date || "",
+          }
+        : { title: "", description: "", due_date: "" }
+    );
+    setIsModalOpen(true);
+  };
+
+  const openStageModal = (stage = null) => {
+    setEditingType("stage");
+    setSelectedStage(stage?.id || null);
+    setFormData(stage ? { title: stage.title } : { title: "" });
+    setIsModalOpen(true);
+  };
+
+  // Handle create/update
+
+  const handleSave = async () => {
+    if (editingType === "task") {
+      if (selectedTask) {
+        await editTask(selectedTask.id, formData);
+      } else {
+        await addTask(selectedStage, formData);
+      }
+    } else if (editingType === "stage") {
+      if (selectedStage) {
+        await editStage(selectedStage, formData);
+      } else {
+        await addStage(project.id, formData);
+      }
+    }
+
+    setIsModalOpen(false);
+    setFormData({ title: "", description: "", due_date: "" });
+    setSelectedTask(null);
+  };
+
+  // Handle task status toggle
+
+  const toggleTaskStatus = async (task) => {
+    const newStatus = task.status === "completed" ? "pending" : "completed";
+    await changeTaskStatus(task.id, newStatus);
+  };
 
   return {
-    projects,
-    selectedProject,
-    progress,
-    stats,
+    formData,
+    handleChange,
+    handleSubmit,
+    navigate,
+    handleAddStage,
+    handleAddTask,
+    handleRemoveStage,
+    handleRemoveTask,
+    handleStageChange,
+    handleTaskChange,
     loading,
     error,
-    fetchMyProjects,
-    fetchProjectById,
-    createNewProject,
-    updateExistingProject,
-    patchExistingProject,
-    removeProject,
-    fetchProgress,
-    fetchStats,
-    refreshProjects,
+    success,
+
+    // Project Details
+    data,
+    setData,
+    project,
+    user,
+    selectedStage,
+    selectedTask,
+    isModalOpen,
+    setIsModalOpen,
+    editingType,
+    stages,
+    removeStage,
+    removeTask,
+    openTaskModal,
+    openStageModal,
+    handleSave,
+    toggleTaskStatus,
   };
 };
+
+export default useProjects;

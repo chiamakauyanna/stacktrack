@@ -1,103 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import useProjects from "../../hooks/useProjects";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { ArrowLeft, Save, PlusCircle, Trash2, ClipboardList } from "lucide-react";
-import { useProjectStore } from "../../store/useProjectStore";
 
 const CreateProject = () => {
-  const navigate = useNavigate();
-  const { addProject, loading, error: storeError } = useProjectStore();
-
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    stages: [],
-  });
-
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  useEffect(() => {
-    document.title = "Create Project | StackTrack";
-  }, []);
-
-  // ---------- Form Handlers ----------
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
-    setSuccess("");
-  };
-
-  const handleAddStage = () => {
-    setFormData((prev) => ({
-      ...prev,
-      stages: [...prev.stages, { id: crypto.randomUUID(), title: "", tasks: [] }],
-    }));
-  };
-
-  const handleRemoveStage = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      stages: prev.stages.filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleStageChange = (index, value) => {
-    const updated = [...formData.stages];
-    updated[index].title = value;
-    setFormData({ ...formData, stages: updated });
-  };
-
-  const handleAddTask = (stageIndex) => {
-    const updated = [...formData.stages];
-    updated[stageIndex].tasks.push({
-      id: crypto.randomUUID(),
-      title: "",
-      description: "",
-      priority: "low",
-      due_date: "",
-    });
-    setFormData({ ...formData, stages: updated });
-  };
-
-  const handleTaskChange = (stageIndex, taskIndex, field, value) => {
-    const updated = [...formData.stages];
-    updated[stageIndex].tasks[taskIndex][field] = value;
-    setFormData({ ...formData, stages: updated });
-  };
-
-  const handleRemoveTask = (stageIndex, taskIndex) => {
-    const updated = [...formData.stages];
-    updated[stageIndex].tasks.splice(taskIndex, 1);
-    setFormData({ ...formData, stages: updated });
-  };
-
-  // ---------- Submit ----------
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    if (!formData.title.trim() || !formData.description.trim()) {
-      setError("Title and description are required.");
-      return;
-    }
-
-    if (formData.stages.length === 0) {
-      setError("Add at least one stage.");
-      return;
-    }
-
-    try {
-      await addProject(formData);
-      setSuccess("Project created successfully!");
-      setTimeout(() => navigate("/projects"), 1200);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to create project.");
-    }
-  };
-
+const { formData, handleChange, handleSubmit, navigate, handleAddStage, handleAddTask, handleRemoveStage, handleRemoveTask,handleStageChange, handleTaskChange, loading, error, success } = useProjects()
   return (
     <DashboardLayout pageTitle="Create Project">
       <div className="min-h-screen bg-[var(--color-landing-bg)] py-10">
@@ -239,7 +145,7 @@ const CreateProject = () => {
             </div>
 
             {/* Feedback */}
-            {(error || storeError) && <p className="text-red-500 text-center">{error || storeError}</p>}
+            {(error) && <p className="text-red-500 text-center">{error}</p>}
             {success && <p className="text-green-600 text-center">{success}</p>}
           </form>
         </div>

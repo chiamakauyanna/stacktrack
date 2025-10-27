@@ -12,14 +12,16 @@ import {
   updateTask,
   deleteTask,
   updateTaskStatus,
+  getAnalytics,
 } from "../services/appService";
 import { useAuthStore } from "./useAuthStore";
 
-export const useProjectStore = create((set, get) => ({
+export const useProjectStore = create((set) => ({
   projects: JSON.parse(localStorage.getItem("projects")) || [],
   project: null,
   stages: [],
   tasks: [],
+  analytics: null,
   loading: false,
   error: null,
 
@@ -187,9 +189,7 @@ export const useProjectStore = create((set, get) => ({
       set((state) => {
         const updatedTasks = [...state.tasks, newTask];
         const updatedStages = state.stages.map((s) =>
-          s.id === stageId
-            ? { ...s, tasks: [...(s.tasks || []), newTask] }
-            : s
+          s.id === stageId ? { ...s, tasks: [...(s.tasks || []), newTask] } : s
         );
         const updatedProject = {
           ...state.project,
@@ -199,7 +199,11 @@ export const useProjectStore = create((set, get) => ({
               : s
           ),
         };
-        return { tasks: updatedTasks, stages: updatedStages, project: updatedProject };
+        return {
+          tasks: updatedTasks,
+          stages: updatedStages,
+          project: updatedProject,
+        };
       });
       return newTask;
     } catch (err) {
@@ -226,7 +230,11 @@ export const useProjectStore = create((set, get) => ({
             tasks: s.tasks.map((t) => (t.id === taskId ? updatedTask : t)),
           })),
         };
-        return { tasks: updatedTasks, stages: updatedStages, project: updatedProject };
+        return {
+          tasks: updatedTasks,
+          stages: updatedStages,
+          project: updatedProject,
+        };
       });
       return updatedTask;
     } catch (err) {
@@ -251,7 +259,11 @@ export const useProjectStore = create((set, get) => ({
             tasks: s.tasks.filter((t) => t.id !== taskId),
           })),
         };
-        return { tasks: updatedTasks, stages: updatedStages, project: updatedProject };
+        return {
+          tasks: updatedTasks,
+          stages: updatedStages,
+          project: updatedProject,
+        };
       });
     } catch (err) {
       console.error("Error deleting task:", err);
@@ -276,12 +288,27 @@ export const useProjectStore = create((set, get) => ({
             tasks: s.tasks.map((t) => (t.id === taskId ? updatedTask : t)),
           })),
         };
-        return { tasks: updatedTasks, stages: updatedStages, project: updatedProject };
+        return {
+          tasks: updatedTasks,
+          stages: updatedStages,
+          project: updatedProject,
+        };
       });
       return updatedTask;
     } catch (err) {
       console.error("Error updating task status:", err);
       throw err;
+    }
+  },
+
+  loadAnalytics: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await getAnalytics();
+      set({ analytics: data, loading: false });
+    } catch (err) {
+      console.error("Error loading analytics:", err);
+      set({ error: "Failed to load analytics", loading: false });
     }
   },
 
@@ -296,6 +323,12 @@ useAuthStore.subscribe(
   (state) => state.user,
   (user) => {
     if (user) useProjectStore.getState().loadProjects();
-    else useProjectStore.setState({ projects: [], project: null, stages: [], tasks: [] });
+    else
+      useProjectStore.setState({
+        projects: [],
+        project: null,
+        stages: [],
+        tasks: [],
+      });
   }
 );

@@ -4,12 +4,12 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import DashboardHome from "../pages/dashboard/DashboardHome";
 import Profile from "../pages/dashboard/Profile";
-import Settings from "../pages/dashboard/Settings";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/resetPassword";
 import Projects from "../pages/projects/Projects";
 import CreateProject from "../pages/dashboard/CreateProject";
 import ProjectDetails from "../pages/projects/ProjectDetails";
+import ProjectStats from "../pages/projects/ProjectStats";
 
 const AppRoutes = () => {
   return (
@@ -27,7 +27,8 @@ const AppRoutes = () => {
       <Route path="projects/create" element={<CreateProject />} />
       <Route path="projects/:id" element={<ProjectDetails />} />
       <Route path="/dashboard/profile" element={<Profile />} />
-      <Route path="/dashboard/settings" element={<Settings />} />
+
+      <Route path="/projects/analytics" element={<ProjectStats />} />
     </Routes>
   );
 };
