@@ -1,22 +1,47 @@
+import { useState } from "react";
 import useProjects from "../../hooks/useProjects";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { ArrowLeft, Save, PlusCircle, Trash2, ClipboardList } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  PlusCircle,
+  ClipboardList,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import StageForm from "../../components/projectSection/forms/StageForm";
 
 const CreateProject = () => {
-const { formData, handleChange, handleSubmit, navigate, handleAddStage, handleAddTask, handleRemoveStage, handleRemoveTask,handleStageChange, handleTaskChange, loading, error, success } = useProjects()
+  const {
+    formData,
+    handleChange,
+    handleSubmit,
+    navigate,
+    handleAddStageForm,
+    handleAddTaskForm,
+    handleRemoveStageForm,
+    handleRemoveTaskForm,
+    handleStageChangeForm,
+    handleTaskChangeForm,
+    loading,
+  } = useProjects();
+
+  const [allExpanded, setAllExpanded] = useState(true);
+  const toggleAllStages = () => setAllExpanded((prev) => !prev);
+
   return (
-    <DashboardLayout pageTitle="Create Project">
-      <div className="min-h-screen bg-[var(--color-landing-bg)] py-10">
+    <DashboardLayout>
+      <div className="min-h-screen py-10">
         <div className="max-w-4xl mx-auto px-4 space-y-8">
           {/* Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between border-b pb-3 mx-2">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-[var(--color-landing-primary)] hover:text-[var(--color-landing-secondary)] transition"
+              className="flex items-center gap-2 text-gray-600 hover:text-app-primary transition"
             >
               <ArrowLeft size={18} /> Back
             </button>
-            <h1 className="text-3xl font-heading font-bold text-[var(--color-landing-navy)]">
+            <h1 className="md:text-xl font-semibold text-landing-navy">
               Create New Project
             </h1>
           </div>
@@ -24,129 +49,96 @@ const { formData, handleChange, handleSubmit, navigate, handleAddStage, handleAd
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="bg-[var(--color-app-surface)] rounded-2xl shadow-lg p-8 space-y-8 border border-gray-200 backdrop-blur-sm"
+            className="bg-app-surface rounded-xl shadow-sm p-4 md:p-8 space-y-8"
           >
             {/* Project Info */}
-            <input
-              type="text"
-              name="title"
-              placeholder="Project Title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--color-landing-primary)]"
-            />
-            <textarea
-              name="description"
-              placeholder="Project Description"
-              rows={4}
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--color-landing-primary)] resize-none"
-            />
-
-            {/* Stages */}
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <ClipboardList size={18} /> Stages
-                </h2>
+              <input
+                type="text"
+                name="title"
+                placeholder="Project Title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-app-primary focus:outline-none placeholder:text-gray-400 text-sm"
+              />
+
+              <textarea
+                name="description"
+                placeholder="Project Description"
+                rows={4}
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-app-primary focus:outline-none placeholder:text-gray-400 resize-none text-sm"
+              />
+            </div>
+
+            {/* Stages Header */}
+            <div className="flex justify-between items-center border-t pt-6">
+              <h2 className="font-medium flex items-center gap-2 text-gray-700">
+                <ClipboardList size={18} /> Stages
+              </h2>
+
+              <div className="flex flex-col md:flex-row lg:flex-row items-center gap-3">
                 <button
                   type="button"
-                  onClick={handleAddStage}
-                  className="flex items-center gap-2 text-sm bg-[var(--color-landing-primary)] hover:bg-[var(--color-landing-secondary)] text-white px-4 py-2 rounded-full"
+                  onClick={toggleAllStages}
+                  className="text-sm flex items-center gap-1 px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:border-app-primary hover:text-app-primary transition"
+                >
+                  {allExpanded ? (
+                    <>
+                      <ChevronUp size={14} /> Collapse All
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown size={14} /> Expand All
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleAddStageForm}
+                  className="flex items-center gap-2 text-sm px-4 py-2 rounded-md bg-app-primary text-white hover:bg-app-secondary transition"
                 >
                   <PlusCircle size={16} /> Add Stage
                 </button>
               </div>
+            </div>
 
-              {formData.stages.map((stage, si) => (
-                <div key={stage.id} className="p-4 bg-white rounded-xl border shadow-sm space-y-3">
-                  <div className="flex justify-between items-center">
-                    <input
-                      type="text"
-                      placeholder={`Stage ${si + 1} title`}
-                      value={stage.title}
-                      onChange={(e) => handleStageChange(si, e.target.value)}
-                      className="w-full p-2 border rounded-md"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveStage(si)}
-                      className="text-red-500"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-
-                  {/* Tasks */}
-                  {stage.tasks.map((task, ti) => (
-                    <div key={task.id} className="p-3 border rounded-md bg-gray-50 space-y-2">
-                      <input
-                        type="text"
-                        placeholder="Task title"
-                        value={task.title}
-                        onChange={(e) => handleTaskChange(si, ti, "title", e.target.value)}
-                        className="w-full p-2 border rounded-md"
-                      />
-                      <textarea
-                        rows={2}
-                        placeholder="Task description"
-                        value={task.description}
-                        onChange={(e) => handleTaskChange(si, ti, "description", e.target.value)}
-                        className="w-full p-2 border rounded-md resize-none"
-                      />
-                      <div className="flex gap-2">
-                        <select
-                          value={task.priority}
-                          onChange={(e) => handleTaskChange(si, ti, "priority", e.target.value)}
-                          className="p-2 border rounded-md"
-                        >
-                          <option value="low">Low</option>
-                          <option value="medium">Medium</option>
-                          <option value="high">High</option>
-                        </select>
-                        <input
-                          type="date"
-                          value={task.due_date}
-                          onChange={(e) => handleTaskChange(si, ti, "due_date", e.target.value)}
-                          className="p-2 border rounded-md"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveTask(si, ti)}
-                          className="text-red-500"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-
-                  <button
-                    type="button"
-                    onClick={() => handleAddTask(si)}
-                    className="text-[var(--color-landing-primary)] text-sm flex items-center gap-1 mt-2"
-                  >
-                    <PlusCircle size={14} /> Add Task
-                  </button>
-                </div>
-              ))}
+            {/* Stage List */}
+            <div className="space-y-5">
+              {formData.stages.length === 0 ? (
+                <p className="text-gray-400 text-sm italic">
+                  No stages added yet.
+                </p>
+              ) : (
+                formData.stages.map((stage, si) => (
+                  <StageForm
+                    key={stage.id}
+                    stage={stage}
+                    si={si}
+                    handleStageChangeForm={handleStageChangeForm}
+                    handleRemoveStageForm={handleRemoveStageForm}
+                    handleAddTaskForm={handleAddTaskForm}
+                    handleTaskChangeForm={handleTaskChangeForm}
+                    handleRemoveTaskForm={handleRemoveTaskForm}
+                    allExpanded={allExpanded}
+                  />
+                ))
+              )}
             </div>
 
             {/* Submit */}
-            <div className="flex justify-end">
+            <div className="flex justify-end border-t pt-6">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 bg-gradient-to-r from-[var(--color-landing-primary)] to-[var(--color-landing-secondary)] text-white px-6 py-3 rounded-full shadow-md disabled:opacity-60"
+                className="flex items-center gap-2 px-6 py-3 bg-app-primary text-white font-medium rounded-lg hover:bg-app-secondary transition disabled:opacity-60 text-sm"
               >
-                <Save size={18} /> {loading ? "Saving..." : "Save Project"}
+                <Save size={18} />
+                {loading ? "Saving..." : "Save Project"}
               </button>
             </div>
-
-            {/* Feedback */}
-            {(error) && <p className="text-red-500 text-center">{error}</p>}
-            {success && <p className="text-green-600 text-center">{success}</p>}
           </form>
         </div>
       </div>

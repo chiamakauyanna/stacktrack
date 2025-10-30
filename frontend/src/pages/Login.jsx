@@ -3,15 +3,14 @@ import AuthLayout from "../layouts/AuthLayout";
 import useLogin from "../hooks/useLogin";
 
 const Login = () => {
-  const { formData, handleChange, handleSubmit, loading, error, success } =
-    useLogin();
+  const { formData, handleChange, handleSubmit, loading } = useLogin();
 
   return (
     <AuthLayout>
       <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
         {/* Left: Form */}
         <div className="w-full md:w-1/2 px-8 bg-landing-bg rounded-r-4xl shadow-lg absolute top-2 bottom-2 pt-8 z-10">
-          <p className="mb-24 text-sm text-landing-navy text- font-semibold text-right">
+          <p className="mb-24 text-sm text-landing-navy font-semibold text-right">
             Don't have an account?{" "}
             <a
               href="/signup"
@@ -24,12 +23,11 @@ const Login = () => {
           <p className="text-3xl font-bold text-landing-text-muted mb-16">
             Welcome Back
           </p>
+
           <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            {success && <p className="text-green-600 text-sm">{success}</p>}
             <div className="bg-white p-3 rounded-xl shadow-md">
               <input
-                type="username"
+                type="text"
                 placeholder="Username"
                 name="username"
                 value={formData.username}
@@ -45,6 +43,7 @@ const Login = () => {
                 className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
               />
             </div>
+
             <div className="mt-6 text-sm text-red-500 text-right">
               <Link
                 to="/forgot-password"
@@ -53,16 +52,20 @@ const Login = () => {
                 Forgot your password?
               </Link>
             </div>
-            <button className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition">
+
+            <button
+              className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition disabled:opacity-60"
+              disabled={loading}
+            >
               {loading ? "Loading..." : "Login"}
             </button>
           </form>
         </div>
 
-        {/* Right: Illustration (replace with SVG or image) */}
+        {/* Right: Illustration (optional) */}
         <div className="hidden md:flex w-full relative bg-landing-secondary items-center justify-center p-8 h-full">
           {/* <img
-            src="/illustrations/signup.svg" // <-- replace
+            src="/illustrations/signup.svg"
             alt="Signup Illustration"
             className="max-w-sm"
           /> */}

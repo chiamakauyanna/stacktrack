@@ -8,8 +8,8 @@ import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/resetPassword";
 import Projects from "../pages/projects/Projects";
 import CreateProject from "../pages/dashboard/CreateProject";
-import ProjectDetails from "../pages/projects/ProjectDetails";
 import ProjectStats from "../pages/projects/ProjectStats";
+import ProjectDetail from "../pages/projectDetail/ProjectDetail";
 
 const AppRoutes = () => {
   return (
@@ -25,7 +25,7 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<DashboardHome />} />
       <Route path="projects" element={<Projects />} />
       <Route path="projects/create" element={<CreateProject />} />
-      <Route path="projects/:id" element={<ProjectDetails />} />
+      <Route path="projects/:id" element={<ProjectDetail />} />
       <Route path="/dashboard/profile" element={<Profile />} />
 
       <Route path="/projects/analytics" element={<ProjectStats />} />

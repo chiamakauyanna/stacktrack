@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { useProjectStore } from "../store/useProjectStore";
+import useToast from "./useToast";
 import {
   Chart as ChartJS,
   BarElement,
@@ -13,28 +14,32 @@ import {
 
 const useDashboardLayout = () => {
   const { user, logout } = useAuthStore();
+  const { projects, analytics, loadAnalytics, loadProjects, loading, error } =
+    useProjectStore();
+
   const [greeting, setGreeting] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { projects, analytics, loadAnalytics, loadProjects, loading, error } =
-    useProjectStore();
   const [expandedProject, setExpandedProject] = useState(null);
   const [expandedStage, setExpandedStage] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const toast = useToast();
+
   ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+  // Load data once user logs in
   useEffect(() => {
-  if (user && (!analytics || !projects.length)) {
-    Promise.allSettled([
-      !analytics && loadAnalytics(),
-      !projects.length && loadProjects(),
-    ]);
-  }
-}, [user]);
+    if (user && (!analytics || !projects.length)) {
+      Promise.allSettled([
+        !analytics && loadAnalytics(),
+        !projects.length && loadProjects(),
+      ]);
+    }
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
-
+  // Greeting message
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good Morning");
@@ -44,12 +49,21 @@ const useDashboardLayout = () => {
 
   const initials = user?.username?.charAt(0)?.toUpperCase() || "?";
 
+  // Logout
   const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-    setShowUserMenu(false);
+    const loadingToast = toast.loading("Logging out...");
+    try {
+      await logout();
+      toast.success("Logged out successfully!", { id: loadingToast });
+      navigate("/login");
+      setShowUserMenu(false);
+    } catch (err) {
+      toast.error("Logout failed. Try again.", { id: loadingToast });
+      console.error(err);
+    }
   };
 
+  // Animation + UI helpers
   const sidebarVariants = useMemo(
     () => ({
       hidden: { x: "-100%" },
@@ -68,7 +82,7 @@ const useDashboardLayout = () => {
     []
   );
 
-  // Dynamic bar colors based on progress
+  // Dynamic chart colors
   const barColors = projects.map((p) => {
     const progress = parseInt(p.progress) || 0;
     if (progress >= 80) return "rgba(34, 197, 94, 0.8)"; // Green
@@ -88,10 +102,10 @@ const useDashboardLayout = () => {
     ],
   };
 
-  // Limit to show max 3 projects
+  // Display at most 3 projects
   const displayedProjects = projects.slice(0, 3);
 
-  // Flex width control for projects section
+  // Dynamic width control for project cards
   const getProjectContainerWidth = () => {
     switch (displayedProjects.length) {
       case 1:

@@ -13,6 +13,7 @@ import {
   Tooltip,
   Legend,
   Title,
+  Filler,
 } from "chart.js";
 
 ChartJS.register(
@@ -24,7 +25,8 @@ ChartJS.register(
   PointElement,
   Tooltip,
   Legend,
-  Title
+  Title,
+  Filler,
 );
 
 
