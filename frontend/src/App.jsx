@@ -15,6 +15,7 @@ import {
   Title,
   Filler,
 } from "chart.js";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 ChartJS.register(
   CategoryScale,
@@ -26,22 +27,23 @@ ChartJS.register(
   Tooltip,
   Legend,
   Title,
-  Filler,
+  Filler
 );
-
 
 function App() {
   const initAuth = useAuthStore((state) => state.initAuth);
-  
 
   useEffect(() => {
     initAuth();
-  }, [])
-  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </ErrorBoundary>
   );
 }
 

@@ -1,38 +1,37 @@
-import { Link } from "react-router-dom";
-import AuthLayout from "../layouts/AuthLayout";
 import useLogin from "../hooks/useLogin";
+import loginImg from "../assets/access-account.svg";
 
 const Login = () => {
   const { formData, handleChange, handleSubmit, loading } = useLogin();
 
   return (
-    <AuthLayout>
-      <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
-        {/* Left: Form */}
-        <div className="w-full md:w-1/2 px-8 bg-landing-bg rounded-r-4xl shadow-lg absolute top-2 bottom-2 pt-8 z-10">
-          <p className="mb-24 text-sm text-landing-navy font-semibold text-right">
+    <div className="flex flex-col md:flex-row h-screen md:bg-accent/25">
+      {/* Left: Form */}
+      <div className="w-full md:w-1/2 px-8 flex flex-col justify-center items-center">
+        <div className="w-full max-w-lg">
+          <p className="mb-30 text-sm md:text-base text-navy font-semibold text-right mt-10">
             Don't have an account?{" "}
             <a
               href="/signup"
-              className="border-2 border-landing-navy py-1.5 px-2 rounded-lg"
+              className="border-2 border-secondary ml-3  py-1.5 px-2 rounded-lg"
             >
               Sign Up
             </a>
           </p>
 
-          <p className="text-3xl font-bold text-landing-text-muted mb-16">
-            Welcome Back
+          <p className="text-3xl font-bold text-secondary text-center mb-8 font-heading">
+            Login
           </p>
 
-          <form onSubmit={handleSubmit}>
-            <div className="bg-white p-3 rounded-xl shadow-md">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="bg-surface/40 p-3 rounded-xl shadow-md">
               <input
                 type="text"
                 placeholder="Username"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
               />
               <input
                 type="password"
@@ -40,38 +39,34 @@ const Login = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
               />
             </div>
 
-            <div className="mt-6 text-sm text-red-500 text-right">
-              <Link
-                to="/forgot-password"
-                className="hover:underline mb-2 md:mb-0"
-              >
+            {/* <div className="text-sm text-red-500 text-right">
+              <Link to="/forgot-password" className="hover:underline">
                 Forgot your password?
               </Link>
+            </div> */}
+            <div className="flex justify-center mt-6">
+              <button
+                className="bg-secondary hover:bg-primary text-white py-3 px-10 rounded-full font-medium transition disabled:opacity-60"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Login"}
+              </button>
             </div>
-
-            <button
-              className="bg-landing-navy hover:bg-landing-primary text-landing-bg py-3 px-8 rounded-lg font-medium transition disabled:opacity-60"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Login"}
-            </button>
           </form>
         </div>
-
-        {/* Right: Illustration (optional) */}
-        <div className="hidden md:flex w-full relative bg-landing-secondary items-center justify-center p-8 h-full">
-          {/* <img
-            src="/illustrations/signup.svg"
-            alt="Signup Illustration"
-            className="max-w-sm"
-          /> */}
-        </div>
       </div>
-    </AuthLayout>
+
+      {/* Right: Background Image */}
+      <div
+        className="hidden md:flex items-center justify-center bg-secondary rounded-l-full w-full md:w-1/2"
+      >
+        <img src={loginImg} alt="Login Illustration" className="max-h-2/3" />
+      </div>
+    </div>
   );
 };
 

@@ -1,19 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Home, LogOut, X } from "lucide-react";
-import Logo from "./Logo";
+import {
+  BarChart3,
+  FolderKanban,
+  LayoutDashboard,
+  LogOut,
+  X,
+} from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore";
-import { MdAnalytics } from "react-icons/md";
 
 const Sidebar = ({ isMobile, onClose, activePath }) => {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
 
   const links = [
-    { to: "/dashboard", icon: <Home size={18} />, label: "Home" },
-    { to: "/projects", icon: <MdAnalytics size={18} />, label: "Projects" },
+    {
+      to: "/dashboard",
+      icon: <LayoutDashboard size={22} />,
+      label: "Dashboard",
+    },
+    { to: "/projects", icon: <FolderKanban size={22} />, label: "Projects" },
     {
       to: "/projects/analytics",
-      icon: <MdAnalytics size={18} />,
+      icon: <BarChart3 size={22} />,
       label: "Analytics",
     },
   ];
@@ -25,31 +33,26 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
 
   return (
     <aside
-      className={`${
+      className={`bg-surface text-navy flex-col w-64 md:w-16 md:p-2 lg:p- lg:w-64 rounded-2xl ${
         isMobile
-          ? "fixed z-50 w-64 p-6 inset-y-0 left-0 shadow-xl flex flex-col bg-app-primary text-white"
-          : "hidden md:flex w-64 pl-6 flex-col bg-app-primary text-white"
+          ? "fixed z-50 p-6 inset-y-0 left-0 shadow-xl flex"
+          : "hidden md:flex pl-6"
       }`}
     >
-      {/* === TOP SECTION === */}
+      {/* TOP SECTION */}
       <div className="flex flex-col flex-grow relative">
         {/* Close Button (Mobile Only) */}
         {isMobile && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition"
+            className="absolute top-1 right-1 text-navy hover:text-secondary transition"
           >
             <X size={22} />
           </button>
         )}
 
-        {/* Logo */}
-        <div className="mt-8 mb-8">
-          <Logo />
-        </div>
-
         {/* Navigation */}
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-2 mt-10 text-text-muted">
           {links.map(({ to, icon, label }) => {
             const isActive = activePath === to;
             return (
@@ -57,24 +60,12 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
                 key={to}
                 to={to}
                 onClick={onClose}
-                className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 overflow-hidden
-                  ${
-                    isActive
-                      ? "text-white font-medium"
-                      : "text-white/80 hover:text-white"
-                  }`}
+                className={`group relative flex items-center gap-3 p-4 rounded-l-2xl transition-all duration-300 overflow-hidden hover:bg-accent/25
+                  ${isActive && "text-navy font-medium"}`}
               >
-                {/* Glow background */}
-                {isActive && (
-                  <span
-                    className="absolute inset-0 rounded-xl bg-app-accent/20 blur-md"
-                    aria-hidden="true"
-                  ></span>
-                )}
-
                 {/* Accent bar */}
                 <span
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-app-accent transition-opacity duration-300 ${
+                  className={`absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-primary transition-opacity duration-300 ${
                     isActive
                       ? "opacity-100"
                       : "opacity-0 group-hover:opacity-40"
@@ -82,8 +73,10 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
                 ></span>
 
                 <span className="relative flex items-center gap-3">
-                  {icon}
-                  <span>{label}</span>
+                  <span className={`${isActive && "text-primary"}`}>
+                    {icon}
+                  </span>
+                  <span className="flex md:hidden lg:flex">{label}</span>
                 </span>
               </Link>
             );
@@ -91,14 +84,14 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
         </nav>
       </div>
 
-      {/* === BOTTOM SECTION === */}
+      {/* BOTTOM SECTION */}
       <div className="mt-auto mb-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 hover:bg-app-surface/10 px-4 py-3 rounded-lg transition w-full"
+          className="flex items-center gap-3 hover:bg-navy px-4 hover:text-surface py-3 rounded-lg transition"
         >
-          <LogOut size={18} />
-          <span>Logout</span>
+          <LogOut size={20} />
+          <span className="md:hidden block lg:block">Logout</span>
         </button>
       </div>
     </aside>

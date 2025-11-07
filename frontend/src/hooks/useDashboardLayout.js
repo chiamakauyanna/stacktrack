@@ -1,23 +1,19 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { useProjectStore } from "../store/useProjectStore";
 import useToast from "./useToast";
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
 const useDashboardLayout = () => {
   const { user, logout } = useAuthStore();
-  const { projects, analytics, loadAnalytics, loadProjects, loading, error } =
-    useProjectStore();
 
-  const [greeting, setGreeting] = useState("");
+  // Zustand state selectors
+  const projects = useProjectStore((state) => state.projects);
+  const analytics = useProjectStore((state) => state.analytics);
+  const loading = useProjectStore((state) => state.loading);
+  const error = useProjectStore((state) => state.error);
+
+  // UI state
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedProject, setExpandedProject] = useState(null);
@@ -27,26 +23,7 @@ const useDashboardLayout = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
-
-  // Load data once user logs in
-  useEffect(() => {
-    if (user && (!analytics || !projects.length)) {
-      Promise.allSettled([
-        !analytics && loadAnalytics(),
-        !projects.length && loadProjects(),
-      ]);
-    }
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Greeting message
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good Morning");
-    else if (hour < 18) setGreeting("Good Afternoon");
-    else setGreeting("Good Evening");
-  }, []);
-
+  // Initials
   const initials = user?.username?.charAt(0)?.toUpperCase() || "?";
 
   // Logout
@@ -63,7 +40,7 @@ const useDashboardLayout = () => {
     }
   };
 
-  // Animation + UI helpers
+  // Sidebar motion
   const sidebarVariants = useMemo(
     () => ({
       hidden: { x: "-100%" },
@@ -82,52 +59,32 @@ const useDashboardLayout = () => {
     []
   );
 
-  // Dynamic chart colors
+  // Bar chart data
   const barColors = projects.map((p) => {
     const progress = parseInt(p.progress) || 0;
-    if (progress >= 80) return "rgba(34, 197, 94, 0.8)"; // Green
-    if (progress >= 50) return "rgba(253, 224, 71, 0.8)"; // Yellow
-    return "rgba(239, 68, 68, 0.8)"; // Red
+    if (progress >= 80) return "rgba(34, 197, 94, 0.8)";
+    if (progress >= 50) return "rgba(253, 224, 71, 0.8)";
+    return "rgba(239, 68, 68, 0.8)";
   });
 
-  const barData = {
-    labels: projects.map((p) => p.title),
-    datasets: [
-      {
-        label: "Completion (%)",
-        data: projects.map((p) => parseInt(p.progress) || 0),
-        backgroundColor: barColors,
-        borderRadius: 8,
-      },
-    ],
-  };
+  const barData = useMemo(
+    () => ({
+      labels: projects.map((p) => p.title),
+      datasets: [
+        {
+          label: "Completion (%)",
+          data: projects.map((p) => parseInt(p.progress) || 0),
+          backgroundColor: barColors,
+          borderRadius: 8,
+        },
+      ],
+    }),
+    [projects]
+  );
 
-  // Display at most 3 projects
   const displayedProjects = projects.slice(0, 3);
 
-  // Dynamic width control for project cards
-  const getProjectContainerWidth = () => {
-    switch (displayedProjects.length) {
-      case 1:
-        return "w-1/2";
-      case 2:
-        return "w-2/3";
-      case 3:
-        return "w-3/4";
-      default:
-        return "w-full";
-    }
-  };
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
-    }),
-  };
-
+  // Expand/collapse logic
   const toggleProject = (id, e) => {
     e.stopPropagation();
     setExpandedProject(expandedProject === id ? null : id);
@@ -138,13 +95,13 @@ const useDashboardLayout = () => {
     setExpandedStage(expandedStage === id ? null : id);
   };
 
+  // Helpers
   const getPriorityClasses = (priority) => {
     switch (priority) {
       case "high":
         return "bg-red-100 text-red-700";
       case "medium":
         return "bg-yellow-100 text-yellow-700";
-      case "low":
       default:
         return "bg-green-100 text-green-700";
     }
@@ -160,7 +117,6 @@ const useDashboardLayout = () => {
     loading,
     error,
     user,
-    greeting,
     showUserMenu,
     setShowUserMenu,
     isSidebarOpen,
@@ -170,17 +126,10 @@ const useDashboardLayout = () => {
     handleLogout,
     sidebarVariants,
     transition,
-    // DashboardHome
     barData,
-    fadeUp,
     projects,
-    getProjectContainerWidth,
     displayedProjects,
-
-    // Analytics
     analytics,
-    loadAnalytics,
-    // Projects
     expandedProject,
     expandedStage,
     toggleProject,

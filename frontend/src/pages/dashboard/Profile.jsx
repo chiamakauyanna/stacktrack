@@ -21,8 +21,8 @@ const Profile = () => {
 
   if (loading || !user) {
     return (
-      <DashboardLayout pageTitle="My Profile">
-        <div className="max-w-3xl mx-auto animate-pulse space-y-8 mt-10">
+      <DashboardLayout>
+        <div className="-auto animate-pulse space-y-8 mt-10">
           <div className="h-40 bg-gray-100 rounded-2xl"></div>
           <div className="h-24 bg-gray-100 rounded-2xl"></div>
         </div>
@@ -36,17 +36,17 @@ const Profile = () => {
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="max-w-4xl mx-auto p-6 md:p-10 space-y-10"
+        className="p-2 space-y-4"
       >
-        {/* --- Profile Card --- */}
+        {/* Profile Card */}
         <motion.section
           variants={fadeUp}
           custom={1}
-          className="bg-white/70 backdrop-blur-lg border border-gray-100 shadow-md rounded-2xl p-8 flex flex-col sm:flex-row items-center sm:items-start gap-8"
+          className="bg-surface shadow-md rounded-2xl p-8 flex flex-col md:flex-row items-center md:items-start gap-8"
         >
-          {/* --- Avatar Section --- */}
+          {/* Avatar Section */}
           <div className="relative group">
-            <div className="w-28 h-28 rounded-full overflow-hidden bg-app-secondary flex items-center justify-center text-app-surface font-bold text-3xl shadow-inner ring-2 ring-app-secondary">
+            <div className="w-28 h-28 rounded-full overflow-hidden bg-secondary flex items-center justify-center text-surface font-bold text-3xl shadow-inner ring-2 ring-secondary">
               {form.avatar ? (
                 <img
                   src={form.avatar}
@@ -72,14 +72,14 @@ const Profile = () => {
               onClick={handleAvatarClick}
               title="Change Avatar"
               disabled={loading}
-              className="absolute bottom-0 right-0 p-2 bg-white border rounded-full shadow-md hover:bg-app-secondary transition group-hover:scale-105"
+              className="absolute bottom-0 right-0 p-2 bg-white border rounded-full shadow-md hover:bg-secondary transition group-hover:scale-105"
             >
-              <Camera size={16} className="text-app-secondary" />
+              <Camera size={16} className="text-secondary" />
             </button>
           </div>
 
-          {/* --- Info Section --- */}
-          <div className="flex-1 space-y-3 text-center sm:text-left">
+          {/* Info Section */}
+          <div className="flex-1 space-y-2 text-center md:text-left">
             <h1 className="text-2xl font-semibold text-gray-800">
               {user.username}
             </h1>
@@ -89,26 +89,26 @@ const Profile = () => {
                 name="role"
                 value={form.role}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-app-accent"
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="Role"
               />
             ) : (
               <p className="text-gray-500">{form.role || "Member"}</p>
             )}
 
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-sm text-gray-500">
+            <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500">
               <Mail size={16} /> {user.email}
             </div>
           </div>
 
-          {/* --- Edit / Save Buttons --- */}
+          {/* Edit / Save Buttons */}
           <div className="flex gap-2">
             {isEditing ? (
               <>
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="bg-app-accent hover:bg-app-accent text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm shadow-sm transition"
+                  className="bg-accent hover:bg-accent text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm shadow-sm transition"
                 >
                   <Save size={14} /> Save
                 </button>
@@ -130,14 +130,14 @@ const Profile = () => {
           </div>
         </motion.section>
 
-        {/* --- About / Bio Section --- */}
+        {/* About / Bio Section */}
         <motion.section
           variants={fadeUp}
           custom={2}
           className="bg-white/70 backdrop-blur-lg border border-gray-100 rounded-2xl p-8 shadow-sm"
         >
-          <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-4">
-            <User size={18} className="text-app-accent" /> About
+          <h2 className="text-lg flex items-center gap-2 mb-4">
+            <User size={18} className="text-accent" /> About
           </h2>
 
           {isEditing ? (
@@ -146,7 +146,7 @@ const Profile = () => {
               value={form.bio}
               onChange={handleChange}
               rows={5}
-              className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-app-accent"
+              className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               placeholder="Tell us about yourself..."
             />
           ) : (

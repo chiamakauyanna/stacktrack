@@ -47,19 +47,29 @@ const ProjectDetail = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-app-surface px-6 md:px-12 py-8 space-y-6">
+      <div className="min-h-screen bg-surface px-6 md:px-12 py-8 space-y-6">
         <ProjectHeader project={project} user={user} openModal={openModal} />
 
-        {stages?.length > 0 && (
-          <ProjectDetailsAnalytics
-            stages={stages}
-            onTaskSelect={(stageId, taskId) => {
-              const stage = stages.find((s) => s.id === stageId);
-              const task = stage?.tasks.find((t) => t.id === taskId);
-              if (task) openModal("task", stageId, task);
-            }}
-          />
-        )}
+        {/* Analytics */}
+        <div>
+          {stages?.length > 0 ? (
+            <ProjectDetailsAnalytics
+              stages={stages}
+              onTaskSelect={(stageId, taskId) => {
+                const stage = stages.find((s) => s.id === stageId);
+                const task = stage?.tasks.find((t) => t.id === taskId);
+                if (task) openModal("task", stageId, task);
+              }}
+            />
+          ) : (
+            <div className="bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-10 text-center text-gray-500">
+              <p className="font-medium mb-2">No analytics yet</p>
+              <p className="text-sm">
+                Add your first stage to start tracking project progress.
+              </p>
+            </div>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {stages?.map((stage) => (
@@ -74,6 +84,22 @@ const ProjectDetail = () => {
             />
           ))}
         </div>
+        {stages?.length === 0 && (
+          <div className="flex flex-col items-center justify-center p-10 border border-dashed border-gray-300 rounded-2xl bg-gray-50 text-center">
+            <h2 className="text-gray-600 font-medium mb-2">
+              No stages added yet
+            </h2>
+            <p className="text-sm text-gray-500 mb-4">
+              Start by adding a stage to begin organizing your project.
+            </p>
+            <button
+              onClick={() => openModal("stage")}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition"
+            >
+              Add First Stage
+            </button>
+          </div>
+        )}
 
         <EditModal
           isOpen={isModalOpen}

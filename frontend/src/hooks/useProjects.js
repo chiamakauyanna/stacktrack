@@ -7,10 +7,10 @@ import useToast from "./useToast";
 const useProjects = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useAuthStore();
   const toast = useToast();
+  const { user } = useAuthStore();
 
-  // ----- Modal / Detail data -----
+  // UI states
   const [selectedStage, setSelectedStage] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,14 +21,14 @@ const useProjects = () => {
     due_date: "",
   });
 
-  // ----- Form data for CreateProject -----
+  // Project creation form state
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     stages: [],
   });
 
-  const projectStore = useProjectStore();
+  // Store access
   const {
     project,
     stages,
@@ -36,7 +36,6 @@ const useProjects = () => {
     addProject,
     editProject,
     removeProject,
-    loading,
     addStage,
     editStage,
     removeStage,
@@ -44,14 +43,26 @@ const useProjects = () => {
     editTask,
     removeTask,
     changeTaskStatus,
-  } = projectStore;
+  } = useProjectStore();
 
-  // ---------- Load project ----------
+  const loading = useProjectStore((state) => state.loading);
+  const error = useProjectStore((state) => state.error);
+
+  // Load project when ID changes (avoid reloading same project)
   useEffect(() => {
-    if (id) loadProject(id);
-  }, [id, loadProject]); 
+    if (id && (!project || project.id !== id)) {
+      loadProject(id);
+    }
+  }, [id, project, loadProject]);
 
-  // ---------- CreateProject form handlers ----------
+  useEffect(() => {
+    if (project && project.stages?.length === 0) {
+      toast.info("This project has no stages yet. Add one to begin tracking.");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project]);
+
+  // Project creation form handlers
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -100,12 +111,15 @@ const useProjects = () => {
     setFormData({ ...formData, stages: updated });
   };
 
+  // Submit new project
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.title.trim() || !formData.description.trim()) {
       toast.error("Title and description are required");
       return;
     }
+
     if (formData.stages.length === 0) {
       toast.error("Add at least one stage");
       return;
@@ -122,7 +136,7 @@ const useProjects = () => {
     }
   };
 
-  // ---------- Modal Handlers ----------
+  // Modal logic
   const openModal = (type, stage = null, task = null) => {
     setEditingType(type);
     setSelectedStage(stage?.id || null);
@@ -130,14 +144,29 @@ const useProjects = () => {
 
     if (type === "task") {
       setData(
-        task ? { ...task } : { title: "", description: "", due_date: "" }
+        task
+          ? { ...task }
+          : {
+              title: "",
+              description: "",
+              due_date: "",
+              status: "pending",
+              stage: stage?.id || null,
+            }
       );
     } else if (type === "stage") {
-      setData(stage ? { title: stage.title } : { title: "" });
+      setData(
+        stage
+          ? { title: stage.title, project: stage.project || project?.id }
+          : { title: "", project: project?.id }
+      );
     } else if (type === "project") {
       setData(
         project
-          ? { title: project.title, description: project.description }
+          ? {
+              title: project?.title || "",
+              description: project?.description || "",
+            }
           : { title: "", description: "" }
       );
     }
@@ -147,6 +176,7 @@ const useProjects = () => {
 
   const handleSave = async () => {
     const loadingToast = toast.loading("Saving...");
+
     try {
       if (editingType === "task") {
         selectedTask
@@ -157,25 +187,19 @@ const useProjects = () => {
           ? await editStage(selectedStage, data)
           : await addStage(project.id, data);
       } else if (editingType === "project") {
-        project ? await editProject(project.id, data) : await addProject(data);
+        await editProject(project.id, data);
       }
 
-      toast.success(
-        `${
-          editingType.charAt(0).toUpperCase() + editingType.slice(1)
-        } saved successfully`,
-        { id: loadingToast }
-      );
+      toast.success(`${editingType} saved successfully`, { id: loadingToast });
       setIsModalOpen(false);
       setData({ title: "", description: "", due_date: "" });
-      setSelectedStage(null);
-      setSelectedTask(null);
     } catch (err) {
       toast.error(`Failed to save ${editingType}`, { id: loadingToast });
       console.error(err);
     }
   };
 
+  // Delete a project
   const handleDeleteProject = async (projectId) => {
     const loadingToast = toast.loading("Deleting project...");
     try {
@@ -188,6 +212,7 @@ const useProjects = () => {
     }
   };
 
+  // Toggle task status
   const toggleTaskStatusHandler = async (task) => {
     const loadingToast = toast.loading("Updating task...");
     try {
@@ -203,7 +228,7 @@ const useProjects = () => {
   };
 
   return {
-    // FormData for CreateProject
+    // Create Project form
     formData,
     handleChange,
     handleSubmit,
@@ -214,26 +239,31 @@ const useProjects = () => {
     handleStageChangeForm,
     handleTaskChangeForm,
 
-    // Modal / Detail for ProjectDetail
+    // Modal logic
     data,
     setData,
     openModal,
     handleSave,
-    toggleTaskStatusHandler,
+    isModalOpen,
+    setIsModalOpen,
+    selectedStage,
+    selectedTask,
+    editingType,
 
     // Project / stages / tasks
     project,
     stages,
     user,
-    selectedStage,
-    selectedTask,
-    isModalOpen,
-    setIsModalOpen,
-    editingType,
+
+    // Store actions
     removeStage,
     removeTask,
     handleDeleteProject,
+    toggleTaskStatusHandler,
+
+    // States
     loading,
+    error,
     navigate,
   };
 };

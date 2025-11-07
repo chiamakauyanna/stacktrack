@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/authService";
 import useToast from "./useToast";
+import { useAuthStore } from "../store/useAuthStore";
 
 const useRegister = () => {
-  const [loading, setLoading] = useState(false);
+  const { register, loading } = useAuthStore();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -19,11 +19,10 @@ const useRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const loadingToast = toast.loading("Creating account...");
-    setLoading(true);
 
     try {
-      const res = await registerUser(formData);
-      toast.success(res.message || "Registration successful!", {
+      const user = await register(formData);
+      toast.success(user.message || "Registration successful!", {
         id: loadingToast,
       });
       setTimeout(() => navigate("/dashboard"), 1000);
@@ -31,8 +30,6 @@ const useRegister = () => {
       toast.error(error.message || "Registration failed", {
         id: loadingToast,
       });
-    } finally {
-      setLoading(false);
     }
   };
 

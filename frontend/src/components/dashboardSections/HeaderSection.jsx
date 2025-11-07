@@ -10,14 +10,12 @@ const HeaderSection = ({ fadeUp }) => (
     animate="visible"
     className="flex justify-between items-center"
   >
-    <h1 className="md:text-xl font-heading font-bold text-landing-navy">
-      Dashboard Overview
-    </h1>
+    <h1 className="md:text-xl">Dashboard</h1>
     <Link
       to="/projects/create"
-      className="flex items-center gap-2 text-sm bg-landing-primary hover:bg-landing-secondary text-white px-3 md:px-5 py-2 rounded-full shadow-sm transition"
+      className="flex items-center gap-2 text-sm bg-surface hover:bg-secondary hover:text-white px-3 md:px-5 py-4 rounded-xl shadow-sm transition whitespace-nowrap font-bold"
     >
-      <PlusCircle size={16} /> New Project
+      <PlusCircle size={22} /> New Project
     </Link>
   </motion.div>
 );

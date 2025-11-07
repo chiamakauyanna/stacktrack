@@ -23,10 +23,10 @@ const TrendChart = ({ analytics, fadeUp }) => {
       initial="hidden"
       animate="visible"
       custom={6}
-      className="bg-app-surface rounded-2xl p-5 shadow"
+      className="bg-surface p-5"
     >
-      <h2 className="text-lg font-semibold mb-4 text-landing-navy">
-        Weekly Task Completion Trend
+      <h2 className="font-semibold mb-4">
+        Weekly Performance
       </h2>
       <div className="h-64">
         <Line

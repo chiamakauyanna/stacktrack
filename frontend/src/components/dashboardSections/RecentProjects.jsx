@@ -7,11 +7,9 @@ const RecentProjects = ({ analytics, fadeUp }) => (
     initial="hidden"
     animate="visible"
     custom={8}
-    className="bg-app-surface rounded-2xl p-5 shadow"
+    className="bg-surface rounded-2xl p-5 shadow"
   >
-    <h2 className="text-lg font-semibold text-landing-navy mb-4">
-      Recently Updated
-    </h2>
+    <h2 className="text-lg font-semibold text-navy mb-4">Recently Updated</h2>
 
     {analytics?.projects?.length ? (
       <ul className="divide-y divide-gray-100">

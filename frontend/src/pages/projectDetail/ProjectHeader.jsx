@@ -1,9 +1,11 @@
 import { Plus, Pencil } from "lucide-react";
 
 const ProjectHeader = ({ project, user, openModal }) => (
-  <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-app-primary/25 p-6 rounded-2xl shadow-md">
+  <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-primary/25 p-6 rounded-2xl shadow-md">
     <div>
-      <h1 className="text-1xl md:text-2xl font-bold text-gray-800">{project?.title}</h1>
+      <h1 className="text-1xl md:text-2xl font-bold text-gray-800">
+        {project?.title}
+      </h1>
       <p className="text-gray-600 mt-1">{project?.description}</p>
     </div>
 

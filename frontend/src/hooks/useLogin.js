@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../services/authService";
 import useToast from "./useToast";
+import { useAuthStore } from "../store/useAuthStore";
 
 const useLogin = () => {
-  const [loading, setLoading] = useState(false);
+  const { login, loading } = useAuthStore();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -18,20 +18,19 @@ const useLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const loadingToast = toast.loading("Logging in...");
-    setLoading(true);
 
     try {
-      const res = await loginUser(formData);
-      if (res.access) {
+      const user = await login(formData);
+      if (user) {
         toast.success("Login successful!", { id: loadingToast });
         setTimeout(() => navigate("/dashboard"), 1000);
       } else {
-        toast.error(res.message || "Invalid credentials", { id: loadingToast });
+        toast.error(user.message || "Invalid credentials", {
+          id: loadingToast,
+        });
       }
     } catch (error) {
       toast.error(error.message || "Login failed", { id: loadingToast });
-    } finally {
-      setLoading(false);
     }
   };
 

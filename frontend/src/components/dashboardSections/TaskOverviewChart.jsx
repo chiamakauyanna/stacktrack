@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Doughnut } from "react-chartjs-2";
@@ -9,23 +8,32 @@ const TaskOverviewChart = ({ taskData, fadeUp }) => (
     initial="hidden"
     animate="visible"
     custom={5}
-    className="bg-app-surface rounded-2xl p-5 shadow flex flex-col items-center justify-center"
+    className="bg-surface rounded-2xl p-5 shadow flex flex-col"
   >
-    <h2 className="text-lg font-semibold mb-4 text-landing-navy">
-      Task Overview
-    </h2>
-    <div className="h-64 w-full flex justify-center items-center">
-      <Doughnut
-        data={taskData}
-        options={{
-          plugins: {
-            legend: {
-              position: "bottom",
-              labels: { color: "#374151" },
+    <h2 className="font-semibold mb-4">Task Overview</h2>
+
+    {/* Chart container */}
+    <div className="flex items-center justify-center">
+      <div className="h-64 w-64 flex justify-center items-center">
+        <Doughnut
+          data={taskData}
+          options={{
+            cutout: "80%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  color: "#374151",
+                  boxWidth: 16,
+                  padding: 16,
+                  usePointStyle: true,
+                  pointStyle: "circle",
+                },
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      </div>
     </div>
   </motion.div>
 );

@@ -10,67 +10,66 @@ import RecentProjects from "../../components/dashboardSections/RecentProjects";
 import { Layers, CheckCircle2, TrendingUp } from "lucide-react";
 
 const DashboardHome = () => {
-  const {
-    barData,
-    fadeUp,
-    analytics,
-    getProjectContainerWidth,
-    displayedProjects,
-  } = useDashboardLayout();
+  const { barData, fadeUp, analytics, displayedProjects } =
+    useDashboardLayout();
 
   const summary = analytics?.summary || {};
   const projectIcons = [
-    <Layers size={28} className="text-landing-navy" />,
-    <CheckCircle2 size={28} className="text-landing-navy" />,
-    <TrendingUp size={28} className="text-landing-navy" />,
+    <Layers size={28} className="text-navy" />,
+    <CheckCircle2 size={28} className="text-navy" />,
+    <TrendingUp size={28} className="text-navy" />,
   ];
 
   const taskData = {
     labels: ["Completed Tasks", "Pending Tasks"],
     datasets: [
       {
-        data: [summary.completed_tasks || 0, summary.pending_tasks || 0],
-        backgroundColor: ["#22c55e", "#facc15"],
+        data:
+          summary.completed_tasks > 0 || summary.pending_tasks > 0
+            ? [summary.completed_tasks, summary.pending_tasks]
+            : [1], // placeholder so the doughnut is visible
+        backgroundColor:
+          summary.completed_tasks > 0 || summary.pending_tasks > 0
+            ? ["#22c55e", "#facc15"]
+            : ["#e5e7eb"], // gray placeholder color
+        borderWidth: 0,
       },
     ],
   };
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen md:p-6 space-y-8">
-        {/* === HEADER SECTION === */}
-        <section className="bg-app-surface p-6 rounded-2xl shadow-sm">
-          <HeaderSection fadeUp={fadeUp} />
-        </section>
+      <div className="min-h-screen md:p-3 space-y-4">
+        {/*  HEADER  */}
+        <HeaderSection fadeUp={fadeUp} />
 
-        {/* === ACTIVE PROJECTS + TASK OVERVIEW === */}
-        <section>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <ActiveProjects
-              displayedProjects={displayedProjects}
-              getProjectContainerWidth={getProjectContainerWidth}
-              fadeUp={fadeUp}
-              projectIcons={projectIcons}
-              totalProjects={summary.total_projects || 0}
-            />
-            <TaskOverviewChart fadeUp={fadeUp} taskData={taskData} />
-          </div>
-        </section>
+        {/*  MAIN GRID  */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/*  LEFT MAIN SECTION  */}
+          <div className="md:col-span-2 space-y-4">
+            {/* Quick Stats */}
+            <QuickStats summary={summary} fadeUp={fadeUp} />
 
-        {/* === CHARTS + STATS === */}
-        <section>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <TrendChart analytics={analytics} fadeUp={fadeUp} />
+            {/* Task Overview + Completion Chart */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TaskOverviewChart fadeUp={fadeUp} taskData={taskData} />
               <CompletionChart barData={barData} fadeUp={fadeUp} />
             </div>
 
-            <div className="space-y-8">
-              <QuickStats summary={summary} fadeUp={fadeUp} />
-              <RecentProjects analytics={analytics} fadeUp={fadeUp} />
-            </div>
+            {/* Active Projects */}
+            <ActiveProjects
+              displayedProjects={displayedProjects}
+              fadeUp={fadeUp}
+              projectIcons={projectIcons}
+            />
           </div>
-        </section>
+
+          {/*  RIGHT ASIDE  */}
+          <aside className="space-y-6 bg-surface p-3 rounded-2xl">
+            <TrendChart analytics={analytics} fadeUp={fadeUp} />
+            <RecentProjects analytics={analytics} fadeUp={fadeUp} />
+          </aside>
+        </div>
       </div>
     </DashboardLayout>
   );

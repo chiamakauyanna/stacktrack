@@ -8,9 +8,9 @@ const CompletionChart = ({ barData, fadeUp }) => (
     initial="hidden"
     animate="visible"
     custom={7}
-    className="bg-app-surface rounded-2xl p-5 shadow"
+    className="bg-surface rounded-2xl p-5 shadow]"
   >
-    <h2 className="text-lg font-semibold mb-4 text-landing-navy">
+    <h2 className="text-lg font-semibold mb-4 text-navy">
       Project Completion Overview
     </h2>
     <div className="h-64">

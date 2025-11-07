@@ -1,9 +1,9 @@
-import logo from '../../assets/dark_logo.png'
+import logo from '../../assets/logo.png'
 
 const Logo = () => {
   return (
     <div>
-      <img src={logo} alt="StackTrack logo" className="h-18" />
+      <img src={logo} alt="StackTrack logo" className="md:h-10 lg:h-12 h-8" />
     </div>
   )
 }

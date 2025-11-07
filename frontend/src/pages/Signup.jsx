@@ -1,44 +1,46 @@
-import AuthLayout from "../layouts/AuthLayout";
 import useRegister from "../hooks/useRegister";
+import signupImg from "../assets/authentication.svg";
 
 const Signup = () => {
   const { formData, handleChange, handleSubmit, loading } = useRegister();
 
   return (
-    <AuthLayout>
-      <div className="flex flex-col md:flex-row items-center h-[calc(100vh-1rem)]">
-        {/* Left: Illustration (optional) */}
-        <div className="hidden md:flex w-full relative bg-landing-secondary items-center justify-center p-8 h-full">
-          {/* <img
-            src="/illustrations/signup.svg"
-            alt="Signup Illustration"
-            className="max-w-sm"
-          /> */}
-        </div>
+    <div className="flex flex-col md:flex-row h-screen bg-accent/25">
+      {/* Left: Background Image */}
+      <div
+        className="hidden md:flex items-center justify-center bg-secondary rounded-r-full w-full md:w-1/2"
+      >
+        <img
+          src={signupImg}
+          alt="Signup Illustration"
+          className="max-h-2/3 max-w-full"
+        />
+      </div>
 
-        {/* Right: Form */}
-        <div className="w-full md:w-1/2 px-8 bg-landing-bg rounded-l-4xl shadow-lg absolute right-2 top-2 bottom-2 pt-8">
-          <p className="mb-24 text-sm text-landing-navy font-semibold text-right">
+      {/* Right: Form */}
+      <div className="w-full md:w-1/2 px-8 flex flex-col justify-center items-center">
+        <div className="w-full max-w-lg">
+          <p className="mb-30 text-sm md:text-base text-navy font-semibold text-right mt-10">
             Already have an account?{" "}
             <a
               href="/login"
-              className="border-2 border-landing-navy py-1.5 px-2 rounded-lg"
+              className="border-2 border-secondary py-1.5 px-2 rounded-lg ml-2 hover:bg-secondary hover:text-white transition"
             >
               Sign in
             </a>
           </p>
 
-          <p className="text-3xl font-bold text-landing-text-muted mb-16">
+          <p className="text-3xl font-bold text-secondary text-center mb-8 font-heading">
             Create Account
           </p>
 
-          <form onSubmit={handleSubmit}>
-            <div className="bg-white p-3 rounded-xl shadow-md">
+          <form onSubmit={handleSubmit} className="space-y-4 ">
+            <div className="bg-surface/40 p-4 rounded-xl shadow-md">
               <input
                 type="text"
                 placeholder="Username"
                 name="username"
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
                 onChange={handleChange}
                 value={formData.username}
               />
@@ -46,7 +48,7 @@ const Signup = () => {
                 type="email"
                 placeholder="Email Address"
                 name="email"
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
                 onChange={handleChange}
                 value={formData.email}
               />
@@ -54,22 +56,24 @@ const Signup = () => {
                 type="password"
                 placeholder="Password"
                 name="password"
-                className="w-full p-3 focus:ring-2 focus:ring-landing-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
                 onChange={handleChange}
                 value={formData.password}
               />
             </div>
 
-            <button
-              className="bg-landing-navy hover:bg-landing-primary text-white py-3 px-8 rounded-lg font-medium transition mt-10 disabled:opacity-60"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Sign Up"}
-            </button>
+            <div className="flex justify-center mt-6">
+              <button
+                className="bg-secondary hover:bg-primary text-white py-3 px-10 rounded-full font-medium transition disabled:opacity-60"
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Sign Up"}
+              </button>
+            </div>
           </form>
         </div>
       </div>
-    </AuthLayout>
+    </div>
   );
 };
 

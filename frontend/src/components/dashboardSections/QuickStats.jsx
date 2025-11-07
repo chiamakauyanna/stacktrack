@@ -1,12 +1,27 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { CheckCircle2, FolderOpen, TrendingUp } from "lucide-react";
 
 const QuickStats = ({ summary, fadeUp }) => {
   const stats = [
-    { label: "Active", value: summary.active_projects || 0 },
-    { label: "Completed", value: summary.completed_projects || 0 },
-    { label: "Drafts", value: summary.draft_projects || 0 },
-    { label: "Avg Progress", value: `${summary.average_project_progress || 0}%` },
+    {
+      label: "Active Projects",
+      value: summary.active_projects || 0,
+      icon: <FolderOpen size={24} />,
+      color: "bg-blue-100 text-blue-600",
+    },
+    {
+      label: "Completed Projects",
+      value: summary.completed_projects || 0,
+      icon: <CheckCircle2 size={24} />,
+      color: "bg-pink-100 text-pink-600",
+    },
+    {
+      label: "Average Progress",
+      value: `${summary.average_project_progress || 0}%`,
+      icon: <TrendingUp size={24} />,
+      color: "bg-green-100 text-green-600",
+    },
   ];
 
   return (
@@ -15,19 +30,26 @@ const QuickStats = ({ summary, fadeUp }) => {
       initial="hidden"
       animate="visible"
       custom={4}
-      className="bg-app-surface rounded-2xl p-5 shadow"
+      className="rounded-2xl"
     >
-      <h2 className="text-lg font-semibold text-landing-navy mb-4">
-        Quick Stats
-      </h2>
-      <div className="grid grid-cols-2 gap-4">
-        {stats.map((stat, i) => (
+      {/* Mobile: horizontal scroll | Desktop: grid */}
+      <div className="flex gap-4 overflow-x-auto sm:overflow-x-visible sm:grid sm:grid-cols-3 scrollbar-hide">
+        {stats?.length && stats.map((stat, i) => (
           <div
             key={i}
-            className="p-3 rounded-xl bg-gray-50 text-center shadow-sm"
+            className="min-w-[80%] md:min-w-0 flex-shrink-0 md:flex-shrink bg-gray-50 rounded-xl px-4 py-6 shadow-sm flex items-center justify-center gap-4 snap-start"
           >
-            <h3 className="text-xl font-bold text-landing-navy">{stat.value}</h3>
-            <p className="text-xs text-gray-500">{stat.label}</p>
+            <div
+              className={`p-3 rounded-xl flex items-center justify-center ${stat.color}`}
+            >
+              {stat.icon}
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">
+                {stat.label}
+              </p>
+              <h3 className="text-2xl font-bold">{stat.value}</h3>
+            </div>
           </div>
         ))}
       </div>

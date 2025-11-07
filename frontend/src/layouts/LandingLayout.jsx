@@ -3,7 +3,7 @@ import Footer from "../components/common/Footer";
 
 const LandingLayout = ({ children }) => {
   return (
-    <div className="font-body bg-landing-bg text-landing-text">
+    <div className="font-body bg-bg text-text">
       <Navbar />
       {children}
       <Footer />

@@ -7,9 +7,10 @@ import Profile from "../pages/dashboard/Profile";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/resetPassword";
 import Projects from "../pages/projects/Projects";
-import CreateProject from "../pages/dashboard/CreateProject";
+import CreateProject from "../pages/projects/CreateProject";
 import ProjectStats from "../pages/projects/ProjectStats";
 import ProjectDetail from "../pages/projectDetail/ProjectDetail";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
   return (
@@ -21,14 +22,15 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Dashboard Routes */}
-      <Route path="/dashboard" element={<DashboardHome />} />
-      <Route path="projects" element={<Projects />} />
-      <Route path="projects/create" element={<CreateProject />} />
-      <Route path="projects/:id" element={<ProjectDetail />} />
-      <Route path="/dashboard/profile" element={<Profile />} />
-
-      <Route path="/projects/analytics" element={<ProjectStats />} />
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<DashboardHome />} />
+        <Route path="/dashboard/profile" element={<Profile />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/create" element={<CreateProject />} />
+        <Route path="/projects/:id" element={<ProjectDetail />} />
+        <Route path="/projects/analytics" element={<ProjectStats />} />
+      </Route>
     </Routes>
   );
 };

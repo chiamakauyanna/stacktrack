@@ -12,19 +12,18 @@ const StageForm = ({
   handleAddTaskForm,
   handleTaskChangeForm,
   handleRemoveTaskForm,
-  allExpanded
+  allExpanded,
 }) => {
   const [isOpen, setIsOpen] = useState(allExpanded);
 
   useEffect(() => {
-  setIsOpen(allExpanded);
-}, [allExpanded]);
-
+    setIsOpen(allExpanded);
+  }, [allExpanded]);
 
   return (
     <motion.div
       key={stage.id}
-      className="p-5 bg-app-surface rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden"
+      className="p-5 bg-surface rounded-2xl border border-gray-100 shadow-sm relative overflow-hidden"
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
@@ -46,7 +45,7 @@ const StageForm = ({
             placeholder={`Stage ${si + 1} title`}
             value={stage.title}
             onChange={(e) => handleStageChangeForm(si, e.target.value)}
-            className="w-full p-2 border-b border-gray-200 focus:outline-none focus:border-app-primary bg-transparent font-medium text-sm"
+            className="w-full p-2 border-b border-gray-200 focus:outline-none focus:border-primary bg-transparent font-medium text-sm"
           />
         </div>
 
@@ -72,7 +71,9 @@ const StageForm = ({
           >
             {/* Tasks */}
             {stage.tasks.length === 0 ? (
-              <p className="text-gray-400 text-sm italic ml-1">No tasks added yet.</p>
+              <p className="text-gray-400 text-sm italic ml-1">
+                No tasks added yet.
+              </p>
             ) : (
               <div className="space-y-3">
                 {stage.tasks.map((task, ti) => (
@@ -92,7 +93,7 @@ const StageForm = ({
             <button
               type="button"
               onClick={() => handleAddTaskForm(si)}
-              className="text-app-accent text-sm flex items-center gap-1 mt-2 hover:underline"
+              className="text-accent text-sm flex items-center gap-1 mt-2 hover:underline"
             >
               <PlusCircle size={14} /> Add Task
             </button>

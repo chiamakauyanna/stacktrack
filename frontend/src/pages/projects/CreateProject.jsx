@@ -9,7 +9,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import StageForm from "../../components/projectSection/forms/StageForm";
+import StageForm from "../../components/projectForms/StageForm";
 
 const CreateProject = () => {
   const {
@@ -37,11 +37,11 @@ const CreateProject = () => {
           <div className="flex items-center justify-between border-b pb-3 mx-2">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-600 hover:text-app-primary transition"
+              className="flex items-center gap-2 text-gray-600 hover:text-primary transition"
             >
               <ArrowLeft size={18} /> Back
             </button>
-            <h1 className="md:text-xl font-semibold text-landing-navy">
+            <h1 className="md:text-xl font-semibold text-navy">
               Create New Project
             </h1>
           </div>
@@ -49,7 +49,7 @@ const CreateProject = () => {
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="bg-app-surface rounded-xl shadow-sm p-4 md:p-8 space-y-8"
+            className="bg-surface rounded-xl shadow-sm p-4 md:p-8 space-y-8"
           >
             {/* Project Info */}
             <div className="space-y-4">
@@ -59,7 +59,7 @@ const CreateProject = () => {
                 placeholder="Project Title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-app-primary focus:outline-none placeholder:text-gray-400 text-sm"
+                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 text-sm"
               />
 
               <textarea
@@ -68,7 +68,7 @@ const CreateProject = () => {
                 rows={4}
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-app-primary focus:outline-none placeholder:text-gray-400 resize-none text-sm"
+                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 resize-none text-sm"
               />
             </div>
 
@@ -82,7 +82,7 @@ const CreateProject = () => {
                 <button
                   type="button"
                   onClick={toggleAllStages}
-                  className="text-sm flex items-center gap-1 px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:border-app-primary hover:text-app-primary transition"
+                  className="text-sm flex items-center gap-1 px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:border-primary hover:text-primary transition"
                 >
                   {allExpanded ? (
                     <>
@@ -98,7 +98,7 @@ const CreateProject = () => {
                 <button
                   type="button"
                   onClick={handleAddStageForm}
-                  className="flex items-center gap-2 text-sm px-4 py-2 rounded-md bg-app-primary text-white hover:bg-app-secondary transition"
+                  className="flex items-center gap-2 text-sm px-4 py-2 rounded-md bg-primary text-white hover:bg-secondary transition"
                 >
                   <PlusCircle size={16} /> Add Stage
                 </button>
@@ -108,9 +108,25 @@ const CreateProject = () => {
             {/* Stage List */}
             <div className="space-y-5">
               {formData.stages.length === 0 ? (
-                <p className="text-gray-400 text-sm italic">
-                  No stages added yet.
-                </p>
+                <div className="text-center bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                  <p className="text-gray-500 text-sm mb-4">
+                    Every project starts with at least one stage. Would you like
+                    to begin with a{" "}
+                    <span className="font-medium text-gray-700">
+                      “Planning”
+                    </span>{" "}
+                    stage?
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleAddStageForm({ title: "Planning", description: "" })
+                    }
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-secondary transition"
+                  >
+                    <PlusCircle size={14} /> Add Planning Stage
+                  </button>
+                </div>
               ) : (
                 formData.stages.map((stage, si) => (
                   <StageForm
@@ -133,7 +149,7 @@ const CreateProject = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-3 bg-app-primary text-white font-medium rounded-lg hover:bg-app-secondary transition disabled:opacity-60 text-sm"
+                className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-secondary transition disabled:opacity-60 text-sm"
               >
                 <Save size={18} />
                 {loading ? "Saving..." : "Save Project"}
