@@ -2,7 +2,6 @@ import { useState } from "react";
 import useProjects from "../../hooks/useProjects";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import {
-  ArrowLeft,
   Save,
   PlusCircle,
   ClipboardList,
@@ -16,7 +15,6 @@ const CreateProject = () => {
     formData,
     handleChange,
     handleSubmit,
-    navigate,
     handleAddStageForm,
     handleAddTaskForm,
     handleRemoveStageForm,
@@ -31,20 +29,10 @@ const CreateProject = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen py-10">
+      <div className="min-h-screen py-4">
         <div className="max-w-4xl mx-auto px-4 space-y-8">
           {/* Header */}
-          <div className="flex items-center justify-between border-b pb-3 mx-2">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-600 hover:text-primary transition"
-            >
-              <ArrowLeft size={18} /> Back
-            </button>
-            <h1 className="md:text-xl font-semibold text-navy">
-              Create New Project
-            </h1>
-          </div>
+          <h1 className="md:text-xl">Create New Project</h1>
 
           {/* Form */}
           <form
@@ -59,7 +47,7 @@ const CreateProject = () => {
                 placeholder="Project Title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 text-sm"
+                className="w-full p-3 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 text-sm"
               />
 
               <textarea
@@ -68,12 +56,12 @@ const CreateProject = () => {
                 rows={4}
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 resize-none text-sm"
+                className="w-full p-3 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-gray-400 resize-none text-sm"
               />
             </div>
 
             {/* Stages Header */}
-            <div className="flex justify-between items-center border-t pt-6">
+            <div className="flex justify-between items-center shadow-sm p-6">
               <h2 className="font-medium flex items-center gap-2 text-gray-700">
                 <ClipboardList size={18} /> Stages
               </h2>
@@ -82,7 +70,7 @@ const CreateProject = () => {
                 <button
                   type="button"
                   onClick={toggleAllStages}
-                  className="text-sm flex items-center gap-1 px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:border-primary hover:text-primary transition"
+                  className="text-sm flex items-center gap-1 px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:border-primary hover:text-primary transition"
                 >
                   {allExpanded ? (
                     <>
@@ -98,7 +86,7 @@ const CreateProject = () => {
                 <button
                   type="button"
                   onClick={handleAddStageForm}
-                  className="flex items-center gap-2 text-sm px-4 py-2 rounded-md bg-primary text-white hover:bg-secondary transition"
+                  className="flex items-center gap-2 text-sm px-4 py-3 rounded-md bg-primary text-white hover:bg-secondary transition"
                 >
                   <PlusCircle size={16} /> Add Stage
                 </button>
@@ -108,7 +96,7 @@ const CreateProject = () => {
             {/* Stage List */}
             <div className="space-y-5">
               {formData.stages.length === 0 ? (
-                <div className="text-center bg-gray-50 border border-gray-200 p-6 rounded-lg">
+                <div className="text-center bg-gray-50 p-6 rounded-lg">
                   <p className="text-gray-500 text-sm mb-4">
                     Every project starts with at least one stage. Would you like
                     to begin with a{" "}
@@ -145,11 +133,11 @@ const CreateProject = () => {
             </div>
 
             {/* Submit */}
-            <div className="flex justify-end border-t pt-6">
+            <div className="flex justify-end pt-6">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-secondary transition disabled:opacity-60 text-sm"
+                className="flex items-center gap-2 px-6 py-4 bg-green-500 text-white font-medium rounded-lg hover:bg-secondary transition disabled:opacity-60 text-sm"
               >
                 <Save size={18} />
                 {loading ? "Saving..." : "Save Project"}

@@ -4,8 +4,8 @@ const ProjectOverview = ({ selectedProject, getProgressColor }) => (
       {selectedProject.description}
     </p>
 
-    <div className="mt-4">
-      <p className="text-xs md:text-sm text-gray-500 mb-1">Progress</p>
+    <div className="mt-4 mx-6">
+      <p className="text-xs md:text-sm text-gray-500 mb-2">Progress</p>
       <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
         <div
           className={`h-2 rounded-full ${getProgressColor(

@@ -1,0 +1,112 @@
+Perfect — since your form already supports stages and nested tasks, let’s make a **sample project** that’s visually appealing *and realistic enough* for screenshots (e.g. to showcase on your hero page).
+
+Here’s a **ready-to-use test project** you can paste into your create form:
+
+---
+
+### 🧠 Project Example — “AI Career Coach Platform”
+
+**Project Title:**
+`AI Career Coach Platform`
+
+**Project Description:**
+A web-based AI assistant designed to help Nigerian youth identify career paths, build personalized learning plans, and track job-readiness progress. The platform integrates AI career matching, goal tracking, and skill analytics dashboards.
+
+---
+
+#### **Stage 1 — Planning**
+
+**Description:** Define project scope, goals, and user requirements.
+
+**Tasks:**
+
+1. **Task:** Research user pain points
+
+   * *Description:* Conduct interviews with 20 Nigerian job seekers to identify challenges in career guidance.
+   * *Priority:* High
+   * *Due Date:* 2025-11-20
+2. **Task:** Define feature set
+
+   * *Description:* Outline MVP features (AI chatbot, skill tracker, dashboard).
+   * *Priority:* Medium
+   * *Due Date:* 2025-11-25
+
+---
+
+#### **Stage 2 — Development**
+
+**Description:** Build and integrate system components.
+
+**Tasks:**
+
+1. **Task:** Backend API Setup
+
+   * *Description:* Build Django REST API endpoints for user profiles and career matches.
+   * *Priority:* High
+   * *Due Date:* 2025-12-01
+2. **Task:** Frontend UI Development
+
+   * *Description:* Implement React-based dashboard and chatbot interface.
+   * *Priority:* Medium
+   * *Due Date:* 2025-12-05
+3. **Task:** AI Integration
+
+   * *Description:* Connect OpenAI API for personalized recommendations.
+   * *Priority:* High
+   * *Due Date:* 2025-12-08
+
+---
+
+#### **Stage 3 — Testing & Deployment**
+
+**Description:** Validate functionality and launch MVP.
+
+**Tasks:**
+
+1. **Task:** User Acceptance Testing
+
+   * *Description:* Invite beta testers and collect feedback via embedded survey.
+   * *Priority:* Medium
+   * *Due Date:* 2025-12-10
+2. **Task:** Deploy to Production
+
+   * *Description:* Deploy frontend on Vercel and backend on Render with live API.
+   * *Priority:* High
+   * *Due Date:* 2025-12-12
+
+---
+
+💡 **Tip for Screenshot (Hero Page):**
+After creating this project:
+
+1. Open your **Projects Overview** page — it’ll show all stages with neat progress bars and priorities.
+2. Open the **Analytics** tab to show your summary cards and charts.
+3. Take a screenshot of both (maybe crop to focus on the dashboard area).
+4. Use that in your hero section to visually showcase “live project tracking.”
+
+
+Task Title: Write Unit Tests for API Endpoints
+Description: Create unit tests for user profiles and career matching API endpoints to ensure data integrity and handle edge cases.
+Priority: Medium
+Due Date: 2025-12-07
+Optional additional task ideas
+
+Stage: Planning
+
+Task: Finalize User Flow Diagrams
+
+Description: Create detailed user flow diagrams for AI Career Coach platform onboarding and dashboard.
+
+Priority: Medium
+
+Due Date: 2025-11-22
+
+Stage: Testing & Deployment
+
+Task: Performance Testing
+
+Description: Run performance and load tests on backend API and frontend dashboard to ensure stability under load.
+
+Priority: High
+
+Due Date: 2025-12-11

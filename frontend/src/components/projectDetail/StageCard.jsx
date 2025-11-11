@@ -5,14 +5,11 @@ import TaskItem from "./TaskItem";
 
 const StageCard = ({
   stage,
-  classifyTasks,
   openModal,
   removeStage,
   ...taskActions
 }) => {
-  const { overdue, dueSoon, inProgress, completed } = classifyTasks(
-    stage.tasks || []
-  );
+  const { overdue, dueSoon, inProgress, completed } = stage.tasksClassified;
 
   const renderSection = (title, color, tasks) =>
     tasks.length > 0 && (
@@ -35,8 +32,8 @@ const StageCard = ({
   return (
     <motion.div
       className="bg-white rounded-2xl p-5 shadow-md flex flex-col"
-      whileHover={{ scale: 1.03, boxShadow: "0 10px 20px rgba(0,0,0,0.12)" }}
-      transition={{ type: "spring", stiffness: 300 }}
+      whileHover={{ scale: 1.01, boxShadow: "0 10px 20px rgba(0,0,0,0.08)" }}
+      transition={{ duration: 0.2, ease: "easeInOut" }}
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-4">

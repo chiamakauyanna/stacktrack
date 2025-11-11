@@ -13,7 +13,7 @@ const ActiveProjects = ({ displayedProjects, fadeUp, projectIcons }) => {
           displayedProjects.map((project, i) => (
             <div
               key={project.id}
-              className="min-w-[80%] md:min-w-[0] flex-shrink-0 md:flex-shrink"
+              className="min-w-[100%] md:min-w-[0] flex-shrink-0 md:flex-shrink"
             >
               <ProjectCard
                 project={project}

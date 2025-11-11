@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-accent/10 text-text">
       <AppHeader onMenuClick={() => setIsSidebarOpen(true)} />
 
-      <div className="flex flex-1 pt-4 ml-4">
+      <div className="flex flex-1 pt-4 md:ml-4">
         <Sidebar activePath={location.pathname} />
 
         <AnimatePresence>
@@ -72,7 +72,7 @@ const DashboardLayout = ({ children }) => {
               animate="visible"
               exit="exit"
               transition={transition}
-              className="fixed inset-y-0 left-0 z-50 w-64 bg-primary text-text-muted p-6 md:hidden flex flex-col justify-between"
+              className="fixed inset-y-0 left-0 z-50 w-64 text-text-muted p-6 md:hidden flex flex-col justify-between"
             >
               <div className="flex justify-end">
                 <button
@@ -92,9 +92,7 @@ const DashboardLayout = ({ children }) => {
           )}
         </AnimatePresence>
 
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

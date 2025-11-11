@@ -15,13 +15,13 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
   const links = [
     {
       to: "/dashboard",
-      icon: <LayoutDashboard size={22} />,
+      icon: <LayoutDashboard size={24} />,
       label: "Dashboard",
     },
-    { to: "/projects", icon: <FolderKanban size={22} />, label: "Projects" },
+    { to: "/projects", icon: <FolderKanban size={24} />, label: "Projects" },
     {
       to: "/projects/analytics",
-      icon: <BarChart3 size={22} />,
+      icon: <BarChart3 size={24} />,
       label: "Analytics",
     },
   ];
@@ -33,10 +33,10 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
 
   return (
     <aside
-      className={`bg-surface text-navy flex-col w-64 md:w-16 md:p-2 lg:p- lg:w-64 rounded-2xl ${
+      className={`bg-surface text-navy flex-col w-64 md:w-16  lg:w-64 ${
         isMobile
-          ? "fixed z-50 p-6 inset-y-0 left-0 shadow-xl flex"
-          : "hidden md:flex pl-6"
+          ? "fixed z-50 py-6 inset-y-0 left-0 shadow-xl flex pl-6"
+          : "hidden md:flex md:pl-2 lg:pl-6"
       }`}
     >
       {/* TOP SECTION */}
@@ -45,7 +45,7 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
         {isMobile && (
           <button
             onClick={onClose}
-            className="absolute top-1 right-1 text-navy hover:text-secondary transition"
+            className="absolute top-1 right-1 text-navy hover:text-secondary transition pr-6"
           >
             <X size={22} />
           </button>
@@ -65,7 +65,7 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
               >
                 {/* Accent bar */}
                 <span
-                  className={`absolute right-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-primary transition-opacity duration-300 ${
+                  className={`absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-12 rounded-r-full bg-primary transition-opacity duration-300 ${
                     isActive
                       ? "opacity-100"
                       : "opacity-0 group-hover:opacity-40"

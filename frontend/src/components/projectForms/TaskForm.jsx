@@ -8,13 +8,13 @@ const TaskForm = ({
   handleRemoveTaskForm,
 }) => {
   return (
-    <div className="p-3 border border-gray-100 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all space-y-2 text-sm">
+    <div className="p-3 backdrop-blur-md rounded-xl bg-accent/10 transition-all space-y-2 text-sm">
       <input
         type="text"
         placeholder="Task title"
         value={task.title}
         onChange={(e) => handleTaskChangeForm(si, ti, "title", e.target.value)}
-        className="w-full p-2 border-b border-gray-200 focus:outline-none focus:border-primary bg-transparent"
+        className="w-full p-4 focus:outline-none focus:border-primary bg-surface rounded-xl"
       />
       <textarea
         rows={2}
@@ -23,7 +23,7 @@ const TaskForm = ({
         onChange={(e) =>
           handleTaskChangeForm(si, ti, "description", e.target.value)
         }
-        className="w-full p-2 border-b border-gray-200 focus:outline-none focus:border-primary bg-transparent resize-none text-sm"
+        className="w-full p-4 focus:outline-none focus:border-primary bg-surface rounded-xl resize-none text-sm"
       />
       <div className="flex flex-wrap gap-3 items-center">
         <select
@@ -49,6 +49,7 @@ const TaskForm = ({
           type="button"
           onClick={() => handleRemoveTaskForm(si, ti)}
           className="text-red-500 hover:text-red-700"
+          title="delete task"
         >
           <Trash2 size={14} />
         </button>

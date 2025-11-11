@@ -6,13 +6,13 @@ const StatsHeader = ({ averageProgress }) => (
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
-    className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 bg-white p-6 rounded-3xl shadow-sm"
+    className="flex flex-col md:flex-row items-center md:justify-between gap-8 bg-white p-6 lg:justify-around rounded-3xl shadow-sm"
   >
     <div>
-      <h1 className="text-2xl font-bold text-navy mb-1">
+      <h1 className="text-2xl font-bold text-navy mb-4">
         Project Analytics Overview
       </h1>
-      <p className="text-gray-600 text-sm mt-2">
+      <p className="text-gray-600 text-sm">
         Monitor project and task performance in real time
       </p>
     </div>

@@ -13,7 +13,7 @@ const DashboardHome = () => {
   const { barData, fadeUp, analytics, displayedProjects } =
     useDashboardLayout();
 
-  const summary = analytics?.summary || {};
+  const summary = analytics.summary || {};
   const projectIcons = [
     <Layers size={28} className="text-navy" />,
     <CheckCircle2 size={28} className="text-navy" />,
@@ -39,7 +39,7 @@ const DashboardHome = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen md:p-3 space-y-4">
+      <div className="min-h-screen p-3 space-y-4">
         {/*  HEADER  */}
         <HeaderSection fadeUp={fadeUp} />
 

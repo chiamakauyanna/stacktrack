@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         onClick={onClose}
       >
         <motion.div
-          className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative"
+          className="bg-surface rounded-2xl shadow-xl max-w-lg p-6 relative "
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -28,7 +28,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           >
             <X size={20} />
           </button>
-          {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
+          {title && <h2 className="md:text-xl mb-4">{title}</h2>}
           {children}
         </motion.div>
       </motion.div>

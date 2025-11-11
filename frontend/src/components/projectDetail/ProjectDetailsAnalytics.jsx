@@ -1,48 +1,24 @@
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Clock } from "lucide-react";
 import dayjs from "dayjs";
 import { stats } from "../../services/data";
 
-const ProjectDetailsAnalytics = ({ stages, onTaskSelect }) => {
-  const allTasks = stages.flatMap(
-    (stage) => stage?.tasks?.map((t) => ({ ...t, stageId: stage.id })) || []
-  );
+const ProjectDetailsAnalytics = ({ classifiedAllTasks, onTaskSelect }) => {
+  const { overdue, dueSoon, inProgress, completed } = classifiedAllTasks;
 
-  const total = allTasks.length;
-  const completed = allTasks.filter((t) => t.status === "completed").length;
-  const inProgress = allTasks.filter((t) => t.status === "in-progress").length;
-  const pending = allTasks.filter((t) => t.status === "pending").length;
+  const total = overdue.length + dueSoon.length + inProgress.length + completed.length;
+  const progress = total ? Math.round((completed.length / total) * 100) : 0;
+  const taskStats = stats(total, inProgress.length, completed.length, overdue.length + dueSoon.length);
 
-  const progress = total ? Math.round((completed / total) * 100) : 0;
-
-  const taskStats = stats(total, inProgress, completed, pending);
-
-  const today = dayjs();
-  const dueSoon = allTasks.filter((t) => {
-    if (!t.due_date) return false;
-    const dueDate = dayjs(t.due_date);
+  if (!total) {
     return (
-      dueDate.isAfter(today) &&
-      dueDate.diff(today, "day") <= 3 &&
-      t.status !== "completed"
+      <div className="flex flex-col items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-10 text-center">
+        <p className="text-gray-600 font-medium mb-2">No tasks yet</p>
+        <p className="text-sm text-gray-500 mb-4">
+          Add tasks to begin tracking project analytics.
+        </p>
+      </div>
     );
-  });
-
-  const overdue = allTasks.filter((t) => {
-    if (!t.due_date) return false;
-    return dayjs(t.due_date).isBefore(today) && t.status !== "completed";
-  });
-
-  if (!stages || stages.length === 0) {
-  return (
-    <div className="flex flex-col items-center justify-center bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-10 text-center">
-      <p className="text-gray-600 font-medium mb-2">No stages yet</p>
-      <p className="text-sm text-gray-500 mb-4">
-        Add a stage to begin tracking project analytics.
-      </p>
-    </div>
-  );
-}
-
+  }
 
   return (
     <div className="space-y-6">
@@ -57,27 +33,25 @@ const ProjectDetailsAnalytics = ({ stages, onTaskSelect }) => {
               <stat.icon size={20} />
             </div>
             <h3 className="text-lg font-semibold mt-1">{stat.value}</h3>
-            <p className="text-sm text-gray-500 whitespace-nowrap">
-              {stat.label}
-            </p>
+            <p className="text-sm text-gray-500 whitespace-nowrap">{stat.label}</p>
           </div>
         ))}
 
         {/* Overall Progress Bar */}
         <div className="col-span-2 sm:col-span-4 mt-2">
-          <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden mt-4">
             <div
               className="h-2 bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-sm text-center text-gray-500 mt-1 font-medium">
+          <p className="text-sm text-center text-gray-500 mt-2 font-medium">
             Overall Progress: {progress}%
           </p>
         </div>
       </div>
 
-      {/* == Tasks Due Soon / Overdue == */}
+      {/* Tasks Due Soon / Overdue */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {overdue.length > 0 && (
           <div className="bg-red-50 p-4 rounded-2xl shadow-md hover:shadow-xl transition-transform hover:-translate-y-1">
@@ -101,9 +75,7 @@ const ProjectDetailsAnalytics = ({ stages, onTaskSelect }) => {
                       </p>
                     )}
                   </div>
-                  <span className="text-xs font-semibold text-red-800">
-                    Overdue
-                  </span>
+                  <span className="text-xs font-semibold text-red-800">Overdue</span>
                 </button>
               ))}
             </div>
@@ -132,9 +104,7 @@ const ProjectDetailsAnalytics = ({ stages, onTaskSelect }) => {
                       </p>
                     )}
                   </div>
-                  <span className="text-xs font-semibold text-yellow-800">
-                    Due Soon
-                  </span>
+                  <span className="text-xs font-semibold text-yellow-800">Due Soon</span>
                 </button>
               ))}
             </div>

@@ -18,7 +18,7 @@ const TaskOverviewChart = ({ taskData, fadeUp }) => (
         <Doughnut
           data={taskData}
           options={{
-            cutout: "80%",
+            cutout: "85%",
             plugins: {
               legend: {
                 position: "bottom",

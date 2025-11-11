@@ -1,5 +1,5 @@
-import useLogin from "../hooks/useLogin";
-import loginImg from "../assets/access-account.svg";
+import useLogin from "../../hooks/useLogin";
+import loginImg from "../../assets/access-account.svg";
 
 const Login = () => {
   const { formData, handleChange, handleSubmit, loading } = useLogin();

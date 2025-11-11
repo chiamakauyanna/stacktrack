@@ -68,7 +68,7 @@ export const useProjectStore = create(
         });
         try {
           const data = await fetchProjects();
-          set({ projects: Array.isArray(data?.results) ? data.results : [] });
+          set({ projects: Array.isArray(data?.data?.projects) ? data.data.projects : [] });
         } catch (err) {
           console.error("Error loading projects:", err);
           set({ error: "Failed to load projects" });
@@ -102,11 +102,17 @@ export const useProjectStore = create(
       },
 
       addProject: async (payload) => {
-        const newProject = await createProject(payload);
-        set((state) => {
-          state.projects.push(newProject);
-        });
-        return newProject;
+        try {
+          const newProject = await createProject(payload);
+          set((state) => {
+            state.projects.unshift(newProject);
+          });
+          await get().loadProjects();
+          return newProject;
+        } catch (err) {
+          console.error("Error creating project:", err);
+          throw err;
+        }
       },
 
       editProject: async (id, payload) => {

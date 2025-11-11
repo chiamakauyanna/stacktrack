@@ -1,5 +1,5 @@
-import useRegister from "../hooks/useRegister";
-import signupImg from "../assets/authentication.svg";
+import useRegister from "../../hooks/useRegister";
+import signupImg from "../../assets/authentication.svg";
 
 const Signup = () => {
   const { formData, handleChange, handleSubmit, loading } = useRegister();

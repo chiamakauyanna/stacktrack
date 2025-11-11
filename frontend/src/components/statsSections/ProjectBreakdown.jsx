@@ -14,7 +14,7 @@ const ProjectBreakdown = ({ projects }) => (
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white border-l-4 border-primary rounded-2xl shadow-sm hover:shadow-md transition-all p-5"
+            className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-5"
           >
             <h3 className="text-base font-semibold text-navy mb-1">{p.title}</h3>
             <p className="text-sm text-gray-600">

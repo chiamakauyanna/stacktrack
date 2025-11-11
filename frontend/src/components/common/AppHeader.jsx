@@ -4,13 +4,8 @@ import Logo from "./Logo";
 import useDashboardLayout from "../../hooks/useDashboardLayout";
 
 const AppHeader = ({ onMenuClick }) => {
-  const {
-    user,
-    showUserMenu,
-    setShowUserMenu,
-    initials,
-    handleLogout,
-  } = useDashboardLayout();
+  const { user, showUserMenu, setShowUserMenu, initials, handleLogout } =
+    useDashboardLayout();
 
   return (
     <header className="sticky z-10 bg-surface backdrop-blur-md shadow-b-sm transition-all duration-500">
@@ -25,15 +20,14 @@ const AppHeader = ({ onMenuClick }) => {
           >
             <Menu size={18} />
           </button>
-
           {/* Logo */}
           <div>
             <Logo />
           </div>
 
-          <div className="md:pl-3">
-            <h1 className="hidden md:block md:text-lg">
-              Welcome {user?.username}
+          <div className="md:pl-3 pt-2">
+            <h1 className="hidden md:block md:text-xl">
+              Hello {user?.username}!
             </h1>
           </div>
         </div>

@@ -10,7 +10,7 @@ const ProjectStageList = ({ selectedProject, getPriorityClasses }) => (
       <p className="text-sm text-gray-400">No stages added yet.</p>
     ) : (
       <div className="space-y-6">
-        {selectedProject?.length &&selectedProject.stages.map((stage) => (
+        {selectedProject.stages.map((stage) => (
           <StageItem
             key={stage.id}
             stage={stage}
