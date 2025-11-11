@@ -33,7 +33,7 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
 
   return (
     <aside
-      className={`bg-surface text-navy flex-col w-64 md:w-16  lg:w-64 ${
+      className={`bg-primary flex-col w-64 md:w-16  lg:w-64 ${
         isMobile
           ? "fixed z-50 py-6 inset-y-0 left-0 shadow-xl flex pl-6"
           : "hidden md:flex md:pl-2 lg:pl-6"
@@ -52,7 +52,7 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
         )}
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-2 mt-10 text-text-muted">
+        <nav className="flex flex-col gap-2 mt-10 text-surface">
           {links.map(({ to, icon, label }) => {
             const isActive = activePath === to;
             return (
@@ -60,18 +60,9 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
                 key={to}
                 to={to}
                 onClick={onClose}
-                className={`group relative flex items-center gap-3 p-4 rounded-l-2xl transition-all duration-300 overflow-hidden hover:bg-accent/25
-                  ${isActive && "text-navy font-medium"}`}
+                className={`group relative flex items-center gap-3 p-4 rounded-l-2xl transition-all duration-300 overflow-hidden hover:bg-surface/20
+                  ${isActive && "text-navy font-medium bg-surface"}`}
               >
-                {/* Accent bar */}
-                <span
-                  className={`absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-12 rounded-r-full bg-primary transition-opacity duration-300 ${
-                    isActive
-                      ? "opacity-100"
-                      : "opacity-0 group-hover:opacity-40"
-                  }`}
-                ></span>
-
                 <span className="relative flex items-center gap-3">
                   <span className={`${isActive && "text-primary"}`}>
                     {icon}
@@ -88,7 +79,7 @@ const Sidebar = ({ isMobile, onClose, activePath }) => {
       <div className="mt-auto mb-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 hover:bg-navy px-4 hover:text-surface py-3 rounded-lg transition"
+          className="flex items-center gap-3 hover:bg-navy px-4 text-surface py-3 rounded-lg transition"
         >
           <LogOut size={20} />
           <span className="md:hidden block lg:block">Logout</span>

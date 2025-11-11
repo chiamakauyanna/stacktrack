@@ -13,7 +13,7 @@ const HeaderSection = ({ fadeUp }) => (
     <h1 className="md:text-xl">Dashboard</h1>
     <Link
       to="/projects/create"
-      className="flex items-center gap-2 text-sm hover:bg-surface bg-primary hover:text-secondary text-white px-3 md:px-5 py-4 rounded-xl shadow-sm transition whitespace-nowrap font-bold"
+      className="flex items-center gap-2 text-sm hover:bg-surface bg-primary hover:text-secondary text-white p-3 md:px-5 md:py-4 rounded-xl shadow-sm transition whitespace-nowrap font-bold"
     >
       <PlusCircle size={22} /> New Project
     </Link>

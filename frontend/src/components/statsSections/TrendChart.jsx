@@ -29,7 +29,7 @@ const TrendChart = ({ trend }) => (
             />
             <Bar
               dataKey="completed_tasks"
-              fill="#0E938D"
+              fill="#22c55e"
               radius={[6, 6, 0, 0]}
             />
           </BarChart>

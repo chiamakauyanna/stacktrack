@@ -9,6 +9,7 @@ import CreateProject from "../pages/projects/CreateProject";
 import ProjectStats from "../pages/projects/ProjectStats";
 import ProjectDetail from "../pages/projects/ProjectDetail";
 import ProtectedRoute from "./ProtectedRoute";
+import NotFound from "../pages/NotFound";
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="*" element={<NotFound />} />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>

@@ -12,7 +12,7 @@ const TrendChart = ({ analytics, fadeUp }) => {
       {
         label: "Tasks Completed",
         data: trendValues,
-        backgroundColor: "rgba(14, 147, 141, 0.8)", 
+        backgroundColor: "#facc15", 
         borderRadius: 6,
         maxBarThickness: 28,
       },

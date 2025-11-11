@@ -7,6 +7,7 @@ import SummaryCards from "../../components/statsSections/SummaryCards";
 import ProjectBreakdown from "../../components/statsSections/ProjectBreakdown";
 import TrendChart from "../../components/statsSections/TrendChart";
 import { summaryCards } from "../../services/data";
+import StatsProgress from "../../components/statsSections/StatProgress";
 
 const ProjectStats = () => {
   const { analytics, loading, error } = useProjectStore();
@@ -45,15 +46,19 @@ const ProjectStats = () => {
   return (
     <DashboardLayout>
       <div className="min-h-screen p-4 md:p-6 space-y-6">
-        <StatsHeader averageProgress={summary.average_project_progress ?? 0} />
+        <StatsHeader />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <SummaryCards cards={summaryCards(summary)} />
+            <TrendChart trend={trend} />
+          </div>
+          <div className="space-y-6">
+            <StatsProgress
+              averageProgress={summary.average_project_progress ?? 0}
+            />
             <ProjectBreakdown projects={projects} />
           </div>
-
-          <TrendChart trend={trend} />
         </div>
       </div>
     </DashboardLayout>

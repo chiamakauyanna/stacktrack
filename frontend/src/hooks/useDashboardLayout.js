@@ -62,7 +62,7 @@ const useDashboardLayout = () => {
   // Bar chart data
   const barColors = projects.map((p) => {
     const progress = parseInt(p.progress) || 0;
-    if (progress >= 80) return "rgba(34, 197, 94, 0.8)";
+    if (progress >= 80) return "#22c55e";
     if (progress >= 50) return "rgba(253, 224, 71, 0.8)";
     return "rgba(239, 68, 68, 0.8)";
   });

@@ -2,12 +2,12 @@
 import { motion } from "framer-motion";
 
 const ProjectBreakdown = ({ projects }) => (
-  <section>
-    <h2 className="text-lg font-semibold text-navy mb-3">
+  <section className="bg-secondary p-3 rounded-2xl">
+    <p className="text-lg text-surface font-semibold mb-10">
       Per Project Breakdown
-    </h2>
+    </p>
     {projects.length > 0 ? (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {projects.map((p, i) => (
           <motion.div
             key={p.id}
@@ -16,13 +16,13 @@ const ProjectBreakdown = ({ projects }) => (
             transition={{ delay: i * 0.05 }}
             className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-5"
           >
-            <h3 className="text-base font-semibold text-navy mb-1">{p.title}</h3>
+            <h3 className="text-base mb-1">{p.title}</h3>
             <p className="text-sm text-gray-600">
               <span className="font-medium">Status:</span> {p.status}
             </p>
             <div className="w-full h-2 bg-gray-200 rounded-full mt-3 overflow-hidden">
               <div
-                className="h-2 bg-primary rounded-full transition-all"
+                className="h-2 bg-secondary rounded-full transition-all"
                 style={{ width: `${p.progress}%` }}
               />
             </div>

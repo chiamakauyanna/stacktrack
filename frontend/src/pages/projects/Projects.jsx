@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import useDashboardLayout from "../../hooks/useDashboardLayout";
 import useProjects from "../../hooks/useProjects";
-import ProjectTable from "./ProjectTable";
-import ProjectCardList from "./ProjectCardList";
+import ProjectTable from "../../components/projectSection/ProjectTable";
+import ProjectCardList from "../../components/projectSection/ProjectCardList";
 import ProjectDrawer from "../../components/projectDrawer/ProjectDrawer";
 
 const Projects = () => {
@@ -57,7 +57,9 @@ const Projects = () => {
 
         {projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center text-gray-500 mt-20">
-            <p className="mb-4">No projects found. Create one to get started!</p>
+            <p className="mb-4">
+              No projects found. Create one to get started!
+            </p>
             <button
               onClick={() => navigate("/projects/create")}
               className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors"
