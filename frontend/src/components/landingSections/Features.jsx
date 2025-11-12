@@ -2,15 +2,15 @@ import { features } from "../../services/data";
 
 const Features = () => {
   return (
-    <section className="py-20 px-6 bg-accent/25" id="features">
+    <section className="py-20 md:px-6 px-4 bg-accent/25" id="features">
       <div className="max-w-7xl mx-auto text-center">
         {/* Section Header */}
-        <h2 className="text-2xl md:text-4xl font-heading text-navy mb-4">
+        <h2 className="text-xl md:text-4xl mb-4">
           Stay organized, from idea to shipped.
         </h2>
-        <p className="mt-6 mb-14 md:text-lg text-text">
+        <p className="mt-6 mb-14 md:text-lg text-text px-3">
           StackTrack helps developers plan smarter, track progress, and ship
-          faster — stage by stage.
+          faster.
         </p>
 
         {/* Feature Grid */}

@@ -1,73 +1,86 @@
-import logo from "../../assets/dark-logo.png";
+import logo from "../../assets/logo.png";
 import { Github, Twitter, Linkedin } from "lucide-react";
 
 const Footer = () => {
+  const socialIcons = [
+    { icon: <Github size={20} />, label: "GitHub", href: "#" },
+    { icon: <Twitter size={20} />, label: "X", href: "#" },
+    { icon: <Linkedin size={20} />, label: "LinkedIn", href: "#" },
+  ];
   return (
-    <footer className="bg-navy text-gray-300 py-16">
-      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
-        
-        {/* Brand Section */}
+    <footer className="relative bg-gradient-to-b from-primary to-secondary text-surface overflow-hidden">
+      <div className="relative max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center space-y-8">
+        {/* Logo + Tagline */}
         <div>
-          <div className="flex items-center space-x-3 mb-4">
-            <img
-              src={logo}
-              alt="StackTrack logo"
-              className="h-14 w-auto"
-            />
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-            Plan projects, manage tasks, and ship faster — all in one place.
+          <img
+            src={logo}
+            alt="StackTrack logo"
+            className="h-14 mx-auto mb-4 bg-surface"
+          />
+          <p className="text-gray-100/90 max-w-md mx-auto text-sm md:text-base font-light">
+            Plan, track, and ship your projects seamlessly — with focus and
+            flow.
           </p>
-          <div className="flex items-center space-x-4 mt-6">
-            <a href="#" aria-label="GitHub" className="hover:text-white transition">
-              <Github size={20} />
-            </a>
-            <a href="#" aria-label="Twitter" className="hover:text-white transition">
-              <Twitter size={20} />
-            </a>
-            <a href="#" aria-label="LinkedIn" className="hover:text-white transition">
-              <Linkedin size={20} />
-            </a>
-          </div>
         </div>
 
-        {/* Product Links */}
-        <div>
-          <h4 className="text-white font-semibold mb-4 text-lg">Product</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">Features</a></li>
-            <li><a href="#" className="hover:text-white transition">How It Works</a></li>
-            <li><a href="#" className="hover:text-white transition">Pricing</a></li>
-            <li><a href="#" className="hover:text-white transition">Integrations</a></li>
-          </ul>
+        {/* Links */}
+        <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-sm md:text-base font-medium text-gray-100/90">
+          <a
+            href="#"
+            className="hover:text-white hover:underline underline-offset-4 transition"
+          >
+            Features
+          </a>
+          <a
+            href="#"
+            className="hover:text-white hover:underline underline-offset-4 transition"
+          >
+            Pricing
+          </a>
+          <a
+            href="#"
+            className="hover:text-white hover:underline underline-offset-4 transition"
+          >
+            Blog
+          </a>
+          <a
+            href="#"
+            className="hover:text-white hover:underline underline-offset-4 transition"
+          >
+            Docs
+          </a>
+          <a
+            href="#"
+            className="hover:text-white hover:underline underline-offset-4 transition"
+          >
+            Support
+          </a>
         </div>
 
-        {/* Company Links */}
-        <div>
-          <h4 className="text-white font-semibold mb-4 text-lg">Company</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">About Us</a></li>
-            <li><a href="#" className="hover:text-white transition">Careers</a></li>
-            <li><a href="#" className="hover:text-white transition">Blog</a></li>
-            <li><a href="#" className="hover:text-white transition">Contact</a></li>
-          </ul>
+        {/* Social Icons */}
+
+        <div className="flex items-center justify-center space-x-6 mt-8">
+          {socialIcons.map(({ icon, href, label }, i) => (
+            <div
+              key={i}
+              className="flex justify-center items-center gap-2 hover:text-white transform hover:-translate-y-1 transition duration-300"
+            >
+              <a
+                href={href}
+                className="bg-surface rounded-full p-1.5 text-primary"
+              >
+                {icon}
+              </a>
+              <p>{label}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Resources Links */}
-        <div>
-          <h4 className="text-white font-semibold mb-4 text-lg">Resources</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">Docs</a></li>
-            <li><a href="#" className="hover:text-white transition">Community</a></li>
-            <li><a href="#" className="hover:text-white transition">Support</a></li>
-            <li><a href="#" className="hover:text-white transition">API Status</a></li>
-          </ul>
+        {/* Copyright */}
+        <div className="pt-6 text-xs text-gray-100/70 border-t border-white/20 w-full text-center">
+          © {new Date().getFullYear()}{" "}
+          <span className="font-semibold">StackTrack</span>
         </div>
-      </div>
-
-      {/* Divider + Copyright */}
-      <div className="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} StackTrack. All rights reserved.
       </div>
     </footer>
   );
