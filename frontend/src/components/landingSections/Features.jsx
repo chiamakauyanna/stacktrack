@@ -3,7 +3,7 @@ import { features } from "../../services/data";
 const Features = () => {
   return (
     <section className="py-20 md:px-6 px-4 bg-accent/25" id="features">
-      <div className="max-w-7xl mx-auto text-center">
+      <div className="max-w-5xl mx-auto text-center">
         {/* Section Header */}
         <h2 className="text-xl md:text-4xl mb-4">
           Stay organized, from idea to shipped.
@@ -19,7 +19,7 @@ const Features = () => {
             <div
               key={feature.name}
               className={`p-8 rounded-xl shadow-md hover:shadow-lg transition md:flex lg:flex gap-3
-                ${idx === 0 ? "bg-primary font-medium" : "bg-gray-50"}`}
+                ${idx === 0 ? "bg-accent font-medium" : "bg-gray-50"}`}
             >
               <div
                 className={`flex justify-center items-center w-28 h-16 rounded-xl my-3 p-2 ${
