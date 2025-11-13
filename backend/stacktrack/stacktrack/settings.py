@@ -20,9 +20,7 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com"]
 
-# --------------------------------------------------------------------
 # APPLICATIONS
-# --------------------------------------------------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,9 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'stacktrack.wsgi.application'
 
-# --------------------------------------------------------------------
 # DATABASE
-# --------------------------------------------------------------------
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
@@ -83,9 +79,7 @@ DATABASES = {
     )
 }
 
-# --------------------------------------------------------------------
 # PASSWORD VALIDATION
-# --------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -93,17 +87,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# --------------------------------------------------------------------
 # INTERNATIONALIZATION
-# --------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# --------------------------------------------------------------------
 # STATIC & MEDIA FILES
-# --------------------------------------------------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -111,9 +101,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# --------------------------------------------------------------------
 # REST FRAMEWORK SETTINGS
-# --------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -155,9 +143,7 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-# --------------------------------------------------------------------
 # CORS & SECURITY
-# --------------------------------------------------------------------
 CORS_ALLOW_ALL_ORIGINS = True
 
 SECURE_BROWSER_XSS_FILTER = True
