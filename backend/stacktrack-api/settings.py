@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'stacktrack.urls'
+ROOT_URLCONF = 'stacktrack-api.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'stacktrack.wsgi.application'
+WSGI_APPLICATION = 'stacktrack-api.wsgi.application'
 
 # DATABASE
 DATABASES = {
