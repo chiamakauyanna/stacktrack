@@ -1,55 +1,29 @@
 # 🧭 StackTrack Backend
 
-A **project and task management API** built with Django REST Framework (DRF) for the StackTrack capstone project.
-It supports **user authentication**, **project/task management**, **progress tracking**, and **custom dashboards** — following modern backend best practices.
+StackTrack is a personal project management platform that allows users to manage projects, stages, and tasks efficiently. With built-in analytics and progress tracking, it provides a clear overview of project status, helping you stay organized and productive.
+
+Currently, it’s a single-user platform, designed to scale for future team collaboration.
 
 ---
 
 ## 🚀 Features
 
-✅ **User Management**
+* User authentication and profile management
 
-* JWT authentication (login/logout/refresh)
-* User registration endpoint
-* Auto profile creation with role, avatar & bio
-* Profile update endpoint
+* Create, update, and delete projects, stages, and tasks
 
-✅ **Project Management**
+* Track task completion and project progress
 
-* Create, update, delete, and list projects
-* Auto slug generation
-* Track project progress dynamically
-* Compute project task statistics (completed vs pending)
+* Analytics dashboard with visual progress indicators
 
-✅ **Stage & Task Management**
-
-* Full CRUD for stages and tasks
-* Track task status and due dates
-* Stage progress auto-calculated based on tasks
-
-✅ **Dashboard & Analytics**
-
-* `/api/projects/` and `/api/tasks/` for user dashboard
-* Summary of all projects and tasks
-* Progress percentage for each project
-
-✅ **Advanced API Features**
-
-* Pagination (page-based)
-* Search and filtering
-* Ordering (by date, status, etc.)
+* Responsive design for desktop and tablet
 
 ---
 
 ## 🧱 Tech Stack
 
-| Component     | Description                                    |
-| ------------- | ---------------------------------------------- |
-| **Language**  | Python 3.13                                    |
-| **Framework** | Django 5 + Django REST Framework               |
-| **Auth**      | JWT (SimpleJWT)                                |
-| **Database**  | SQLite (default), easy to switch to PostgreSQL |
-| **Tools**     | Thunder Client / Postman for API testing       |
+| **Frontend**  | React, Tailwind CSS, Framer Motion, React Router              |
+| **Backend** | Django REST Framework, PostgreSQL, JWT Authentication      |
 
 ---
 
@@ -105,25 +79,29 @@ git clone https://github.com/chiamakauyanna/stacktrack.git
 cd backend
 ```
 
-### 2️⃣ Create a Virtual Environment
+### 2️⃣ Create a Virtual Environment and Install Dependencies
 
 ```bash
 python -m venv venv
 venv\Scripts\activate  # On Windows
 source venv/bin/activate  # On macOS/Linux
-```
-
-### 3️⃣ Install Dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Apply Migrations
+### 3️⃣ Apply Migrations
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
+```
+
+### 4️⃣ Create a .env file
+
+```bash
+DEBUG=True
+DATABASE_URL=postgres://username:password@localhost:5432/stacktrack
+SECRET_KEY=your_secret_key
+
 ```
 
 ### 5️⃣ Run the Development Server
@@ -177,41 +155,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 🧭 Folder Structure
-
-```
-backend/
-│
-├── tracker/
-│   ├── models/
-│   │   ├── project.py        # Project model
-│   │   ├── stage.py          # Stage model
-│   │   ├── task.py           # Task model
-│   │   └── profile.py        # User profile model
-│   │
-│   ├── views/
-│   │   ├── project_views.py  # Project API views
-│   │   ├── stage_views.py    # Stage API views
-│   │   ├── task_views.py     # Task API views
-│   │   └── auth_views.py     # Authentication & profile views
-│   │
-│   ├── serializers.py        # DRF serializers
-│   ├── urls.py               # API routes
-│   ├── signals.py            # Auto profile creation
-│   └── apps.py               # App configuration
-│
-├── stacktrack-api/
-│   ├── settings.py           # Django + DRF configuration
-│   ├── urls.py               # Root router
-│   └── wsgi.py
-│
-└── manage.py
-```
-
----
-
 ## 🧾 License
 
 This project is developed as part of the **ALX Capstone Project** — for educational and portfolio use.
 © 2025 Chiamaka Uyanna. All rights reserved.
-

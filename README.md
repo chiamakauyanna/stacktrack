@@ -1,7 +1,5 @@
 # StackTrack 🗂️
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE) [![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/) [![Django](https://img.shields.io/badge/Django-4.3.2-green)](https://www.djangoproject.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16.2-blue)](https://www.postgresql.org/)
-
 **StackTrack** is a personal project management platform that allows users to manage projects, stages, and tasks efficiently. With built-in analytics and progress tracking, it provides a clear overview of project status, making it easy to stay organized and productive.
 
 This is a single-user platform currently, designed to scale for future team collaboration.
@@ -79,6 +77,7 @@ This is a single-user platform currently, designed to scale for future team coll
    Create a `.env` file:
 
    ```bash
+   DEBUG=True
    DATABASE_URL=postgres://username:password@localhost:5432/stacktrack
    SECRET_KEY=your_secret_key
    ```
@@ -111,13 +110,19 @@ This is a single-user platform currently, designed to scale for future team coll
    npm install
    ```
 
-3. Start the React app:
+3. Create a .env file
 
    ```bash
-   npm start
+   VITE_API_URL=http://127.0.0.1:8000/api
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Start the React app:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
