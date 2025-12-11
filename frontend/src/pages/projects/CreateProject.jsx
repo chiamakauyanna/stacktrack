@@ -28,7 +28,6 @@ const CreateProject = () => {
   const toggleAllStages = () => setAllExpanded((prev) => !prev);
 
   return (
-    <DashboardLayout>
       <div className="min-h-screen py-4">
         <div className="max-w-4xl mx-auto px-4 space-y-8">
           {/* Header */}
@@ -146,7 +145,6 @@ const CreateProject = () => {
           </form>
         </div>
       </div>
-    </DashboardLayout>
   );
 };
 

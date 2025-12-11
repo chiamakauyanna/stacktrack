@@ -25,7 +25,6 @@ const ProjectDetail = () => {
   } = useProjects();
 
   return (
-    <DashboardLayout>
       <div className="min-h-screen bg-surface mx-4 px-6 md:px-12 py-8 space-y-6">
         {/* Header */}
         <ProjectHeader project={project} user={user} openModal={openModal} />
@@ -95,7 +94,6 @@ const ProjectDetail = () => {
           selectedTask={data.taskId ? stages.flatMap((s) => s.tasks).find((t) => t.id === data.taskId) : null}
         />
       </div>
-    </DashboardLayout>
   );
 };
 

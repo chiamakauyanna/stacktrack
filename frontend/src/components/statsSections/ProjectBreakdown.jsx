@@ -33,7 +33,7 @@ const ProjectBreakdown = ({ projects }) => (
         ))}
       </div>
     ) : (
-      <p className="text-gray-500 text-center mt-10 text-sm">
+      <p className="text-gray-50 text-center mt-10 text-sm">
         No projects available yet.
       </p>
     )}

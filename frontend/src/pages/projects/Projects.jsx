@@ -30,24 +30,20 @@ const Projects = () => {
 
   if (loading.projects)
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center min-h-screen text-gray-500">
-          Loading...
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center min-h-screen text-gray-500">
+        Loading...
+      </div>
     );
 
   if (error)
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center min-h-screen text-red-500">
-          {error}
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center min-h-screen text-red-500">
+        {error}
+      </div>
     );
 
   return (
-    <DashboardLayout>
+    <div>
       <div
         className={`min-h-screen transition-all duration-500 ${
           selectedProject ? "mr-[480px] xl:mr-[520px]" : ""
@@ -101,7 +97,7 @@ const Projects = () => {
           />
         )}
       </AnimatePresence>
-    </DashboardLayout>
+    </div>
   );
 };
 

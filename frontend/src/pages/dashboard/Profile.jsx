@@ -19,19 +19,7 @@ const Profile = () => {
     initials,
   } = useProfile();
 
-  if (loading || !user) {
-    return (
-      <DashboardLayout>
-        <div className="-auto animate-pulse space-y-8 mt-10">
-          <div className="h-40 bg-gray-100 rounded-2xl"></div>
-          <div className="h-24 bg-gray-100 rounded-2xl"></div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   return (
-    <DashboardLayout>
       <motion.div
         variants={fadeUp}
         initial="hidden"
@@ -156,7 +144,6 @@ const Profile = () => {
           )}
         </motion.section>
       </motion.div>
-    </DashboardLayout>
   );
 };
 

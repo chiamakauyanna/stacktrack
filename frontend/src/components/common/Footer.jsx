@@ -8,7 +8,7 @@ const Footer = () => {
     { icon: <Linkedin size={20} />, label: "LinkedIn", href: "#" },
   ];
   return (
-    <footer className="relative bg-gradient-to-b from-primary to-secondary text-surface overflow-hidden">
+    <footer className="relative bg-linear-to-b from-primary to-secondary text-surface overflow-hidden">
       <div className="relative max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center space-y-8">
         {/* Logo + Tagline */}
         <div>

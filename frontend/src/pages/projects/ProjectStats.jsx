@@ -14,29 +14,23 @@ const ProjectStats = () => {
 
   if (loading.analytics)
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center h-screen text-gray-500">
-          Loading analytics...
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center h-screen text-gray-500">
+        Loading analytics...
+      </div>
     );
 
   if (error)
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center h-screen text-red-500">
-          {error}
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center h-screen text-red-500">
+        {error}
+      </div>
     );
 
   if (!analytics)
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center h-screen text-gray-500">
-          No analytics data found.
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center h-screen text-gray-500">
+        No analytics data found.
+      </div>
     );
 
   const summary = analytics.summary || {};
@@ -44,24 +38,22 @@ const ProjectStats = () => {
   const projects = analytics.projects || [];
 
   return (
-    <DashboardLayout>
-      <div className="min-h-screen p-4 md:p-6 space-y-6">
-        <StatsHeader />
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
+      <StatsHeader />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <SummaryCards cards={summaryCards(summary)} />
-            <TrendChart trend={trend} />
-          </div>
-          <div className="space-y-6">
-            <StatsProgress
-              averageProgress={summary.average_project_progress ?? 0}
-            />
-            <ProjectBreakdown projects={projects} />
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <SummaryCards cards={summaryCards(summary)} />
+          <TrendChart trend={trend} />
+        </div>
+        <div className="space-y-6">
+          <StatsProgress
+            averageProgress={summary.average_project_progress ?? 0}
+          />
+          <ProjectBreakdown projects={projects} />
         </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 

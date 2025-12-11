@@ -38,7 +38,6 @@ const DashboardHome = () => {
   };
 
   return (
-    <DashboardLayout>
       <div className="min-h-screen p-3 space-y-4">
         {/*  HEADER  */}
         <HeaderSection fadeUp={fadeUp} />
@@ -71,7 +70,6 @@ const DashboardHome = () => {
           </aside>
         </div>
       </div>
-    </DashboardLayout>
   );
 };
 

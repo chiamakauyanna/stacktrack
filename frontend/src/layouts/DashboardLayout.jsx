@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
+import { Outlet } from "react-router-dom";
 import { X } from "lucide-react";
 import Sidebar from "../components/common/SideBar";
 import AppHeader from "../components/common/AppHeader";
@@ -8,7 +9,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import { useProjectStore } from "../store/useProjectStore";
 import { useEffect } from "react";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
   const { user } = useAuthStore();
   const loading = useProjectStore((state) => state.loading);
   const error = useProjectStore((state) => state.error);
@@ -92,7 +93,9 @@ const DashboardLayout = ({ children }) => {
           )}
         </AnimatePresence>
 
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

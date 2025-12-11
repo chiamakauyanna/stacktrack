@@ -10,6 +10,7 @@ import ProjectStats from "../pages/projects/ProjectStats";
 import ProjectDetail from "../pages/projects/ProjectDetail";
 import ProtectedRoute from "./ProtectedRoute";
 import NotFound from "../pages/NotFound";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 const AppRoutes = () => {
   return (
@@ -22,12 +23,15 @@ const AppRoutes = () => {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardHome />} />
-        <Route path="/dashboard/profile" element={<Profile />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/create" element={<CreateProject />} />
-        <Route path="/projects/:id" element={<ProjectDetail />} />
-        <Route path="/projects/analytics" element={<ProjectStats />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardHome />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
+
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/create" element={<CreateProject />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/projects/analytics" element={<ProjectStats />} />
+        </Route>
       </Route>
     </Routes>
   );
