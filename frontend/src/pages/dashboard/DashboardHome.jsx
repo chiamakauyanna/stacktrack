@@ -10,10 +10,11 @@ import RecentProjects from "../../components/dashboardSections/RecentProjects";
 import { Layers, CheckCircle2, TrendingUp } from "lucide-react";
 
 const DashboardHome = () => {
-  const { barData, fadeUp, analytics, displayedProjects } =
+  const { barData, fadeUp, analytics = {}, displayedProjects } =
     useDashboardLayout();
 
   const summary = analytics.summary || {};
+  console.log(summary);
   const projectIcons = [
     <Layers size={28} className="text-navy" />,
     <CheckCircle2 size={28} className="text-navy" />,
@@ -38,38 +39,38 @@ const DashboardHome = () => {
   };
 
   return (
-      <div className="min-h-screen p-3 space-y-4">
-        {/*  HEADER  */}
-        <HeaderSection fadeUp={fadeUp} />
+    <div className="min-h-screen p-3 space-y-4">
+      {/*  HEADER  */}
+      <HeaderSection fadeUp={fadeUp} />
 
-        {/*  MAIN GRID  */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/*  LEFT MAIN SECTION  */}
-          <div className="md:col-span-2 space-y-4">
-            {/* Quick Stats */}
-            <QuickStats summary={summary} fadeUp={fadeUp} />
+      {/*  MAIN GRID  */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/*  LEFT MAIN SECTION  */}
+        <div className="md:col-span-2 space-y-4">
+          {/* Quick Stats */}
+          <QuickStats summary={summary} fadeUp={fadeUp} />
 
-            {/* Task Overview + Completion Chart */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <TaskOverviewChart fadeUp={fadeUp} taskData={taskData} />
-              <CompletionChart barData={barData} fadeUp={fadeUp} />
-            </div>
-
-            {/* Active Projects */}
-            <ActiveProjects
-              displayedProjects={displayedProjects}
-              fadeUp={fadeUp}
-              projectIcons={projectIcons}
-            />
+          {/* Task Overview + Completion Chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <TaskOverviewChart fadeUp={fadeUp} taskData={taskData} />
+            <CompletionChart barData={barData} fadeUp={fadeUp} />
           </div>
 
-          {/*  RIGHT ASIDE  */}
-          <aside className="space-y-4 rounded-2xl md:grid md:grid-cols-2 gap-4 lg:block md:col-span-2 lg:col-span-1">
-            <TrendChart analytics={analytics || {}} fadeUp={fadeUp} />
-            <RecentProjects analytics={analytics || {}} fadeUp={fadeUp} />
-          </aside>
+          {/* Active Projects */}
+          <ActiveProjects
+            displayedProjects={displayedProjects}
+            fadeUp={fadeUp}
+            projectIcons={projectIcons}
+          />
         </div>
+
+        {/*  RIGHT ASIDE  */}
+        <aside className="space-y-4 rounded-2xl md:grid md:grid-cols-2 gap-4 lg:block md:col-span-2 lg:col-span-1">
+          <TrendChart analytics={analytics || {}} fadeUp={fadeUp} />
+          <RecentProjects analytics={analytics || {}} fadeUp={fadeUp} />
+        </aside>
       </div>
+    </div>
   );
 };
 
