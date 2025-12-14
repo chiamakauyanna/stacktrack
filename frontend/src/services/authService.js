@@ -3,8 +3,9 @@ import { setTokens } from "../utils/tokenManager";
 
 export const registerUser = async (userData) => {
   const response = await api.post("/auth/register/", userData);
-  if (response.data.access) setTokens(response.data);
-  return response.data;
+  const tokens = response.data?.data?.tokens;
+  if (tokens) setTokens(tokens);
+  return response.data?.data;
 };
 
 export const loginUser = async (userData) => {

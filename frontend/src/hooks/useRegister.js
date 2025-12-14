@@ -16,6 +16,14 @@ const useRegister = () => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+ const formatBackendErrors = (errors) =>
+  errors && typeof errors === "object"
+    ? Object.entries(errors)
+        .map(([field, msgs]) => `${field}: ${[].concat(msgs).join(", ")}`)
+        .join("\n")
+    : null;
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const loadingToast = toast.loading("Creating account...");
@@ -27,9 +35,14 @@ const useRegister = () => {
       });
       setTimeout(() => navigate("/dashboard"), 1000);
     } catch (error) {
-      toast.error(error.message || "Registration failed", {
-        id: loadingToast,
-      });
+      const backendErrors = formatBackendErrors(error.response?.data?.errors);
+      toast.error(
+        backendErrors ||
+          error.response?.data?.message ||
+          error.message ||
+          "Registration failed",
+        { id: loadingToast }
+      );
     }
   };
 

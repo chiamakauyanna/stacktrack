@@ -22,7 +22,7 @@ const useLogin = () => {
     try {
       const user = await login(formData);
       if (user) {
-        toast.success("Login successful!", { id: loadingToast });
+        toast.success("Login successfull!", { id: loadingToast });
         setTimeout(() => navigate("/dashboard"), 1000);
       } else {
         toast.error(user.message || "Invalid credentials", {

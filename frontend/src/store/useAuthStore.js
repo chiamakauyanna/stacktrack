@@ -14,6 +14,7 @@ export const useAuthStore = create(
     (set) => ({
       user: null,
       loading: false,
+      initialized: false,
       error: null,
 
       // REGISTER
@@ -21,11 +22,11 @@ export const useAuthStore = create(
         set({ loading: true, error: null });
         try {
           const res = await registerUser(data);
-          const profile = res.user || (await getProfile());
-          set({ user: profile });
+          const profile = res?.profile;
+          if (profile) set({ user: profile });
           return profile;
         } catch (err) {
-          console.error("Registration failed:", err.message);
+          console.error("Registration failed:", err);
           set({ error: "Registration failed" });
           throw err;
         } finally {
@@ -38,8 +39,8 @@ export const useAuthStore = create(
         set({ loading: true, error: null });
         try {
           const res = await loginUser(credentials);
-          const profile = res.user || (await getProfile());
-          set({ user: profile });
+          const profile = res?.profile;
+          if (profile) set({ user: profile });
           return profile;
         } catch (err) {
           console.error("Login failed:", err.message);
@@ -52,16 +53,17 @@ export const useAuthStore = create(
 
       // INITIALIZE SESSION
       initAuth: async () => {
+        set({ loading: true, initialized: false });
         const token = getAccessToken();
-        if (!token) return set({ user: null });
+        if (!token)
+          return set({ user: null, loading: false, initialized: true });
 
-        set({ loading: true });
         try {
           const profile = await getProfile();
-          set({ user: profile });
+          set({ user: profile, initialized: true });
         } catch (err) {
           clearTokens();
-          set({ user: null });
+          set({ user: null, initialized: true });
           console.error("Session init failed:", err.message);
         } finally {
           set({ loading: false });
