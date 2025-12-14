@@ -22,7 +22,7 @@ const useRegister = () => {
 
     try {
       const user = await register(formData);
-      toast.success(user.message || "Registration successful!", {
+      toast.success(user.message || "Registration successfull!", {
         id: loadingToast,
       });
       setTimeout(() => navigate("/dashboard"), 1000);

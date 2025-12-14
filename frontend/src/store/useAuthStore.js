@@ -25,8 +25,9 @@ export const useAuthStore = create(
           set({ user: profile });
           return profile;
         } catch (err) {
-          console.error("Registration failed:", err);
+          console.error("Registration failed:", err.message);
           set({ error: "Registration failed" });
+          throw err;
         } finally {
           set({ loading: false });
         }
@@ -41,8 +42,9 @@ export const useAuthStore = create(
           set({ user: profile });
           return profile;
         } catch (err) {
-          console.error("Login failed:", err);
+          console.error("Login failed:", err.message);
           set({ error: "Login failed" });
+          throw err;
         } finally {
           set({ loading: false });
         }
@@ -60,7 +62,7 @@ export const useAuthStore = create(
         } catch (err) {
           clearTokens();
           set({ user: null });
-          console.error("Session init failed:", err);
+          console.error("Session init failed:", err.message);
         } finally {
           set({ loading: false });
         }
