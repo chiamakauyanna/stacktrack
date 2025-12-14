@@ -50,9 +50,11 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <div className="bg-navy text-primary px-8 py-2 rounded-full font-bold">
-            <Link to="/login">Login</Link>
-          </div>
+          <Link to="/login">
+            <button className="bg-navy text-primary px-8 py-2 rounded-full font-bold">
+              Login
+            </button>{" "}
+          </Link>
         </div>
       )}
     </nav>

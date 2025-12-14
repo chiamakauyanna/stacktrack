@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import loginImg from "../../assets/access-account.svg";
 
@@ -11,12 +12,11 @@ const Login = () => {
         <div className="w-full max-w-lg">
           <p className="mb-30 text-sm md:text-base text-navy font-semibold text-right mt-10">
             Don't have an account?{" "}
-            <a
-              href="/signup"
-              className="border-2 border-secondary ml-3  py-1.5 px-2 rounded-lg"
-            >
-              Sign Up
-            </a>
+            <Link to="/signup">
+              <button className="border-2 border-secondary ml-3  py-1.5 px-2 rounded-lg">
+                Sign Up
+              </button>
+            </Link>
           </p>
 
           <p className="text-3xl font-bold text-secondary text-center mb-8 font-heading">
@@ -61,9 +61,7 @@ const Login = () => {
       </div>
 
       {/* Right: Background Image */}
-      <div
-        className="hidden md:flex items-center justify-center bg-secondary rounded-l-full w-full md:w-1/2"
-      >
+      <div className="hidden md:flex items-center justify-center bg-secondary rounded-l-full w-full md:w-1/2">
         <img src={loginImg} alt="Login Illustration" className="max-h-2/3" />
       </div>
     </div>
