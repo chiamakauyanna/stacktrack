@@ -65,8 +65,8 @@ const DashboardHome = () => {
 
           {/*  RIGHT ASIDE  */}
           <aside className="space-y-4 rounded-2xl md:grid md:grid-cols-2 gap-4 lg:block md:col-span-2 lg:col-span-1">
-            <TrendChart analytics={analytics} fadeUp={fadeUp} />
-            <RecentProjects analytics={analytics} fadeUp={fadeUp} />
+            <TrendChart analytics={analytics || {}} fadeUp={fadeUp} />
+            <RecentProjects analytics={analytics || {}} fadeUp={fadeUp} />
           </aside>
         </div>
       </div>
