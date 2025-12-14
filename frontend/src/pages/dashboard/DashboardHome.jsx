@@ -10,11 +10,10 @@ import RecentProjects from "../../components/dashboardSections/RecentProjects";
 import { Layers, CheckCircle2, TrendingUp } from "lucide-react";
 
 const DashboardHome = () => {
-  const { barData, fadeUp, analytics = {}, displayedProjects } =
+  const { barData, fadeUp, analytics, displayedProjects } =
     useDashboardLayout();
 
-  const summary = analytics.summary || {};
-  console.log(summary);
+  const summary = analytics?.summary || {};
   const projectIcons = [
     <Layers size={28} className="text-navy" />,
     <CheckCircle2 size={28} className="text-navy" />,
@@ -66,8 +65,9 @@ const DashboardHome = () => {
 
         {/*  RIGHT ASIDE  */}
         <aside className="space-y-4 rounded-2xl md:grid md:grid-cols-2 gap-4 lg:block md:col-span-2 lg:col-span-1">
-          <TrendChart analytics={analytics || {}} fadeUp={fadeUp} />
-          <RecentProjects analytics={analytics || {}} fadeUp={fadeUp} />
+          <TrendChart analytics={analytics || { projects: [] }} fadeUp={fadeUp} />
+<RecentProjects analytics={analytics || { projects: [] }} fadeUp={fadeUp} />
+
         </aside>
       </div>
     </div>
