@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FiUser, FiLock } from "react-icons/fi";
 import useLogin from "../../hooks/useLogin";
 import loginImg from "../../assets/access-account.svg";
 
@@ -13,7 +14,7 @@ const Login = () => {
           <p className="mb-30 text-sm md:text-base text-navy font-semibold text-right mt-10">
             Don't have an account?{" "}
             <Link to="/signup">
-              <button className="border-2 border-secondary ml-3  py-1.5 px-2 rounded-lg">
+              <button className="border-2 border-secondary ml-3 py-1.5 px-2 rounded-lg">
                 Sign Up
               </button>
             </Link>
@@ -24,30 +25,37 @@ const Login = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="bg-surface/40 p-3 rounded-xl shadow-md">
+            <div className="bg-surface/40 p-6 rounded-xl shadow-md space-y-4">
+              <label
+                htmlFor="username"
+                className="flex items-center text-sm font-medium text-gray-600"
+              >
+                <FiUser className="mr-2" /> Username
+              </label>
               <input
                 type="text"
-                placeholder="Username"
                 name="username"
+                id="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary outline-none"
               />
+
+              <label
+                htmlFor="password"
+                className="flex items-center text-sm font-medium text-gray-600"
+              >
+                <FiLock className="mr-2" /> Password
+              </label>
               <input
                 type="password"
-                placeholder="Password"
                 name="password"
+                id="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full p-3 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary outline-none"
               />
             </div>
-
-            {/* <div className="text-sm text-red-500 text-right">
-              <Link to="/forgot-password" className="hover:underline">
-                Forgot your password?
-              </Link>
-            </div> */}
             <div className="flex justify-center mt-6">
               <button
                 className="bg-secondary hover:bg-primary text-white py-3 px-10 rounded-full font-medium transition disabled:opacity-60"
@@ -56,6 +64,7 @@ const Login = () => {
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
+
           </form>
         </div>
       </div>

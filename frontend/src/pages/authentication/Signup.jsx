@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FiUser, FiMail, FiLock } from "react-icons/fi";
 import useRegister from "../../hooks/useRegister";
 import signupImg from "../../assets/authentication.svg";
 
@@ -32,29 +33,49 @@ const Signup = () => {
             Create Account
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4 ">
-            <div className="bg-surface/40 p-4 rounded-xl shadow-md">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="bg-surface/40 p-6 rounded-xl shadow-md space-y-4">
+              <label
+                htmlFor="username"
+                className="flex items-center text-sm font-medium text-gray-600"
+              >
+                <FiUser className="mr-2" /> Username
+              </label>
               <input
                 type="text"
-                placeholder="Username"
                 name="username"
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
+                id="username"
+                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary outline-none"
                 onChange={handleChange}
                 value={formData.username}
               />
+
+              <label
+                htmlFor="email"
+                className="flex items-center text-sm font-medium text-gray-600"
+              >
+                <FiMail className="mr-2" /> Email
+              </label>
               <input
                 type="email"
-                placeholder="Email Address"
                 name="email"
-                className="w-full p-3 border-b border-gray-300 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
+                id="email"
+                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary outline-none"
                 onChange={handleChange}
                 value={formData.email}
               />
+
+              <label
+                htmlFor="password"
+                className="flex items-center text-sm font-medium text-gray-600"
+              >
+                <FiLock className="mr-2" /> Password
+              </label>
               <input
                 type="password"
-                placeholder="Password"
+                id="password"
                 name="password"
-                className="w-full p-3 focus:ring-2 focus:ring-secondary focus:rounded-xl outline-none"
+                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary outline-none"
                 onChange={handleChange}
                 value={formData.password}
               />
